@@ -89,7 +89,6 @@ export default {
               "nickname": this.userInfo.nickname,
             }
           });
-          console.log(info);
           if (info) {
             await this.getInfo();
             await getIdentity();

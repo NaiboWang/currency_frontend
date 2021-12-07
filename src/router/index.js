@@ -33,7 +33,12 @@ const routes = [
     {
         path: '/register',
         name: 'Register',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/RegisterORchangepassword.vue')
+    },
+    {
+        path: '/forgotPassword',
+        name: 'forgotPassword',
+        component: () => import(/* webpackChunkName: "about" */ '../views/RegisterORchangepassword.vue')
     },
     {
         path: '/personalHome',

@@ -16,15 +16,17 @@
             class="login_form"
         >
           <el-form-item label="Email" prop="username">
-            <el-input v-model="loginForm.username" v-on:keyup.enter="login" prefix-icon="iconfont icon-user"></el-input>
+            <el-input v-model="loginForm.username" id="username" v-on:keyup.enter="login" prefix-icon="iconfont icon-user"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="pass">
             <el-input
                 v-model="loginForm.pass"
+                id="passwd"
                 type="password"
                 prefix-icon="iconfont icon-3702mima"
                 v-on:keyup.enter="login"
             ></el-input>
+            <a class="forgotpass" href="/forgotPassword">Forgot Password?</a>
           </el-form-item>
           <el-form-item class="btns">
             <el-button type="primary" @click="login" v-on:keyup.enter="login">Login</el-button>
@@ -98,7 +100,7 @@ export default {
   border-radius: 3px;
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 35%;
   -webkit-transform: translate(-60%, -50%);
   background-color: #fff;
 
@@ -109,9 +111,10 @@ export default {
     border-radius: 50%;
     padding: 10px;
     box-shadow: 0 0 10px #ddd;
-    position: absolute;
+    //position: absolute;
     left: 50%;
-    transform: translate(-30%, -70%);
+    margin-left: 38%;
+    //transform: translate(-30%, -95%);
     background-color: #fff;
 
     img {
@@ -123,7 +126,7 @@ export default {
   }
 
   h2 {
-    transform: translate(0%, 200%);
+    //transform: translate(0%, 70%);
     text-align: center;
     margin-left: 50px;
     margin-top: 10px;
@@ -131,7 +134,7 @@ export default {
 }
 
 .login_form {
-  position: absolute;
+  //position: absolute;
   bottom: 60px;
   width: 100%;
   padding: 0 20px;
@@ -155,5 +158,9 @@ export default {
 .el-input {
   margin-left: 30px;
   width: 80%;
+}
+.forgotpass{
+  float:right;
+  margin-right:25px;
 }
 </style>

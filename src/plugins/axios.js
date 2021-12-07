@@ -53,7 +53,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         NProgress.done();
-        if (response.data.status != 200) {
+        if (response.data.status != 200 && response.data.status != 210) {
             ElMessage({
                 message: response.data.msg,
                 type: 'error',
@@ -64,6 +64,12 @@ service.interceptors.response.use(
                 router.push("/login"); //When not logged in, return to home page.
             }
             return false;
+        } else if(response.data.status == 210){
+            ElMessage({
+                message: response.data.msg,
+                type: 'info',
+                center: true
+            });
         } else if('msg' in response.data){
             ElMessage({
                 message: response.data.msg,

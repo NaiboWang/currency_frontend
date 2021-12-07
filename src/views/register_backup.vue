@@ -17,19 +17,22 @@
             class="login_form"
         >
           <el-form-item label="Email" prop="username">
-            <el-input v-model="registerForm.username" prefix-icon="iconfont icon-user"></el-input>
+            <el-input v-model="registerForm.username" prefix-icon="el-icon-message"></el-input>
           </el-form-item>
-          <el-form-item label="Captcha" prop="username">
+          <el-form-item label="Captcha" prop="captcha">
             <el-input v-model="registerForm.captcha" prefix-icon="el-icon-chat-line-square"></el-input>
-            <el-button type="primary" class="capbtn" @click="get_captcha" :disabled="captcha_disable">{{captcha_state}}</el-button>
+            <el-button type="primary" class="capbtn" @click="get_captcha" :disabled="captcha_disable">
+              {{ captcha_state }}
+            </el-button>
           </el-form-item>
           <el-form-item label="Nickname" prop="nickname">
-            <el-input v-model="registerForm.nickname" prefix-icon="iconfont icon-user"></el-input>
+            <el-input v-model="registerForm.nickname" id="nickname" prefix-icon="iconfont icon-user"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="pass">
             <el-input
                 v-model="registerForm.pass"
                 type="password"
+                id="passwd"
                 prefix-icon="iconfont icon-3702mima"
             ></el-input>
           </el-form-item>
@@ -37,6 +40,7 @@
             <el-input
                 v-model="registerForm.confirmPass"
                 type="password"
+                id="conpasswd"
                 prefix-icon="iconfont icon-3702mima"
             ></el-input>
           </el-form-item>
@@ -52,7 +56,7 @@
 
 <script>
 
-import {validateEmail} from "../utils/validate";
+import {validateEmail, isEmail} from "../utils/validate";
 
 export default {
   data() {
@@ -87,17 +91,23 @@ export default {
     return {
       registerForm: {
         username: '',
-        captcha:'',
+        captcha: '',
         nickname: '',
         pass: '',
         confirmPass: '',
       },
-      captcha_state:"Get Captcha",
+      waitTime: 60,
+      timer: null,
+      captcha_state: "Get Captcha",
       // 表单验证
       registerFormRules: {
         username: [
           {validator: validateEmail, trigger: 'blur'},
           {required: true, message: 'Please enter email as your login proof', trigger: 'blur'},
+        ],
+        captcha: [
+          {required: true, message: 'Please enter captcha', trigger: 'blur'},
+          {min: 6, max: 6, message: 'The captcha is a 6-digit number', trigger: 'blur'}
         ],
         nickname: [
           {required: true, message: 'Please enter nickname', trigger: 'blur'},
@@ -115,22 +125,37 @@ export default {
       }
     }
   },
-  computed:{
+  computed: {
     captcha_disable() {
-      return this.captcha_state.startsWith("Get")?false:true;
+      return this.captcha_state.startsWith("Get") ? false : true;
     }
   },
   methods: {
     returnLogin() {
       this.$router.push("/login");
     },
-    get_captcha(){
-      let timer = setInterval({
-        function(){
+    changeWaitTime() {
+      if (this.waitTime == 0) {
+        clearInterval(this.timer);
+        this.waitTime = 60;
+        this.captcha_state = `Get Captcha`;
+      } else {
+        this.waitTime -= 1;
+        this.captcha_state = `Please wait ${this.waitTime} s for a new captcha`;
+      }
 
-        }
-      },1000);
-      this.captcha_state = "Please wait 60s";
+    },
+    async get_captcha() {
+      if (isEmail(this.registerForm.username)) {
+        this.timer = setInterval(this.changeWaitTime, 1000);
+        let info = await this.$axios.post('getCaptcha', {
+          "username": this.registerForm.username
+        });
+        console.log(info);
+      } else {
+        alert("Please enter a correct email address");
+      }
+
     },
     register() {
       // 表单预验证
@@ -178,7 +203,7 @@ export default {
   border-radius: 3px;
   position: absolute;
   left: 50%;
-  top: 55%;
+  top: 50%;
   -webkit-transform: translate(-60%, -80%);
   background-color: #fff;
 
@@ -189,9 +214,9 @@ export default {
     border-radius: 50%;
     padding: 10px;
     box-shadow: 0 0 10px #ddd;
-    position: absolute;
-    left: 50%;
-    transform: translate(-30%, -100%);
+    //position: absolute;
+    margin-left: 38%;
+    //transform: translate(-30%, -100%);
     background-color: #fff;
 
     img {
@@ -210,7 +235,7 @@ export default {
 }
 
 .login_form {
-  position: absolute;
+  //position: absolute;
   //bottom: 60px;
   width: 100%;
   padding: 0 20px;
@@ -232,12 +257,13 @@ export default {
   margin-left: 30px;
   width: 80%;
 }
-:deep(.el-form-item__error)
-{
+
+:deep(.el-form-item__error) {
   margin-left: 60px;
 }
-.capbtn{
-  float:right;
+
+.capbtn {
+  float: right;
   position: absolute; //绝对位置不占空间
   margin-left: 10px;
 }

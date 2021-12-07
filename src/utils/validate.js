@@ -12,5 +12,5 @@ const validateEmail = (rule, value, callback) => {
         callback()
     }
 }
-export {validateEmail};
+export {validateEmail,isEmail};
 // 如果只有一个 export default function validateEmail = ...
