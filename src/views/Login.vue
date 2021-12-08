@@ -16,13 +16,15 @@
             class="login_form"
         >
           <el-form-item label="Email" prop="username">
-            <el-input v-model="loginForm.username" id="username" v-on:keyup.enter="login" prefix-icon="iconfont icon-user"></el-input>
+            <el-input v-model="loginForm.username" id="username" key="123"
+                      v-on:keyup.enter="login" prefix-icon="iconfont icon-user"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="pass">
             <el-input
                 v-model="loginForm.pass"
                 id="passwd"
                 type="password"
+                key="重新渲染，但是不能解决浏览器自动填充的问题"
                 prefix-icon="iconfont icon-3702mima"
                 v-on:keyup.enter="login"
             ></el-input>

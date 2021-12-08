@@ -5,10 +5,9 @@
       <div class="avatar_box">
         <router-link to="/"><img src="../assets/logo.jpg" alt="avatar"/></router-link>
       </div>
-      <h2>{{$route.path=='/register'?'Register':'Reset Password'}}</h2>
+      <h2>{{ $route.path == '/register' ? 'Register' : 'Reset Password' }}</h2>
       <!-- 登录表单 -->
       <div style="margin-top: 20px">
-
         <el-form
             ref="registerFormRef"
             :model="registerForm"
@@ -16,6 +15,7 @@
             label-width="60px"
             class="login_form"
         >
+
           <el-form-item label="Email" prop="username">
             <el-input v-model="registerForm.username" prefix-icon="el-icon-message"></el-input>
           </el-form-item>
@@ -26,15 +26,19 @@
             </el-button>
           </el-form-item>
           <el-form-item label="Nickname" v-if="$route.path=='/register'" prop="nickname">
-            <el-input v-model="registerForm.nickname" id="nickname" prefix-icon="iconfont icon-user"></el-input>
+
+            <el-input v-model="registerForm.nickname" id="nickname" prefix-icon="iconfont icon-user" key="172"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="pass">
             <el-input
                 v-model="registerForm.pass"
                 type="password"
                 id="passwd"
+                autocomplete="new-password"
+                key="178"
                 prefix-icon="iconfont icon-3702mima"
             ></el-input>
+<!--            使用autocomplete阻止chrome自动填充input-->
           </el-form-item>
           <el-form-item label="ConfirmPass" prop="confirmPass">
             <el-input
@@ -45,7 +49,9 @@
             ></el-input>
           </el-form-item>
           <el-form-item class="btns">
-            <el-button type="primary" @click="registerORrest" v-on:keyup.enter="registerORrest">{{$route.path=='/register'?'Register!':'Reset!'}}</el-button>
+            <el-button type="primary" @click="registerORrest" v-on:keyup.enter="registerORrest">
+              {{ $route.path == '/register' ? 'Register!' : 'Reset!' }}
+            </el-button>
             <el-button @click="returnLogin">Return to Login</el-button>
           </el-form-item>
         </el-form>
@@ -95,7 +101,7 @@ export default {
         nickname: '',
         pass: '',
         confirmPass: '',
-        reset:this.$route.path=='/register'?0:1,
+        reset: this.$route.path == '/register' ? 0 : 1,
       },
       waitTime: 60,
       timer: null,
@@ -148,11 +154,12 @@ export default {
     },
     async get_captcha() {
       if (isEmail(this.registerForm.username)) {
-        this.timer = setInterval(this.changeWaitTime, 1000);
         let info = await this.$axios.post('getCaptcha', {
-          "username": this.registerForm.username,'reset':this.registerForm.reset
+          "username": this.registerForm.username, 'reset': this.registerForm.reset
         });
-        console.log(info);
+        if(info){
+          this.timer = setInterval(this.changeWaitTime, 1000);
+        }
       } else {
         alert("Please enter a correct email address");
       }
@@ -166,8 +173,9 @@ export default {
         if (!valid) {
           return false;
         }
-
-        this.$confirm("Do you really want to "+this.$route.path=='/register'?"register?":"reset your password?",this.$route.path=='/register'?'Register':'Reset Password', {
+        let hint = this.$route.path == '/register' ? "register?" : "reset your password?";
+        console.log(hint);
+        this.$confirm("Do you really want to " + hint, this.$route.path == '/register' ? 'Register' : 'Reset Password', {
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
           cancelButtonClass: 'btn-custom-cancel',
@@ -178,9 +186,9 @@ export default {
           registerFormEnctrypted.confirmPass = this.$jse.encrypt(this.registerForm.confirmPass);
           console.log(registerFormEnctrypted);
           let info = null;
-          if(this.$route.path=='/register'){
+          if (this.$route.path == '/register') {
             info = await this.$axios.post('register', registerFormEnctrypted);
-          }else{
+          } else {
             info = await this.$axios.post('resetPasswordUser', registerFormEnctrypted);
           }
           if (info) {

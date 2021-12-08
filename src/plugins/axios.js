@@ -70,6 +70,7 @@ service.interceptors.response.use(
                 type: 'info',
                 center: true
             });
+            return false;
         } else if('msg' in response.data){
             ElMessage({
                 message: response.data.msg,
