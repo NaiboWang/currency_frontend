@@ -1,55 +1,57 @@
 <template>
-  <el-container>
-    <el-header>
-      <div>
-        <router-link to="/"><img class="logo" src="../../assets/logo.jpg" alt/></router-link>
-        <span>Currency Market</span>
-      </div>
-      <div class="personalInfo">
-        <span>Hello, {{ $store.state.userInfo.nickname }}!</span>
-        <el-button type="primary" @click="$router.push('/')">Home Page</el-button>
-        <el-button @click="logout">Logout</el-button>
-      </div>
-    </el-header>
+  <div>
     <el-container>
-      <!-- 侧边栏 -->
-      <el-aside width="220px">
-        <el-menu unique-opened router :default-active="activePath"
-                 background-color="#333744" text-color="#fff" active-text-color="#409FFF">
-          <!-- :unique-opened="true"->只允许展开一个菜单 -->
-          <!-- :collapse-transition="false" -> 关闭动画 -->
-          <!-- router -> 导航开启路由模式 -->
-          <!-- 一级菜单  -->
-          <div v-for="item in menuList" :key="item.id">
-            <el-menu-item style="text-align: left; margin-left:5px " v-if="!item.children" :index="item.path+''">
-              <!-- 一级菜单的模板区域 -->
-              <i :class="$store.state.iconObj[item.id]"></i>
-              <template #title>
-                <span>{{ item.authName }}</span>
-              </template>
-            </el-menu-item>
-            <el-submenu v-else style="text-align: left; margin-left:5px " :index="item.authName">
-              <template #title>
+      <el-header>
+        <div>
+          <router-link to="/"><img class="logo" src="../../assets/logo.jpg" alt/></router-link>
+          <span>Currency Market</span>
+        </div>
+        <div class="personalInfo">
+          <span>Hello, {{ $store.state.userInfo.nickname }}!</span>
+          <el-button type="primary" @click="$router.push('/')">Home Page</el-button>
+          <el-button @click="logout">Logout</el-button>
+        </div>
+      </el-header>
+      <el-container>
+        <!-- 侧边栏 -->
+        <el-aside width="220px">
+          <el-menu unique-opened router :default-active="activePath"
+                   background-color="#333744" text-color="#fff" active-text-color="#409FFF">
+            <!-- :unique-opened="true"->只允许展开一个菜单 -->
+            <!-- :collapse-transition="false" -> 关闭动画 -->
+            <!-- router -> 导航开启路由模式 -->
+            <!-- 一级菜单  -->
+            <div v-for="item in menuList" :key="item.id">
+              <el-menu-item style="text-align: left; margin-left:5px " v-if="!item.children" :index="item.path+''">
+                <!-- 一级菜单的模板区域 -->
                 <i :class="$store.state.iconObj[item.id]"></i>
-                <span>{{ item.authName }}</span>
-              </template>
-              <el-menu-item v-for="child in item.children" :index="child.path" :key="child.id"
-                            style="padding-left:25px">
                 <template #title>
-                  <i :class="$store.state.iconObj[child.id]"></i>
-                  <span>{{ child.authName }}</span>
+                  <span>{{ item.authName }}</span>
                 </template>
               </el-menu-item>
-            </el-submenu>
-          </div>
-        </el-menu>
-      </el-aside>
-      <!-- 内容主体 -->
-      <el-main>
-        <router-view></router-view>
-      </el-main>
+              <el-submenu v-else style="text-align: left; margin-left:5px " :index="item.authName">
+                <template #title>
+                  <i :class="$store.state.iconObj[item.id]"></i>
+                  <span>{{ item.authName }}</span>
+                </template>
+                <el-menu-item v-for="child in item.children" :index="child.path" :key="child.id"
+                              style="padding-left:25px">
+                  <template #title>
+                    <i :class="$store.state.iconObj[child.id]"></i>
+                    <span>{{ child.authName }}</span>
+                  </template>
+                </el-menu-item>
+              </el-submenu>
+            </div>
+          </el-menu>
+        </el-aside>
+        <!-- 内容主体 -->
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
     </el-container>
-  </el-container>
+  </div>
 </template>
 
 <script>

@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="login_container">
     <div class="login_box">
       <!-- 头像区 -->
@@ -13,6 +14,7 @@
             :model="loginForm"
             :rules="loginFormRules"
             label-width="60px"
+            label-position="right"
             class="login_form"
         >
           <el-form-item label="Email" prop="username">
@@ -37,6 +39,7 @@
         </el-form>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -114,8 +117,7 @@ export default {
     padding: 10px;
     box-shadow: 0 0 10px #ddd;
     //position: absolute;
-    left: 50%;
-    margin-left: 38%;
+    margin-left: 40%;
     //transform: translate(-30%, -95%);
     background-color: #fff;
 
@@ -152,10 +154,11 @@ export default {
   font-size: 13px;
   margin: 10px 15px;
 }
-
-:deep(.el-form-item__error) {
+//vue 2用/deep/，vue 3用:deep()
+/deep/ .el-form-item__error {
   margin-left: 60px;
 }
+
 
 .el-input {
   margin-left: 30px;

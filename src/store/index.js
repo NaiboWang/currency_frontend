@@ -1,7 +1,7 @@
-import {createStore} from 'vuex'
-import {ElMessage} from "element-plus";
-
-export default createStore({
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
+export default new Vuex.Store({
     state: {
         backRef: "/",
         activePath: "/personalModelList", //默认激活的标签

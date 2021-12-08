@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-row :class="classes">
     <el-col :span="6" style="margin-right:10px">
       <el-select style="width: 100%" v-model="searchDict.fields" @change="detectChange" multiple
@@ -78,6 +79,7 @@
     </span>
     </template>
   </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -245,7 +247,7 @@ export default {
   text-align: left;
 }
 
-:deep(.el-form-item__label) {
+/deep/ .el-form-item__label {
   text-align: left !important;
   float: initial !important;
 }

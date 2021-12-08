@@ -1,6 +1,6 @@
 <script type="text/javascript">
 // 定义一些公共的属性和方法
-import {ElMessage} from "element-plus";
+import {Message} from "element-ui";
 
 var waitingList = initializeList();
 function initializeList()
@@ -33,7 +33,7 @@ function push(item){
   let exist_OK = exist(item["id"]);
   if(exist_OK)
   {
-    ElMessage({
+    Message({
       message: "This model already existed in the waiting list",
       type: 'info',
       center: true
@@ -41,7 +41,7 @@ function push(item){
   }
   else{
     waitingList.push(item);
-    ElMessage({
+    Message({
       message: "This model has been added to the waiting list",
       type: 'success',
       center: true
@@ -62,13 +62,13 @@ function remove(item){
   }
   if(index>=0){
     waitingList.splice(index,1);
-    ElMessage({
+    Message({
       message: "This model has been deleted from the waiting list",
       type: 'success',
       center: true
     });
   }else{
-    ElMessage({
+    Message({
       message: "This model doesn't exist in the waiting list",
       type: 'info',
       center: true

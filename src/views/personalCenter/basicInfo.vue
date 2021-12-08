@@ -1,4 +1,5 @@
 <template>
+  <div>
   <!-- 面包屑导航区 -->
   <el-breadcrumb separator-class="el-icon-arrow-right">
     <el-breadcrumb-item :to="{ path: '/personalHome' }">{{$store.state.userInfo.role=='user'?'Personal Center':'Management Center'}}</el-breadcrumb-item>
@@ -32,6 +33,7 @@
       <el-button type="primary" @click="changeInfo">Change Info</el-button>
     </div>
   </el-card>
+  </div>
 </template>
 
 <script>
@@ -105,11 +107,11 @@ export default {
 .el-card {
   min-height: 630px;
 }
-.disabledClass :deep(.el-input__inner)
+.disabledClass /deep/ .el-input__inner
 {
   color:red!important;
 }
-.enabledClass :deep(.el-input__inner)
+.enabledClass /deep/.el-input__inner
 {
   color:blue!important;
 }

@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="login_container">
     <div class="login_box">
       <!-- 头像区 -->
@@ -12,6 +13,7 @@
             ref="registerFormRef"
             :model="registerForm"
             :rules="registerFormRules"
+            label-position="right"
             label-width="60px"
             class="login_form"
         >
@@ -58,11 +60,13 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 
 import {validateEmail, isEmail} from "../utils/validate";
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -161,7 +165,7 @@ export default {
           this.timer = setInterval(this.changeWaitTime, 1000);
         }
       } else {
-        alert("Please enter a correct email address");
+        await Swal.fire("","Please enter a correct email address!");
       }
 
     },
@@ -231,7 +235,7 @@ export default {
     padding: 10px;
     box-shadow: 0 0 10px #ddd;
     //position: absolute;
-    margin-left: 38%;
+    margin-left: 40%;
     //transform: translate(-30%, -100%);
     background-color: #fff;
 
@@ -274,7 +278,7 @@ export default {
   width: 80%;
 }
 
-:deep(.el-form-item__error) {
+/deep/ .el-form-item__error {
   margin-left: 60px;
 }
 

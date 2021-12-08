@@ -1,89 +1,91 @@
 <template>
-  <el-row class="center_layout">
-    <el-col :span="6" style="margin-right:10px">
-      <el-select style="width: 100%" v-model="searchDict.fields" @change="detectChange" multiple
-                 placeholder="Please choose query fields">
-        <el-option
-            v-for="item in searchDict.queryFields"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-        </el-option>
-      </el-select>
-    </el-col>
+  <div>
+    <el-row class="center_layout">
+      <el-col :span="6" style="margin-right:10px">
+        <el-select style="width: 100%" v-model="searchDict.fields" @change="detectChange" multiple
+                   placeholder="Please choose query fields">
+          <el-option
+              v-for="item in searchDict.queryFields"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </el-select>
+      </el-col>
 
-    <el-col :span="10">
-      <!--        注意下面js函数默认传参，与python不同！第一个参数必须显式指定为undefined，不能省略！省略会把第二个参数activesearch的true赋值给函数的第一个参数！-->
-      <el-input v-model="searchDict.query" @keyup.enter="getData(undefined,activeSearch=true)"
-                placeholder="please input keywords to search"
-                clearable>
-        <template #append>
-          <el-button @click="getData(undefined,activeSearch=true)" icon="el-icon-search"></el-button>
-        </template>
-      </el-input>
-    </el-col>
-    <el-col :span="1">
-      <el-button @click="dialogFormVisible=true" type="primary" plain style="margin-left: 5px">Advanced Search
-      </el-button>
-    </el-col>
-  </el-row>
-  <slot>Put your tables here</slot>
-  <!-- 分页区域 -->
-  <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="searchDict.queryInfo.pageNum"
-      :page-sizes="[5, 10, 15, 20]"
-      :page-size="searchDict.queryInfo.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="searchDict.total"
-      background
-  ></el-pagination>
-  <el-dialog title="Advanced Search" v-model="dialogFormVisible">
-    <el-form>
-      <el-form-item v-for="queryField in searchDict.queryFields" :label="queryField.label+queryField.comment"
-                    :key="queryField.label"
-                    prop="queryField.value">
+      <el-col :span="10">
+        <!--        注意下面js函数默认传参，与python不同！第一个参数必须显式指定为undefined，不能省略！省略会把第二个参数activesearch的true赋值给函数的第一个参数！-->
+        <el-input v-model="searchDict.query" @keyup.enter="getData(undefined,activeSearch=true)"
+                  placeholder="please input keywords to search"
+                  clearable>
+          <template #append>
+            <el-button @click="getData(undefined,activeSearch=true)" icon="el-icon-search"></el-button>
+          </template>
+        </el-input>
+      </el-col>
+      <el-col :span="1">
+        <el-button @click="dialogFormVisible=true" type="primary" plain style="margin-left: 5px">Advanced Search
+        </el-button>
+      </el-col>
+    </el-row>
+    <slot>Put your tables here</slot>
+    <!-- 分页区域 -->
+    <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="searchDict.queryInfo.pageNum"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="searchDict.queryInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="searchDict.total"
+        background
+    ></el-pagination>
+    <el-dialog title="Advanced Search" v-model="dialogFormVisible">
+      <el-form>
+        <el-form-item v-for="queryField in searchDict.queryFields" :label="queryField.label+queryField.comment"
+                      :key="queryField.label"
+                      prop="queryField.value">
 
-        <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value]" v-if="queryField.type=='text'"
-                  autocomplete="off"></el-input>
-        <!--number-->
-        <div v-if="queryField.type=='number'" style="width: 100%">
-          <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_from']" style="width: 49%"
-                    placeholder="From"
-                    type="number" autocomplete="off"></el-input>
-          <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_to']"
-                    style="width: 49%; float: right"
-                    placeholder="To"
-                    type="number" autocomplete="off"></el-input>
-        </div>
+          <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value]" v-if="queryField.type=='text'"
+                    autocomplete="off"></el-input>
+          <!--number-->
+          <div v-if="queryField.type=='number'" style="width: 100%">
+            <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_from']" style="width: 49%"
+                      placeholder="From"
+                      type="number" autocomplete="off"></el-input>
+            <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_to']"
+                      style="width: 49%; float: right"
+                      placeholder="To"
+                      type="number" autocomplete="off"></el-input>
+          </div>
 
-        <!--datetime-->
-        <div v-if="queryField.type=='datetime'" style="width: 100%">
-          <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_from']" style="width: 47%"
-                    placeholder="From"
-                    type="datetime-local" autocomplete="off"></el-input>
-          <label style="width: 4%;margin-left: 2%">To</label>
-          <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_to']"
-                    style="width: 47%; float: right"
-                    placeholder="To"
-                    type="datetime-local" autocomplete="off"></el-input>
-        </div>
+          <!--datetime-->
+          <div v-if="queryField.type=='datetime'" style="width: 100%">
+            <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_from']" style="width: 47%"
+                      placeholder="From"
+                      type="datetime-local" autocomplete="off"></el-input>
+            <label style="width: 4%;margin-left: 2%">To</label>
+            <el-input v-model="searchDict.queryInfo.multiConditions[queryField.value +'_to']"
+                      style="width: 47%; float: right"
+                      placeholder="To"
+                      type="datetime-local" autocomplete="off"></el-input>
+          </div>
 
-      </el-form-item>
-    </el-form>
-    <template #footer>
+        </el-form-item>
+      </el-form>
+      <template #footer>
     <span class="dialog-footer">
       <el-button type="primary" @click="getData(advance=1,activeSearch=true)">Search</el-button>
     </span>
-    </template>
-  </el-dialog>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 export default {
   name: "SearchBox",
-  emits:['getData'], //标记事件名称
+  emits: ['getData'], //标记事件名称
   async mounted() {
     this.searchDict.queryFields = this.params.queryFields;
     for (let item of this.searchDict.queryFields) {
@@ -100,8 +102,8 @@ export default {
     await this.getData();
   },
   props: {
-    params:{
-      required:true,
+    params: {
+      required: true,
     },
     pageSize: {
       default: 10,
@@ -187,7 +189,7 @@ export default {
       let data = await this.$axios.post(this.params.apiAddress, queryInfo);
       this.searchDict.total = data.total;
       this.dialogFormVisible = false;
-      this.$emit("getData",data.data);
+      this.$emit("getData", data.data);
     },
   },
 }

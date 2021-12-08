@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ElMessage } from "element-plus";
+import { Message } from "element-ui";
 import router from '../router'
 // import qs from 'qs';
 // import store from '@/store';
@@ -54,7 +54,7 @@ service.interceptors.response.use(
     response => {
         NProgress.done();
         if (response.data.status != 200 && response.data.status != 210) {
-            ElMessage({
+            Message({
                 message: response.data.msg,
                 type: 'error',
                 center: true
@@ -65,14 +65,14 @@ service.interceptors.response.use(
             }
             return false;
         } else if(response.data.status == 210){
-            ElMessage({
+            Message({
                 message: response.data.msg,
                 type: 'info',
                 center: true
             });
             return false;
         } else if('msg' in response.data){
-            ElMessage({
+            Message({
                 message: response.data.msg,
                 type: 'success',
                 center: true
@@ -83,7 +83,7 @@ service.interceptors.response.use(
     error => {
         NProgress.done();
         console.log(error);
-        ElMessage({
+        Message({
             message: "Server Error!",
             type: "error",
             duration: 5 * 1000

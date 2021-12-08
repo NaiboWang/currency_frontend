@@ -1,23 +1,26 @@
-import { createApp } from 'vue'
-import Home from './views/home/Home'
-import router from './router'
+import Vue from "vue";
+import Home from './views/Home'
 import store from "./store";
-import ElementPlus from "element-plus";
-import locale from "element-plus/lib/locale/lang/en";
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/en'
 import axios from "./plugins/axios";
 import jse from "./plugins/encrypt";
+import router from "./router";
+import VueSweetalert2 from "vue-sweetalert2";
 import waitingList from "./components/waitingList";
-import lodash from "lodash";
-import 'element-plus/lib/theme-chalk/index.css';
 
-//Load the root component
-const app = createApp(Home);
-app.use(store);
-app.use(ElementPlus,{locale});
-app.config.globalProperties.$axios=axios;//配置全局属性
-app.config.globalProperties.$jse=jse;//配置全局属性
-app.config.globalProperties.$lodash = lodash;
+Vue.use(ElementUI,{locale});
 
-app.config.globalProperties.staticURL = process.env.VUE_APP_BACKEND_URL.replace("_backend",""); //配置全局静态文件地址，如图片
+Vue.prototype.$axios=axios;//配置全局属性，http接口访问包
+Vue.prototype.$jse=jse;//配置全局属性，加密包
+// Vue.prototype.$store=store;//配置全局属性，加密包
 
-app.mount('#home');
+
+Vue.prototype.staticURL = process.env.VUE_APP_BACKEND_URL.replace("_backend",""); //配置全局静态文件地址，如图片
+new Vue(
+    {
+        store,
+        render: h => h(Home),
+    }
+).$mount('#home');

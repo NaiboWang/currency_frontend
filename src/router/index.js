@@ -1,20 +1,12 @@
-import {createRouter, createWebHistory} from 'vue-router'
 import personalHome from "@/views/personalCenter/personalHome";
-import personalModelList from "@/views/personalCenter/personalModelList";
-import personalOrders from "@/views/personalCenter/personalOrders";
-import modelEnsemble from "@/views/personalCenter/modelEnsemble";
 import changePassword from "@/views/personalCenter/changePassword";
 import basicInfo from "@/views/personalCenter/basicInfo";
-// import managementHome from "@/views/management_center/managementHome";
-import charge from "@/views/personalCenter/charge";
-import modelManagement from "@/views/personalCenter/modelManagement";
-import viewOrder from "@/views/personalCenter/viewOrder";
-import viewWaitingList from "@/views/personalCenter/viewWaitingList";
-import userList from "../views/personalCenter/userList";
-import logList from "../views/personalCenter/logList";
-import notifications from "@/views/personalCenter/notifications";
+
 import redirect from "../views/redirect";
-import Home from "../views/home/Home";
+import Router from 'vue-router'
+import Vue from "vue";
+import layout from '../layout'
+Vue.use(Router)
 
 const routes = [
     {
@@ -45,37 +37,128 @@ const routes = [
         name: 'personalHome',
         component: personalHome,
         children: [
-            {path: '/personalModelList', component: personalModelList},
-            {path: '/manageModel/:id', component: modelManagement},
-            {path: '/personalOrders', component: personalOrders},
-            {path: '/soldOrders', component: personalOrders},
-            {path: '/viewLogs', component: logList},
-            {path: '/viewOrder/:id', component: viewOrder},
-            {path: '/viewSoldOrder/:id', component: viewOrder},
-            {path: '/modelEnsemble', component: modelEnsemble},
             {path: '/changePassword', component: changePassword},
             {path: '/basicInfo', component: basicInfo},
-            {path: '/viewWaitingList', component: viewWaitingList},
-            {path: '/charge', component: charge},
-            {path: '/userManagement', component: userList},
-            {path: '/notifications', component: notifications},
         ]
     },
-    // {
-    //     path: '/managementHome',
-    //     name: 'managementHome',
-    //     component: managementHome,
-    //     redirect: '/managementInfo',
-    //     children: [
-    //         {path: '/managementModels', component: personalModelList},
-    //         {path: '/managementPassword', component: changePassword},
-    //         {path: '/managementInfo', component: basicInfo},
-    //     ]
-    // },
+    {
+        path: '/example',
+        component: layout,
+        children: [
+            {
+                path: '',
+                name: 'dashboard',
+                component: () => import('@/pages/dashboard')
+            }
+        ]
+    },
+    {
+        path: '/basic-ui',
+        component: layout,
+        children: [
+            {
+                path: 'buttons',
+                name: 'buttons',
+                component: () => import('@/pages/basic-ui/buttons')
+            },
+            {
+                path: 'dropdowns',
+                name: 'dropdowns',
+                component: () => import('@/pages/basic-ui/dropdowns')
+            },
+            {
+                path: 'typography',
+                name: 'typography',
+                component: () => import('@/pages/basic-ui/typography')
+            }
+        ]
+    },
+    {
+        path: '/charts',
+        component: layout,
+        children: [
+            {
+                path: 'chartjs',
+                name: 'chartjs',
+                component: () => import('@/pages/charts/chartjs')
+            },
+        ]
+    },
+    {
+        path: '/tables',
+        component: layout,
+        children: [
+            {
+                path: 'basic-tables',
+                name: 'basic-tables',
+                component: () => import('@/pages/tables/basic-tables')
+            }
+        ]
+    },
+    {
+        path: '/auth-pages',
+        component: {
+            render (c) { return c('router-view') }
+        },
+        children: [
+            {
+                path: 'login',
+                name: 'login',
+                component: () => import('@/pages/samples/auth-pages/login')
+            },
+            {
+                path: 'register',
+                name: 'register',
+                component: () => import('@/pages/samples/auth-pages/register')
+            }
+        ]
+    },
+    {
+        path: '/error-pages',
+        component: {
+            render (c) { return c('router-view') }
+        },
+        children: [
+            {
+                path: 'error-404',
+                name: 'error-404',
+                component: () => import('@/pages/samples/error-pages/error-404')
+            },
+            {
+                path: 'error-500',
+                name: 'error-500',
+                component: () => import('@/pages/samples/error-pages/error-500')
+            }
+        ]
+    },
+    {
+        path: '/icons',
+        component: layout,
+        children: [
+            {
+                path: 'mdi-icons',
+                name: 'mdi-icons',
+                component: () => import('@/pages/icons/mdi-icons')
+            }
+        ]
+    },
+    {
+        path: '*',
+        redirect: '/error-404',
+        component: {
+            render (c) { return c('router-view') }
+        },
+        children: [
+            {
+                path: 'error-404',
+                component: () => import('@/pages/samples/error-pages/error-404')
+            }
+        ]
+    }
 ]
 
-const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+const router = new Router({
+    mode:'history',
     routes
 })
 
