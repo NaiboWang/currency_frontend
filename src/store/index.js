@@ -26,7 +26,7 @@ export default new Vuex.Store({
             nickname: 'guest',
             role: "guest",
             username: "guest",
-            notifications:0,
+            profile:"user.png",
         },
     },
     mutations: {
@@ -41,6 +41,9 @@ export default new Vuex.Store({
         },
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
+        },
+        setUserProfile(state, profile) {
+            state.userInfo.profile = profile;
         },
     },
     actions: {},

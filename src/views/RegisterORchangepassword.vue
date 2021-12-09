@@ -4,7 +4,7 @@
     <div class="login_box">
       <!-- 头像区 -->
       <div class="avatar_box">
-        <router-link to="/"><img src="../assets/logo.jpg" alt="avatar"/></router-link>
+        <router-link to="/"><img src="../assets/images/logo_mini.png" alt="avatar"/></router-link>
       </div>
       <h2>{{ $route.path == '/register' ? 'Register' : 'Reset Password' }}</h2>
       <!-- 登录表单 -->

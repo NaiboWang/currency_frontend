@@ -10,7 +10,7 @@ export function convert_time(o) {
         // eslint-disable-next-line no-prototype-builtins
         if (o[i].hasOwnProperty("$date")) {
             o[i] = new Date(o[i].$date);
-            o[i] = moment(+o[i]).utcOffset(8).format('YYYY-MM-DD HH:mm:ss');
+            o[i] = moment(+o[i]).utcOffset(8).format('YYYY-MM-DD HH:mm:ss UTC+8');
         }
         if (typeof (o[i]) == "object") {
             //going on step down in the object tree!!

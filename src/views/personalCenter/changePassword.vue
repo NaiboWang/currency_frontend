@@ -1,44 +1,52 @@
 <template>
   <div>
-  <!-- 面包屑导航区 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item :to="{ path: '/personalHome' }">{{$store.state.userInfo.role=='user'?'Personal Center':'Management Center'}}</el-breadcrumb-item>
-    <el-breadcrumb-item>Personal Info</el-breadcrumb-item>
-    <el-breadcrumb-item>Change Password</el-breadcrumb-item>
-  </el-breadcrumb>
-  <el-card>
-    <h3>Change Password</h3>
-    <!-- 改密码表单 -->
-    <div class="form_center_layout">
-      <el-form
-          ref="changePasswordFormRef"
-          :model="changePasswordForm"
-          :rules="changePasswordFormRules"
-          label-width="130px"
-      >
-        <el-form-item label="Old Password" prop="oldPass">
-          <el-input v-model="changePasswordForm.oldPass" type="password" prefix-icon="iconfont icon-3702mima"></el-input>
-        </el-form-item>
-        <el-form-item label="Password" prop="pass">
-          <el-input
-              v-model="changePasswordForm.pass"
-              type="password"
-              prefix-icon="iconfont icon-3702mima"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="ConfirmPass" prop="confirmPass">
-          <el-input
-              v-model="changePasswordForm.confirmPass"
-              type="password"
-              prefix-icon="iconfont icon-3702mima"
-          ></el-input>
-        </el-form-item>
-        <el-form-item class="btns">
-          <el-button type="primary" @click="changePass">Change</el-button>
-        </el-form-item>
-      </el-form>
+    <!-- 面包屑导航区 -->
+    <div class="page-header">
+      <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-info text-white mr-2">
+        <i class="mdi mdi-account"></i>
+      </span> Change Password </h3>
     </div>
-  </el-card>
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h3>Change Password</h3>
+            <!-- 改密码表单 -->
+            <div class="form_center_layout">
+              <el-form
+                  ref="changePasswordFormRef"
+                  :model="changePasswordForm"
+                  :rules="changePasswordFormRules"
+                  label-width="130px"
+              >
+                <el-form-item label="Old Password" prop="oldPass">
+                  <el-input v-model="changePasswordForm.oldPass" type="password"
+                            prefix-icon="iconfont icon-3702mima"></el-input>
+                </el-form-item>
+                <el-form-item label="Password" prop="pass">
+                  <el-input
+                      v-model="changePasswordForm.pass"
+                      type="password"
+                      prefix-icon="iconfont icon-3702mima"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="ConfirmPass" prop="confirmPass">
+                  <el-input
+                      v-model="changePasswordForm.confirmPass"
+                      type="password"
+                      prefix-icon="iconfont icon-3702mima"
+                  ></el-input>
+                </el-form-item>
+
+                <b-button type="button" variant="info" @click="changePass">Change</b-button>
+
+              </el-form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -89,8 +97,8 @@ export default {
       }
     }
   },
-  methods:{
-    changePass () {
+  methods: {
+    changePass() {
       // 表单预验证
       // valid：bool类型
       this.$refs.changePasswordFormRef.validate(async valid => {
@@ -108,10 +116,11 @@ export default {
           changePasswordFormEncrypted.confirmPass = this.$jse.encrypt(this.changePasswordForm.confirmPass);
           changePasswordFormEncrypted.oldPass = this.$jse.encrypt(this.changePasswordForm.oldPass);
           const info = await this.$axios.post('changePassword', changePasswordFormEncrypted);
-          if(info){
+          if (info) {
             this.$router.push("/login");
           }
-        }).catch(() => {});
+        }).catch(() => {
+        });
       })
     }
   }
@@ -119,8 +128,7 @@ export default {
 </script>
 
 <style scoped>
-.el-card
-{
+.el-card {
   min-height: 630px;
 }
 </style>

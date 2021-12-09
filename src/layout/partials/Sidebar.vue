@@ -2,21 +2,21 @@
   <section class="app-sidebar">
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
       <ul class="nav">
-        <li class="nav-item nav-profile">
-          <a href="javascript:void(0);" class="nav-link">
-            <div class="nav-profile-image">
-              <img src="@/assets/images/faces/face1.jpg" alt="profile">
-              <span class="login-status online"></span>
-            </div>
-            <div class="nav-profile-text d-flex flex-column">
-              <span class="font-weight-bold mb-2">David Grey. H</span>
-              <span class="text-secondary text-small">Project Manager</span>
-            </div>
-            <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
-          </a>
-        </li>
+<!--        <li class="nav-item nav-profile">-->
+<!--          <a href="javascript:void(0);" class="nav-link">-->
+<!--            <div class="nav-profile-image">-->
+<!--              <img src="@/assets/images/faces/face1.jpg" alt="profile">-->
+<!--              <span class="login-status online"></span>-->
+<!--            </div>-->
+<!--            <div class="nav-profile-text d-flex flex-column">-->
+<!--              <span class="font-weight-bold mb-2">David Grey. H</span>-->
+<!--              <span class="text-secondary text-small">Project Manager</span>-->
+<!--            </div>-->
+<!--            <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>-->
+<!--          </a>-->
+<!--        </li>-->
         <li class="nav-item" v-on:click="collapseAll">
-          <router-link class="nav-link" to="/">
+          <router-link class="nav-link" to="/personalHome">
             <span class="menu-title">Dashboard</span>
             <i class="mdi mdi-home menu-icon"></i>
           </router-link>
@@ -123,23 +123,23 @@
             <i class="menu-icon mdi mdi-file-document-outline"></i>
           </a>
         </li>
-        <li class="nav-item sidebar-actions">
-          <span class="nav-link">
-            <div class="border-bottom">
-              <h6 class="font-weight-normal mb-3">Projects</h6>
-            </div>
-            <button class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add a project</button>
-            <div class="mt-4">
-              <div class="border-bottom">
-                <p class="text-secondary">Categories</p>
-              </div>
-              <ul class="gradient-bullet-list mt-4">
-                <li>Free</li>
-                <li>Pro</li>
-              </ul>
-            </div>
-          </span>
-        </li>
+<!--        <li class="nav-item sidebar-actions">-->
+<!--          <span class="nav-link">-->
+<!--            <div class="border-bottom">-->
+<!--              <h6 class="font-weight-normal mb-3">Projects</h6>-->
+<!--            </div>-->
+<!--            <button class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add a project</button>-->
+<!--            <div class="mt-4">-->
+<!--              <div class="border-bottom">-->
+<!--                <p class="text-secondary">Categories</p>-->
+<!--              </div>-->
+<!--              <ul class="gradient-bullet-list mt-4">-->
+<!--                <li>Free</li>-->
+<!--                <li>Pro</li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </span>-->
+<!--        </li>-->
       </ul>
     </nav>
   </section>
@@ -150,7 +150,7 @@ export default {
   name: 'sidebar',
  data () {
     return {
-      collapses: [ 
+      collapses: [
      { show: false },
      { show: false },
      { show: false }
@@ -186,6 +186,6 @@ export default {
     $route () {
        document.querySelector('#sidebar').classList.toggle('active');
     }
-  } 
+  }
 }
 </script>

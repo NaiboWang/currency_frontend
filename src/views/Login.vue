@@ -4,7 +4,7 @@
     <div class="login_box">
       <!-- 头像区 -->
       <div class="avatar_box">
-        <router-link to="/"><img src="../assets/logo.jpg" alt="avatar"/></router-link>
+        <router-link to="/"><img src="../assets/images/logo_mini.png" alt="avatar"/></router-link>
       </div>
       <h2>Login</h2>
       <!-- 登录表单 -->
@@ -21,7 +21,7 @@
             <el-input v-model="loginForm.username" id="username" key="123"
                       v-on:keyup.enter="login" prefix-icon="iconfont icon-user"></el-input>
           </el-form-item>
-          <el-form-item label="Password" prop="pass">
+          <el-form-item label="Password" prop="pass" id="passwdform">
             <el-input
                 v-model="loginForm.pass"
                 id="passwd"
@@ -29,9 +29,11 @@
                 key="重新渲染，但是不能解决浏览器自动填充的问题"
                 prefix-icon="iconfont icon-3702mima"
                 v-on:keyup.enter="login"
+
             ></el-input>
             <a class="forgotpass" href="/forgotPassword">Forgot Password?</a>
           </el-form-item>
+
           <el-form-item class="btns">
             <el-button type="primary" @click="login" v-on:keyup.enter="login">Login</el-button>
             <el-button @click="registerForm">Register</el-button>
@@ -45,6 +47,7 @@
 
 <script>
 import {isEmail, validateEmail} from "../utils/validate";
+import getIdentity from "../store/userInfo";
 export default {
   data() {
 
@@ -60,8 +63,8 @@ export default {
           {validator: validateEmail, trigger: 'blur'}
         ],
         pass: [
-          {required: true, message: 'Please enter password', trigger: 'blur'},
-          {min: 2, max: 18, message: 'Password should between 2 to 18 characters', trigger: 'blur'}
+          {required: true, message:"Please enter your password", trigger: 'blur'},
+          {min: 2, max: 18, message: 'Between 2 to 18 characters', trigger: 'blur'}
         ]
       }
     }
@@ -82,6 +85,7 @@ export default {
         loginFormEnctrypted.pass = this.$jse.encrypt(this.loginForm.pass);
         const info = await this.$axios.post('login', loginFormEnctrypted);
         if (info) {
+          await getIdentity(); //更新用户信息
           this.$router.push("/personalHome");
         }
       })
@@ -148,6 +152,7 @@ export default {
 .btns {
   display: flex;
   justify-content: center;
+  margin-left: 0;
 }
 
 .info {
@@ -159,6 +164,15 @@ export default {
   margin-left: 60px;
 }
 
+#passwdform {
+  /deep/.el-form-item__error{
+    top: 60%;
+  }
+}
+
+//div + a{
+//  color:red;
+//}
 
 .el-input {
   margin-left: 30px;

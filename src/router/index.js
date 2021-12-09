@@ -1,4 +1,4 @@
-import personalHome from "@/views/personalCenter/personalHome";
+
 import changePassword from "@/views/personalCenter/changePassword";
 import basicInfo from "@/views/personalCenter/basicInfo";
 
@@ -6,6 +6,7 @@ import redirect from "../views/redirect";
 import Router from 'vue-router'
 import Vue from "vue";
 import layout from '../layout'
+
 Vue.use(Router)
 
 const routes = [
@@ -32,24 +33,26 @@ const routes = [
         name: 'forgotPassword',
         component: () => import(/* webpackChunkName: "about" */ '../views/RegisterORchangepassword.vue')
     },
+    // {
+    //     path: '/personalHome',
+    //     name: 'personalHome',
+    //     component: personalHome,
+    //     children: [
+    //         {path: '/changePassword', component: changePassword},
+    //         {path: '/basicInfo', component: basicInfo},
+    //     ]
+    // },
     {
         path: '/personalHome',
-        name: 'personalHome',
-        component: personalHome,
-        children: [
-            {path: '/changePassword', component: changePassword},
-            {path: '/basicInfo', component: basicInfo},
-        ]
-    },
-    {
-        path: '/example',
         component: layout,
         children: [
             {
                 path: '',
                 name: 'dashboard',
                 component: () => import('@/pages/dashboard')
-            }
+            },
+            {path: '/changePassword', component: changePassword},
+            {path: '/basicInfo', component: basicInfo},
         ]
     },
     {
@@ -98,7 +101,9 @@ const routes = [
     {
         path: '/auth-pages',
         component: {
-            render (c) { return c('router-view') }
+            render(c) {
+                return c('router-view')
+            }
         },
         children: [
             {
@@ -116,7 +121,9 @@ const routes = [
     {
         path: '/error-pages',
         component: {
-            render (c) { return c('router-view') }
+            render(c) {
+                return c('router-view')
+            }
         },
         children: [
             {
@@ -146,7 +153,9 @@ const routes = [
         path: '*',
         redirect: '/error-404',
         component: {
-            render (c) { return c('router-view') }
+            render(c) {
+                return c('router-view')
+            }
         },
         children: [
             {
@@ -158,7 +167,7 @@ const routes = [
 ]
 
 const router = new Router({
-    mode:'history',
+    mode: 'history',
     routes
 })
 
