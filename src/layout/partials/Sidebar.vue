@@ -2,23 +2,45 @@
   <section class="app-sidebar">
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
       <ul class="nav">
-<!--        <li class="nav-item nav-profile">-->
-<!--          <a href="javascript:void(0);" class="nav-link">-->
-<!--            <div class="nav-profile-image">-->
-<!--              <img src="@/assets/images/faces/face1.jpg" alt="profile">-->
-<!--              <span class="login-status online"></span>-->
-<!--            </div>-->
-<!--            <div class="nav-profile-text d-flex flex-column">-->
-<!--              <span class="font-weight-bold mb-2">David Grey. H</span>-->
-<!--              <span class="text-secondary text-small">Project Manager</span>-->
-<!--            </div>-->
-<!--            <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>-->
-<!--          </a>-->
-<!--        </li>-->
         <li class="nav-item" v-on:click="collapseAll">
           <router-link class="nav-link" to="/personalHome">
-            <span class="menu-title">Dashboard</span>
+            <span class="menu-title">Home Page</span>
             <i class="mdi mdi-home menu-icon"></i>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" v-b-toggle="'scheme1'">
+            <span class="menu-title">Scheme 1</span>
+            <i class="menu-arrow"></i>
+            <i class="mdi mdi-clipboard-text menu-icon menu_icon"></i>
+          </span>
+          <!--          id里不能有空格-->
+          <b-collapse accordion="sidebar-accordion" id="scheme1">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <router-link class="nav-link overview" to="/scheme/1/overview">Overview</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link deposit" to="/scheme/1/deposit">Deposit</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link withdraw" to="/scheme/1/withdraw">Withdraw</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link trade" to="/scheme/1/trade">Trade</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link invest" to="/scheme/1/invest">Invest Plan</router-link>
+              </li>
+            </ul>
+          </b-collapse>
+        </li>
+
+
+        <li class="nav-item" v-on:click="collapseAll">
+          <router-link class="nav-link" to="/dashboard">
+            <span class="menu-title">Dashboard</span>
+            <i class="mdi mdi-chart-areaspline menu-icon"></i>
           </router-link>
         </li>
         <li class="nav-item">
@@ -70,40 +92,6 @@
           </b-collapse>
         </li>
         <li class="nav-item">
-          <span class="nav-link" v-b-toggle="'user-page-dropdown'">
-            <span class="menu-title">User Pages</span>
-            <i class="menu-arrow"></i>
-            <i class="mdi mdi-lock menu-icon"></i>
-          </span>
-          <b-collapse accordion="sidebar-accordion" id="user-page-dropdown">
-            <ul class="nav flex-column sub-menu">
-              <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/auth-pages/login/">Login</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/auth-pages/register/">Register</router-link>
-              </li>
-            </ul>
-          </b-collapse>
-        </li>
-        <li class="nav-item">
-          <span class="nav-link" v-b-toggle="'error-page-dropdown'">
-            <span class="menu-title">Error pages</span>
-            <i class="menu-arrow"></i>
-            <i class="mdi mdi-security menu-icon"></i>
-          </span>
-          <b-collapse accordion="sidebar-accordion" id="error-page-dropdown">
-            <ul class="nav flex-column sub-menu">
-              <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/error-pages/error-404/">404</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/error-pages/error-500/">500</router-link>
-              </li>
-            </ul>
-          </b-collapse>
-        </li>
-        <li class="nav-item">
           <span class="nav-link" v-b-toggle="'icons-dropdown'">
             <span class="menu-title">Icons</span>
             <i class="menu-arrow"></i>
@@ -111,35 +99,12 @@
           </span>
           <b-collapse accordion="sidebar-accordion" id="icons-dropdown">
             <ul class="nav flex-column sub-menu">
-               <li class="nav-item">
+              <li class="nav-item">
                 <router-link class="nav-link" to="/icons/mdi-icons/">MDI</router-link>
               </li>
             </ul>
           </b-collapse>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" target="_blank" href="http://www.bootstrapdash.com/demo/purple-free-vue/documentation/documentation.html">
-            <span class="menu-title">Documentation</span>
-            <i class="menu-icon mdi mdi-file-document-outline"></i>
-          </a>
-        </li>
-<!--        <li class="nav-item sidebar-actions">-->
-<!--          <span class="nav-link">-->
-<!--            <div class="border-bottom">-->
-<!--              <h6 class="font-weight-normal mb-3">Projects</h6>-->
-<!--            </div>-->
-<!--            <button class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add a project</button>-->
-<!--            <div class="mt-4">-->
-<!--              <div class="border-bottom">-->
-<!--                <p class="text-secondary">Categories</p>-->
-<!--              </div>-->
-<!--              <ul class="gradient-bullet-list mt-4">-->
-<!--                <li>Free</li>-->
-<!--                <li>Pro</li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </span>-->
-<!--        </li>-->
       </ul>
     </nav>
   </section>
@@ -148,13 +113,13 @@
 <script>
 export default {
   name: 'sidebar',
- data () {
+  data() {
     return {
       collapses: [
-     { show: false },
-     { show: false },
-     { show: false }
-    ]
+        {show: false},
+        {show: false},
+        {show: false}
+      ]
     }
   },
   methods: {
@@ -166,7 +131,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     const body = document.querySelector('body')
     // add class 'hover-open' to sidebar navitem while hover in sidebar-icon-only menu
     document.querySelectorAll('.sidebar .nav-item').forEach(function (el) {
@@ -182,10 +147,39 @@ export default {
       })
     })
   },
-  watch:{
-    $route () {
-       document.querySelector('#sidebar').classList.toggle('active');
+  watch: {
+    $route() {
+      document.querySelector('#sidebar').classList.toggle('active');
     }
   }
 }
 </script>
+<style lang="scss">
+/*.menu-icon{*/
+/*  color: #bec5ff !important;*/
+/*}*/
+.nav-item{
+  color:black!important;
+}
+.nav-link{
+  font-size: 0.85rem!important;
+  &:before{
+    font-size:0.85rem!important;
+  }
+}
+.overview:before{
+    content: '\F127'!important;
+}
+.deposit:before{
+  content: '\F028C'!important;
+}
+.withdraw:before{
+  content: '\FA9B'!important;
+}
+.trade:before{
+  content: '\F584'!important;
+}
+.invest:before{
+  content: '\F812'!important;
+}
+</style>

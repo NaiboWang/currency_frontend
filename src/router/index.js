@@ -6,6 +6,7 @@ import redirect from "../views/redirect";
 import Router from 'vue-router'
 import Vue from "vue";
 import layout from '../layout'
+import dashboard from "../pages/dashboard";
 
 Vue.use(Router)
 
@@ -46,19 +47,46 @@ const routes = [
         path: '/personalHome',
         component: layout,
         children: [
-            {
-                path: '',
-                name: 'dashboard',
-                component: () => import('@/pages/dashboard')
-            },
             {path: '/changePassword', component: changePassword},
             {path: '/basicInfo', component: basicInfo},
+        ]
+    },
+    {
+        path:'/scheme',
+        component: layout,
+        redirect: '/scheme/:id/overview',
+        children: [
+            {
+                path:'/scheme/:id/overview',
+                component:dashboard,
+            },
+            {
+                path:'/scheme/:id/deposit',
+                component:dashboard,
+            },
+            {
+                path:'/scheme/:id/withdraw',
+                component:dashboard,
+            },
+            {
+                path:'/scheme/:id/trade',
+                component:dashboard,
+            },
+            {
+                path:'/scheme/:id/invest',
+                component:dashboard,
+            },
         ]
     },
     {
         path: '/basic-ui',
         component: layout,
         children: [
+            {
+                path: '/dashboard',
+                name: 'dashboard',
+                component: () => import('@/pages/dashboard')
+            },
             {
                 path: 'buttons',
                 name: 'buttons',
@@ -168,6 +196,7 @@ const routes = [
 
 const router = new Router({
     mode: 'history',
+    linkActiveClass:'active',//路由跳转时动态添加样式
     routes
 })
 

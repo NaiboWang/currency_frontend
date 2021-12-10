@@ -118,7 +118,7 @@
           }
 
           i {
-            color: theme-color(primary);
+            color: theme-color(info);
           }
         }
 
@@ -244,12 +244,17 @@
           }
 
           &.active {
+            font-weight: bold;
             color: $sidebar-light-menu-active-color;
             background: transparent;
+            &:before{
+              color: $sidebar-light-menu-active-color;
+              font-weight: bold;
+            }
           }
 
           &:hover {
-            color: $sidebar-light-submenu-hover-color;
+            color: $sidebar-light-menu-active-color;
           }
         }
 
