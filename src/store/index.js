@@ -23,9 +23,9 @@ export default new Vuex.Store({
             '145': 'iconfont icon-baobiao'
         },
         userInfo: {
-            nickname: 'guest',
-            role: "guest",
-            username: "guest",
+            nickname: '',
+            role: "",
+            username: "",
             profile:"user.png",
         },
     },

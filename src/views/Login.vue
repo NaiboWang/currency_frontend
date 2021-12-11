@@ -19,7 +19,7 @@
         >
           <el-form-item label="Email" prop="username">
             <el-input v-model="loginForm.username" id="username" key="123"
-                      v-on:keyup.enter="login" prefix-icon="iconfont icon-user"></el-input>
+                      @keyup.enter.native="login" prefix-icon="iconfont icon-user"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="pass" id="passwdform">
             <el-input
@@ -28,14 +28,13 @@
                 type="password"
                 key="重新渲染，但是不能解决浏览器自动填充的问题"
                 prefix-icon="iconfont icon-3702mima"
-                v-on:keyup.enter="login"
-
+                @keyup.enter.native="login"
             ></el-input>
             <a class="forgotpass" href="/forgotPassword">Forgot Password?</a>
           </el-form-item>
 
           <el-form-item class="btns">
-            <el-button type="primary" @click="login" v-on:keyup.enter="login">Login</el-button>
+            <el-button type="primary" @click="login" @keyup.enter.native="login">Login</el-button>
             <el-button @click="registerForm">Register</el-button>
           </el-form-item>
         </el-form>

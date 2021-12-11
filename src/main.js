@@ -28,7 +28,7 @@ Vue.prototype.$jse=jse;//配置全局属性，加密包
 Vue.prototype.waitingList = waitingList;
 Vue.prototype.$lodash = lodash; // 深度拷贝包
 
-Vue.prototype.staticURL = process.env.VUE_APP_BACKEND_URL.replace("_backend",""); //配置全局静态文件地址，如图片
+Vue.prototype.staticURL = process.env.VUE_APP_STATIC_URL; //配置全局静态文件地址，如图片
 new Vue(
     {
         router,

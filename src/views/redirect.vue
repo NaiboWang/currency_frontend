@@ -19,7 +19,7 @@ function GetUrlRelativePath() {
 export default {
   name: "redirect",
   created() {
-    window.location.href=process.env.NODE_ENV == 'development' ? "/home":'/home.html'
+    window.location.href=process.env.VUE_APP_INDEX_PAGE
   },
 }
 </script>
