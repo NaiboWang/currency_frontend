@@ -39,7 +39,7 @@
                   ></el-input>
                 </el-form-item>
 
-                <b-button type="button" variant="info" @click="changePass">Change</b-button>
+                <b-button type="button" variant="info" @click="changePass">Submit</b-button>
 
               </el-form>
             </div>
@@ -52,7 +52,6 @@
 
 <script>
 export default {
-  name: "changePassword",
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === '') {

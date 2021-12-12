@@ -1,261 +1,158 @@
 <template>
   <div>
-    <el-container>
-      <el-header>
-        <div>
-          <router-link to="/"><img class="logo" src="../../assets/logo.jpg" alt/></router-link>
-          <span>Currency Market</span>
+    <!-- 面包屑导航区 -->
+    <div class="page-header">
+      <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-info text-white mr-2">
+        <i class="mdi mdi-home"></i>
+      </span> Home Page </h3>
+    </div>
+    <div class="row">
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-info card-img-holder text-white">
+          <div class="card-body">
+            <img src="../../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
+            <h3 class="font-weight-normal mb-3">Total Balance <i class="mdi mdi-diamond mdi-24px float-right"></i>
+            </h3>
+            <h2 class="mb-5">$ {{ amount | numFilter}}</h2>
+            <h5 class="card-text">Today's Profit: {{profit | numFilter}}</h5>
+          </div>
         </div>
-        <div class="personalInfo">
-          <span>Hello, {{ $store.state.userInfo.nickname }}!</span>
-          <el-button type="primary" @click="$router.push('/')">Home Page</el-button>
-          <el-button @click="logout">Logout</el-button>
+      </div>
+
+      <div class="col-md-4 stretch-card grid-margin" v-for="(scheme,index) in schemes" :key="scheme.id">
+        <div :class="scheme.classes"
+             @click="$router.push('/scheme/'+scheme.id+'/overview');">
+          <div class="card-body">
+            <img src="../../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
+            <h3 class="font-weight-normal mb-3">Scheme {{ scheme.code }} Balance <i
+                :class="['mdi mdi-24px float-right',index%2 == 0?'mdi-chart-areaspline':'mdi-chart-line']"></i>
+            </h3>
+            <h2 class="mb-5">$ {{ scheme.amount | numFilter }}</h2>
+            <h5 class="card-text">{{ scheme.name }}</h5>
+          </div>
         </div>
-      </el-header>
-      <el-container>
-        <!-- 侧边栏 -->
-        <el-aside width="220px">
-          <el-menu unique-opened router :default-active="activePath"
-                   background-color="#333744" text-color="#fff" active-text-color="#409FFF">
-            <!-- :unique-opened="true"->只允许展开一个菜单 -->
-            <!-- :collapse-transition="false" -> 关闭动画 -->
-            <!-- router -> 导航开启路由模式 -->
-            <!-- 一级菜单  -->
-            <div v-for="item in menuList" :key="item.id">
-              <el-menu-item style="text-align: left; margin-left:5px " v-if="!item.children" :index="item.path+''">
-                <!-- 一级菜单的模板区域 -->
-                <i :class="$store.state.iconObj[item.id]"></i>
-                <template #title>
-                  <span>{{ item.authName }}</span>
-                </template>
-              </el-menu-item>
-              <el-submenu v-else style="text-align: left; margin-left:5px " :index="item.authName">
-                <template #title>
-                  <i :class="$store.state.iconObj[item.id]"></i>
-                  <span>{{ item.authName }}</span>
-                </template>
-                <el-menu-item v-for="child in item.children" :index="child.path" :key="child.id"
-                              style="padding-left:25px">
-                  <template #title>
-                    <i :class="$store.state.iconObj[child.id]"></i>
-                    <span>{{ child.authName }}</span>
-                  </template>
-                </el-menu-item>
-              </el-submenu>
-            </div>
-          </el-menu>
-        </el-aside>
-        <!-- 内容主体 -->
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
+      </div>
+
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-outline-success card-img-holder">
+          <div class="card-body text-color">
+            <h3 class=" mb-3">New Scheme <i class="mdi mdi-clipboard-text-outline mdi-24px float-right"></i>
+            </h3>
+            <h5 class="mb-5" v-if="schemes.length!=0">You can add a new scheme to start a new invest plan!</h5>
+            <h5 class="mb-5" v-else>You don't have any invest scheme now, add a new scheme to start invest!</h5>
+            <button type="button" class="btn btn-info btn-icon-text newplan add-position"
+                    @click="$router.push('scheme/new')">
+              <i class="mdi mdi-plus btn-icon-prepend"></i>
+              &nbsp;&nbsp;New Scheme
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-import getIdentity from "@/store/userInfo";
+
+import {get_date_difference} from "../../utils/time";
 
 export default {
-  name: 'personalHome',
   async created() {
-    await this.getIdentity();
+    let info = await this.$axios.get("getSchemeOverview");
+    let classes = ['bg-gradient-info', 'bg-gradient-special', 'bg-gradient-primary', 'bg-gradient-special', 'bg-gradient-primary', 'bg-gradient-info', 'bg-gradient-primary', 'bg-gradient-info', 'bg-gradient-special', 'bg-gradient-info']
+    this.amount = 0;//账户总余额
+    let date = new Date();
+    this.yesterdayAmount = 0.0;//昨晚最后的余额是多少
+    for (let index in info.data.schemes) {
+      info.data.schemes[index].code = String.fromCharCode(65 + parseInt(index));
+      info.data.schemes[index].classes = "card card-img-holder text-white scheme_route ";
+      info.data.schemes[index].classes += classes[index % 9 + 1];
+      info.data.schemes[index].amount = 0; //初始化方案的总余额
+      for(let property of info.data.schemes[index].properties){
+        property.amount = 0; //该币的总额
+        for(let address of property.addresses){ //每个币有好几个链，余额统一算到该币中
+          let USD = address.amount*this.$store.state.coinInfo.prices[property.symbol]
+          // console.log(property.symbol, address.amount,this.$store.state.coinInfo.prices[property.symbol],USD);
+          property.amount += USD;
+          info.data.schemes[index].amount += USD;
+          this.amount += USD;
+        }
+      }
+      info.data.schemes[index].propertyLogs.reverse();//从新到旧排列
+      for(let propertyLog of info.data.schemes[index].propertyLogs){
+        if(get_date_difference(date,propertyLog["time"]["$date"]) == 1){ //找到昨天记录的最后一条资产总额记录
+          this.yesterdayAmount += propertyLog["value"];
+          if(info.data.schemes[index].amount == 0){
+            this.profit += 0; //如果账户没钱，或者已经被全部取走，则今日收益为0
+          } else if(propertyLog["value"] == 0){
+            this.profit += 0; //如果昨天账户没钱，则今日收益为0
+          } else{
+            // this.profit = 100 * (this.amount-this.yesterdayAmount) / this.yesterdayAmount;
+            this.profit += info.data.schemes[index].amount - propertyLog["value"];
+          }
+          break;
+        }
+      }
+    }
+    this.schemes = info.data.schemes;
+
+    // console.log(this.amount, this.yesterdayAmount);
   },
   data() {
     return {
-      userInfo: {role: "guest", username: "guest"},
-      // 左侧菜单数据
-      menuList: [],
-    };
+      schemes: [{}],
+      amount:0, //账户总余额
+      yesterdayAmount:0,//昨天的余额
+      profit:0,
+    }
   },
-  methods: {
-    logout: async function () {
-      await this.$axios.get("logout");
-      this.waitingList.clear();
-      this.$router.push("/login");
-    },
-    getIdentity: async function () {
-      let userInfo = await getIdentity();
-      console.log(userInfo);
-      if (userInfo.role == "user") {
-        this.menuList = [
-          {
-            id: 1,
-            path: "/personalModelList",
-            authName: "Model Management",
-          }, {
-            id: 2,
-            authName: "Orders",
-            children: [
-              {
-                id: 21,
-                path: "/personalOrders",
-                authName: "Purchased Orders",
-              },
-              {
-                id: 22,
-                path: "/soldOrders",
-                authName: "Sold Orders",
-              },
-            ],
-          }, {
-            id: 5,
-            path: "/viewWaitingList",
-            authName: "Waiting List",
-          },
-          {
-            id: 3,
-            path: "/modelEnsemble",
-            authName: "Model Ensemble",
-          }, {
-            id: 4,
-            authName: "Personal Info",
-            children: [
-              {
-                id: 41,
-                path: "/basicInfo",
-                authName: "Basic Info",
-              },
-              {
-                id: 42,
-                path: "/changePassword",
-                authName: "Change Password",
-              },
-              {
-                id: 43,
-                path: "/charge",
-                authName: "Charge",
-              },
-            ]
-          }];
-      } else if (userInfo.role == "manager") {
-        this.menuList = [
-          {
-            id: 1,
-            path: "/personalModelList",
-            authName: "Model Management",
-          }, {
-            id: 2,
-            authName: "Orders",
-            path: "/personalOrders",
-          },
-          {
-            id: 0,
-            path: "/userManagement",
-            authName: "User Management",
-          },
-          {
-            id: 6,
-            path: "/viewLogs",
-            authName: "View Logs",
-          },
-          {
-            id: 4,
-            authName: "Personal Info",
-            children: [
-              {
-                id: 41,
-                path: "/basicInfo",
-                authName: "Basic Info",
-              },
-              {
-                id: 42,
-                path: "/changePassword",
-                authName: "Change Password",
-              },
-            ]
-          }];
-      } else {
-        this.$message.error('Sorry, you have not logged in or you are not authorised user!');
-        // this.$router.push("/login");
-      }
-    },
+  filters: {
+    numFilter (value) { //保留两位小数，每三位加逗号
+      let realVal = parseFloat(value).toFixed(2);
+      var str = realVal.toString();
+      var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+      return str.replace(reg,"$1,");
+    }
   },
-  computed: {
-    paths() {
-      let paths = [];
-      for (let item of this.menuList) {
-        if ("path" in item) {
-          paths.push(item["path"]);
-        }
-        if ("children" in item) {
-          for (let it of item["children"]) {
-            paths.push(it["path"]);
-          }
-        }
-      }
-      return paths;
-    },
-    activePath() {
-      if (this.paths.includes(this.$route.path)) {
-        return this.$route.path;
-      } else {
-        return this.$store.state.activePath;
-      }
-    },
-  }
+  computed: {},
+  methods: {}
 }
 </script>
-<style lang="less" scoped>
-.el-container {
-  height: 100%;
-  min-height: 700px;
+
+<style scoped lang="scss">
+.text-color {
+  color: rgb(50, 50, 3) !important;
 }
 
-.personalInfo {
-  span {
-    margin-right: 20px;
-  }
+.newplan {
+  margin-top: 20px;
 }
 
-.icon-align {
-  margin-left: -3px !important;
-}
+.add-position {
+  position: relative;
 
-.el-header {
-  background-color: #373f41;
-  display: flex;
-  justify-content: space-between;
-  padding-left: 0;
-  align-items: center;
-  color: #fff;
-  font-size: 20px;
+  i {
 
-  > div {
-    display: flex;
-    align-items: center;
-
-    span {
-      margin-left: 15px;
+    &:before {
+      position: absolute;
+      top: 35%;
+      left: 18%;
     }
+
   }
 }
 
-.el-aside {
-  background-color: #333744;
-
-  .el-menu {
-    border: none;
-  }
-}
-
-.el-main {
-  background-color: #eaedf1;
-}
-
-.iconfont {
-  margin-right: 10px;
-}
-
-.toggle-button {
-  background-color: #4A5064;
-  font-size: 10px;
-  line-height: 24px;
-  color: #fff;
-  text-align: center;
-  letter-spacing: 0.2em;
-  // 鼠标放上去变成小手
+.scheme_route:hover {
+  -webkit-transform: translateY(-3px);
+  -ms-transform: translateY(-3px);
+  transform: translateY(-3px);
+  -webkit-box-shadow: 0 0 6px #999;
+  box-shadow: 0 0 6px #999;
+  -webkit-transition: all .5s ease-out;
+  transition: all .5s ease-out;
   cursor: pointer;
 }
+
 </style>

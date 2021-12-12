@@ -59,7 +59,10 @@ $theme-gradient-colors: (
   warning:         linear-gradient(to right, #f6e384, #ffd500),
   danger:          linear-gradient(to right, #ffbf96, #fe7096),
   light:           linear-gradient(to bottom, #f4f4f4, #e4e4e9),
-  dark:            linear-gradient(89deg, #5e7188, #3e4b5b)
+  dark:            linear-gradient(89deg, #5e7188, #3e4b5b),
+        special:  linear-gradient(to right, rgb(94,114,228), rgb(127,94,226)),
+        special2:  linear-gradient(to right, rgb(17,202,239), rgb(17,115,239)),
+        special3:  linear-gradient(to right, rgb(23,43,77), rgb(26,24,77)),
 );
 
 

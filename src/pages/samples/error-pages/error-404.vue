@@ -3,7 +3,7 @@
   <section class="error_404">
     <div class="container-scroller">
       <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center text-center error-page bg-primary">
+        <div class="content-wrapper d-flex align-items-center text-center error-page bg-color">
           <div class="row flex-grow">
             <div class="col-lg-7 mx-auto text-white">
               <div class="row align-items-center d-flex flex-row">
@@ -22,7 +22,7 @@
               </div>
               <div class="row mt-5">
                 <div class="col-12 mt-xl-2">
-                  <p class="text-white font-weight-medium text-center">Copyright &copy; 2020  All rights reserved.</p>
+                  <p class="text-white font-weight-medium text-center">Copyright &copy; 2021  All rights reserved.</p>
                 </div>
               </div>
             </div>
@@ -41,3 +41,9 @@ export default {
   name: 'error404'
 }
 </script>
+
+<style>
+.bg-color{
+  background-color: #1b8dbf;
+}
+</style>

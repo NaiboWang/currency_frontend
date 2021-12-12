@@ -9,7 +9,6 @@
 <script>
 import getIdentity from "@/store/userInfo";
 export default {
-  name: 'Home',
   async created() {
     await getIdentity();
   },

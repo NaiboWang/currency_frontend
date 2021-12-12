@@ -29,9 +29,10 @@
                           :action="$axios.defaults.baseURL+'uploadFile'"
                           :show-file-list="false"
                           with-credentials
+                          accept=".jpg,.jpeg,.png,.gif,.bmp,.svg"
                           :on-success="handleSuccess"
                           :before-upload="beforeAvatarUpload">
-                        <img :src="staticURL+'pics/'+userInfo.profile" class="avatar"/>
+                        <img :src="staticURL+'pics/'+$store.state.userInfo.profile" class="avatar"/>
                       </el-upload>
                     </div>
                     <div class="col-md-8 hint">
@@ -54,7 +55,7 @@
                   <el-input v-model="readableUserInfo.status" disabled></el-input>
                 </el-form-item>
               </el-form>
-              <b-button variant="info" @click="changeInfo">Change Info</b-button>
+              <b-button variant="info" @click="changeInfo">Submit</b-button>
 
             </div>
           </div>
@@ -69,7 +70,6 @@ import getIdentity from "@/store/userInfo";
 import {convert_time} from "../../utils/time";
 
 export default {
-  name: "basicInfo",
   async created() { //第一次加载basicinfo组件的时候才会执行，因此简单的在左边切换标签页是没办法执行此函数的
     await this.getInfo();
   },
@@ -101,7 +101,7 @@ export default {
     getInfo: async function () {
       const info = await this.$axios.get('getUserInfo');
       convert_time(info);
-      console.log(info.data);
+      // console.log(info.data);
       this.userInfo = info.data;
     },
     handleSuccess(response, file, fileList) {

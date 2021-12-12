@@ -8,29 +8,34 @@
             <i class="mdi mdi-home menu-icon"></i>
           </router-link>
         </li>
-        <li class="nav-item">
-          <span class="nav-link" v-b-toggle="'scheme1'">
-            <span class="menu-title">Scheme 1</span>
+        <li class="nav-item" v-for="(scheme,index) in schemes" :key="scheme.id">
+          <span class="nav-link" v-b-toggle="scheme.code" >
+<!--          <span class="nav-link"-->
+<!--                :aria-expanded="'true'"-->
+<!--                :aria-controls="''+scheme.code"-->
+<!--          >-->
+            <span class="menu-title">Scheme {{ scheme.code }}</span>
             <i class="menu-arrow"></i>
-            <i class="mdi mdi-clipboard-text menu-icon menu_icon"></i>
+            <i :class="[arrow,index%2==0?'mdi-clipboard-text':'mdi-clipboard-text-outline']"></i>
           </span>
           <!--          id里不能有空格-->
-          <b-collapse accordion="sidebar-accordion" id="scheme1">
+<!--          <b-collapse accordion="sidebar-accordion" :id="scheme.code" v-model="test">-->
+            <b-collapse accordion="sidebar-accordion" :id="scheme.code">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <router-link class="nav-link overview" to="/scheme/1/overview">Overview</router-link>
+                <router-link class="nav-link overview" :to="'/scheme/'+scheme.id+'/overview'">Overview</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link deposit" to="/scheme/1/deposit">Deposit</router-link>
+                <router-link class="nav-link deposit" :to="'/scheme/'+scheme.id+'/deposit'">Deposit</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link withdraw" to="/scheme/1/withdraw">Withdraw</router-link>
+                <router-link class="nav-link withdraw" :to="'/scheme/'+scheme.id+'/withdraw'">Withdraw</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link trade" to="/scheme/1/trade">Trade</router-link>
+                <router-link class="nav-link trade" :to="'/scheme/'+scheme.id+'/trade'">Trade</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link invest" to="/scheme/1/invest">Invest Plan</router-link>
+                <router-link class="nav-link invest" :to="'/scheme/'+scheme.id+'/invest'">Invest</router-link>
               </li>
             </ul>
           </b-collapse>
@@ -113,13 +118,22 @@
 <script>
 export default {
   name: 'sidebar',
+  async created() {
+    let info = await this.$axios.get("getSchemeMenu");
+    for(let index in info.data.schemes){
+      info.data.schemes[index].code = String.fromCharCode(65+parseInt(index));
+    }
+    this.schemes = info.data.schemes;
+    this.$store.commit("setSchemeNum",info.data.schemes.length);
+  },
+  updated(){ //在得到菜单数据之后，即数据更新之后，展开对应的菜单
+    this.setActive();
+  },
   data() {
     return {
-      collapses: [
-        {show: false},
-        {show: false},
-        {show: false}
-      ]
+      schemes:[],
+      arrow:"mdi menu-icon menu_icon",
+      path:this.$route.path,
     }
   },
   methods: {
@@ -128,6 +142,20 @@ export default {
       if (exp_elm.length > 0) {
         var elm_id = exp_elm[0].id;
         this.$root.$emit("bv::toggle::collapse", elm_id);
+      }
+    },
+    setActive(){
+      let path = this.$route.path.split('/');
+      if(this.$route.params.id){//如果id参数存在
+        for(let item of this.schemes){
+          if(item.id == this.$route.params.id){ // 1=='1' true  1==='1' false 0==''==false true
+            let node = document.getElementById(item.code);
+            if(!node.classList.contains('show')){ //如果没有展开就展开它
+              this.$root.$emit("bv::toggle::collapse",item.code); //展开对应方案的下拉菜单
+            }
+            break;
+          }
+        }
       }
     }
   },
@@ -145,41 +173,49 @@ export default {
           el.classList.remove('hover-open')
         }
       })
-    })
+    });
   },
   watch: {
     $route() {
       document.querySelector('#sidebar').classList.toggle('active');
+      this.setActive(); // 对应菜单展开
     }
-  }
+  },
 }
 </script>
 <style lang="scss">
 /*.menu-icon{*/
 /*  color: #bec5ff !important;*/
 /*}*/
-.nav-item{
-  color:black!important;
+.nav-item {
+  color: black !important;
 }
-.nav-link{
-  font-size: 0.85rem!important;
-  &:before{
-    font-size:0.85rem!important;
+
+.nav-link {
+  font-size: 0.85rem !important;
+
+  &:before {
+    font-size: 0.85rem !important;
   }
 }
-.overview:before{
-    content: '\F127'!important;
+
+.overview:before {
+  content: '\F127' !important;
 }
-.deposit:before{
-  content: '\F028C'!important;
+
+.deposit:before {
+  content: '\F028C' !important;
 }
-.withdraw:before{
-  content: '\FA9B'!important;
+
+.withdraw:before {
+  content: '\FA9B' !important;
 }
-.trade:before{
-  content: '\F584'!important;
+
+.trade:before {
+  content: '\F584' !important;
 }
-.invest:before{
-  content: '\F812'!important;
+
+.invest:before {
+  content: '\F812' !important;
 }
 </style>

@@ -53,16 +53,16 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         NProgress.done();
-        if (response.data.status != 200 && response.data.status != 210) {
+        if (response.data.status != 200 && response.data.status != 210 && 'msg' in response.data) {
             Message({
                 message: response.data.msg,
                 type: 'error',
                 center: true
             });
-            if(response.data.status == 302){
-                store.commit("setBackRef",window.location.pathname);
-                router.push("/login"); //When not logged in, return to home page.
-            }
+            // if(response.data.status == 302){
+            //     store.commit("setBackRef",window.location.pathname);
+            //     router.push("/login"); //When not logged in, return to home page.
+            // }
             return false;
         } else if(response.data.status == 210){
             Message({

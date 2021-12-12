@@ -49,7 +49,6 @@ import {isEmail, validateEmail} from "../utils/validate";
 import getIdentity from "../store/userInfo";
 export default {
   data() {
-
     return {
       loginForm: {
         username: '',

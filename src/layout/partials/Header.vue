@@ -38,10 +38,10 @@
               </div>
             </span>
           </template>
-          <b-dropdown-item class="preview-item" href="/basicInfo">
+          <b-dropdown-item class="preview-item" @click="$router.push('/basicInfo').catch(err => {})">
             <i class="mdi mdi-account mr-2 text-info"></i> Basic Info
           </b-dropdown-item>
-          <b-dropdown-item class="preview-item" href="/changePassword">
+          <b-dropdown-item class="preview-item" @click="$router.push('/changePassword').catch(err => {})">
             <i class="mdi mdi-cached mr-2 text-info"></i> Change Password
           </b-dropdown-item>
           <b-dropdown-item class="preview-item" @click="logout">

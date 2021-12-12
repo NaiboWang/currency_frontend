@@ -28,6 +28,10 @@ export default new Vuex.Store({
             username: "",
             profile:"user.png",
         },
+        coinInfo:{
+
+        },
+        scheme_num:0,
     },
     mutations: {
         setBackRef(state, address) {
@@ -42,8 +46,14 @@ export default new Vuex.Store({
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
         },
+        setCoinInfo(state, coinInfo) {
+            state.coinInfo = coinInfo;
+        },
         setUserProfile(state, profile) {
             state.userInfo.profile = profile;
+        },
+        setSchemeNum(state, scheme_num) {
+            state.scheme_num = scheme_num;
         },
     },
     actions: {},

@@ -7,6 +7,10 @@ import Router from 'vue-router'
 import Vue from "vue";
 import layout from '../layout'
 import dashboard from "../pages/dashboard";
+import personalHome from "../views/personalCenter/personalHome";
+import addScheme from "../views/personalCenter/addScheme";
+import trade from "../views/personalCenter/trade";
+import schemeDesc from "../views/personalCenter/schemeDesc";
 
 Vue.use(Router)
 
@@ -34,19 +38,12 @@ const routes = [
         name: 'forgotPassword',
         component: () => import(/* webpackChunkName: "about" */ '../views/RegisterORchangepassword.vue')
     },
-    // {
-    //     path: '/personalHome',
-    //     name: 'personalHome',
-    //     component: personalHome,
-    //     children: [
-    //         {path: '/changePassword', component: changePassword},
-    //         {path: '/basicInfo', component: basicInfo},
-    //     ]
-    // },
     {
-        path: '/personalHome',
+        path: '/personal',
         component: layout,
+        redirect: '/personalHome',
         children: [
+            {path: '/personalHome', component: personalHome},
             {path: '/changePassword', component: changePassword},
             {path: '/basicInfo', component: basicInfo},
         ]
@@ -56,6 +53,14 @@ const routes = [
         component: layout,
         redirect: '/scheme/:id/overview',
         children: [
+            {
+                path:'/scheme/new',
+                component:addScheme,
+            },
+            {
+                path:'/scheme/:id/edit',
+                component:schemeDesc,
+            },
             {
                 path:'/scheme/:id/overview',
                 component:dashboard,
@@ -70,7 +75,7 @@ const routes = [
             },
             {
                 path:'/scheme/:id/trade',
-                component:dashboard,
+                component:trade,
             },
             {
                 path:'/scheme/:id/invest',
