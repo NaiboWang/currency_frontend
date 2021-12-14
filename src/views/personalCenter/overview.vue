@@ -120,18 +120,18 @@ export default {
 </script>
 <style lang="scss">
 .btn-time {
-  color: #2b4b6b;
-  border: 1px solid transparent;
-  width: 7em;
-  font-family: ubuntu-regular;
-  padding: 0.5em 1em;
+  color: #2b4b6b!important;
+  border: 1px solid transparent!important;
+  width: 7em!important;
+  font-family: ubuntu-regular!important;
+  padding: 0.5em 1em!important;
   //margin-right: 1px;
-  background-color: transparent;
+  background-color: transparent!important;
 
 
   &:hover {
-    color: #047edf;
-    background: transparent;
+    color: #047edf!important;
+    background: transparent!important;
   }
 
   &:not(:disabled):not(.disabled).active:focus {
