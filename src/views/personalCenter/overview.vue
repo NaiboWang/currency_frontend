@@ -121,9 +121,10 @@ export default {
 <style lang="scss">
 .btn-time {
   color: #2b4b6b!important;
+  font-weight: normal;
   border: 1px solid transparent!important;
   width: 7em!important;
-  font-family: ubuntu-regular;
+  font-family: ubuntu-regular!important;
   padding: 0.5em 1em!important;
   //margin-right: 1px;
   background-color: transparent!important;

@@ -47,7 +47,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card" style="text-align: left">
+      <div class="col-lg-12 grid-margin stretch-card" style="text-align: left;">
         <div class="card">
           <div class="card-body">
             <div class="row">
