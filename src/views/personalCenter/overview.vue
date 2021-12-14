@@ -120,10 +120,10 @@ export default {
 </script>
 <style lang="scss">
 .btn-time {
-  color: #2b4b6b!important;
+  color: #2b4b6b;
   border: 1px solid transparent!important;
   width: 7em!important;
-  font-family: ubuntu-regular!important;
+  font-family: ubuntu-regular;
   padding: 0.5em 1em!important;
   //margin-right: 1px;
   background-color: transparent!important;
@@ -135,18 +135,19 @@ export default {
   }
 
   &:not(:disabled):not(.disabled).active:focus {
-
     box-shadow: 0 0 0 0 !important;
-
   }
-
+  &.active { //表示同时具有active类和btn-time类的标签的样式
+    color: #fff!important;
+    background-color: #198ae3!important;
+    border-color: #198ae3!important;
+  }
   //&.active { //同时具有btn-time和active类时触发
   //  color: #047edf;
   //  border: 1px solid #2b4b6b;
   //  border-radius: 2px;
   //}
 }
-
 .profits {
   text-align: right;
   font-family: ubuntu-regular;
