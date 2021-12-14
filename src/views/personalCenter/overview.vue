@@ -120,7 +120,7 @@ export default {
 </script>
 <style lang="scss">
 .btn-time {
-  color: #2b4b6b;
+  color: #2b4b6b!important;
   border: 1px solid transparent!important;
   width: 7em!important;
   font-family: ubuntu-regular;
