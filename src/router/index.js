@@ -11,6 +11,8 @@ import personalHome from "../views/personalCenter/personalHome";
 import addScheme from "../views/personalCenter/addScheme";
 import trade from "../views/personalCenter/trade";
 import schemeDesc from "../views/personalCenter/schemeDesc";
+import overview from "../views/personalCenter/overview";
+import lineChartOverview from "../views/personalCenter/lineChartOverview";
 
 Vue.use(Router)
 
@@ -63,7 +65,14 @@ const routes = [
             },
             {
                 path:'/scheme/:id/overview',
-                component:dashboard,
+                component:overview,
+                redirect:'/scheme/:id/overview/3',
+                children: [
+                    {
+                        path:'/scheme/:id/overview/:days',
+                        component:lineChartOverview,
+                    },
+                ]
             },
             {
                 path:'/scheme/:id/deposit',

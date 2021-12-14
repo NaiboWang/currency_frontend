@@ -6,7 +6,8 @@
         <Sidebar :key="$store.state.scheme_num"/>
         <div class="main-panel">
           <div class="content-wrapper">
-            <router-view></router-view>
+            <router-view :key="$route.params.id"></router-view>
+<!--            router-view设置key为$route.params.id保证每次页面路由变化的时候组件强制刷新，因此来解决从一个方案的相同页面到另一个方案的相同页面组件不刷新的问题,同时避免了在scheme/:id/overview/:days页面每次点下面不同的日期就要重新刷新overview页面的bug-->
           </div> <!-- content wrapper ends -->
           <Footer/>
         </div> <!-- main panel ends -->

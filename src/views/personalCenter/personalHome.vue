@@ -57,13 +57,14 @@
 <script>
 
 import {get_date_difference} from "../../utils/time";
+import {getSchemeAccountInfo} from "../../utils/schemeAccount";
 
 export default {
   async created() {
     let info = await this.$axios.get("getSchemeOverview");
     let classes = ['bg-gradient-info', 'bg-gradient-special', 'bg-gradient-primary', 'bg-gradient-special', 'bg-gradient-primary', 'bg-gradient-info', 'bg-gradient-primary', 'bg-gradient-info', 'bg-gradient-special', 'bg-gradient-info']
-    this.amount = 0;//账户总余额
     let date = new Date();
+    this.amount = 0;//账户总余额
     this.yesterdayAmount = 0.0;//昨晚最后的余额是多少
     for (let index in info.data.schemes) {
       info.data.schemes[index].code = String.fromCharCode(65 + parseInt(index));
@@ -82,8 +83,8 @@ export default {
       }
       info.data.schemes[index].propertyLogs.reverse();//从新到旧排列
       for(let propertyLog of info.data.schemes[index].propertyLogs){
-        if(get_date_difference(date,propertyLog["time"]["$date"]) == 1){ //找到昨天记录的最后一条资产总额记录
-          this.yesterdayAmount += propertyLog["value"];
+        if(get_date_difference(date,propertyLog["time"]["$date"]) >= 1){ //找到昨天记录的最后一条资产总额记录
+          this.yesterdayAmount = propertyLog["value"];
           if(info.data.schemes[index].amount == 0){
             this.profit += 0; //如果账户没钱，或者已经被全部取走，则今日收益为0
           } else if(propertyLog["value"] == 0){
@@ -98,6 +99,17 @@ export default {
     }
     this.schemes = info.data.schemes;
 
+    // let amount = 0;
+    // let profit = 0;
+    // for (let scheme of info.data.schemes){
+    //   let account = await getSchemeAccountInfo(scheme.id); //千万不要忘了await
+    //   scheme.amount = account.amount;
+    //   amount +=account.amount;
+    //   profit += account.profit;
+    // }
+    // this.amount = amount;
+    // this.profit = profit;
+
     // console.log(this.amount, this.yesterdayAmount);
   },
   data() {
@@ -106,14 +118,6 @@ export default {
       amount:0, //账户总余额
       yesterdayAmount:0,//昨天的余额
       profit:0,
-    }
-  },
-  filters: {
-    numFilter (value) { //保留两位小数，每三位加逗号
-      let realVal = parseFloat(value).toFixed(2);
-      var str = realVal.toString();
-      var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
-      return str.replace(reg,"$1,");
     }
   },
   computed: {},

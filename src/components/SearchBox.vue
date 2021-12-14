@@ -108,7 +108,6 @@ export default {
     pageSize: {
       default: 10,
     },
-
   },
   data() {
     return {

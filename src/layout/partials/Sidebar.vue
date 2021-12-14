@@ -145,7 +145,6 @@ export default {
       }
     },
     setActive(){
-      let path = this.$route.path.split('/');
       if(this.$route.params.id){//如果id参数存在
         for(let item of this.schemes){
           if(item.id == this.$route.params.id){ // 1=='1' true  1==='1' false 0==''==false true
@@ -177,7 +176,10 @@ export default {
   },
   watch: {
     $route() {
-      document.querySelector('#sidebar').classList.toggle('active');
+      if (document.querySelector('#sidebar').classList.contains('active')){
+        document.querySelector('#sidebar').classList.toggle('active'); //手机端控制，如果菜单弹出来就隐藏
+      }
+
       this.setActive(); // 对应菜单展开
     }
   },

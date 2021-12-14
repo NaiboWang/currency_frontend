@@ -16,6 +16,7 @@ import SearchBox from "@/components/SearchBox/index.js";
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import BootstrapVue from 'bootstrap-vue';
+import {numFilter, numFilter_quantity} from "./utils/filters";
 
 //Load the root component
 
@@ -27,8 +28,12 @@ Vue.prototype.$axios=axios;//配置全局属性，http接口访问包
 Vue.prototype.$jse=jse;//配置全局属性，加密包
 Vue.prototype.waitingList = waitingList;
 Vue.prototype.$lodash = lodash; // 深度拷贝包
-
 Vue.prototype.staticURL = process.env.VUE_APP_STATIC_URL; //配置全局静态文件地址，如图片
+
+Vue.prototype.$numFilter = numFilter;
+Vue.filter("numFilter",numFilter);
+
+Vue.filter("numFilter_quantity", numFilter_quantity);
 new Vue(
     {
         router,

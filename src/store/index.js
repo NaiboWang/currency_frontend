@@ -32,6 +32,8 @@ export default new Vuex.Store({
 
         },
         scheme_num:0,
+        amount:0,
+        startAmount:0, //overview起始day的账户余额
     },
     mutations: {
         setBackRef(state, address) {
@@ -54,6 +56,12 @@ export default new Vuex.Store({
         },
         setSchemeNum(state, scheme_num) {
             state.scheme_num = scheme_num;
+        },
+        setStartAmount(state, amount) {
+            state.startAmount = amount;
+        },
+        setAmount(state, amount) {
+            state.amount = amount;
         },
     },
     actions: {},
