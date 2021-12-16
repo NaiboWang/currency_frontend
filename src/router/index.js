@@ -1,4 +1,3 @@
-
 import changePassword from "@/views/personalCenter/changePassword";
 import basicInfo from "@/views/personalCenter/basicInfo";
 
@@ -13,6 +12,7 @@ import trade from "../views/personalCenter/trade";
 import schemeDesc from "../views/personalCenter/schemeDesc";
 import overview from "../views/personalCenter/overview";
 import lineChartOverview from "../views/personalCenter/lineChartOverview";
+import deposit from "../views/personalCenter/deposit";
 
 Vue.use(Router)
 
@@ -51,44 +51,52 @@ const routes = [
         ]
     },
     {
-        path:'/scheme',
+        path: '/scheme',
         component: layout,
         redirect: '/scheme/:id/overview',
         children: [
             {
-                path:'/scheme/new',
-                component:addScheme,
+                path: '/scheme/new',
+                component: addScheme,
             },
             {
-                path:'/scheme/:id/edit',
-                component:schemeDesc,
+                path: '/scheme/:id/edit',
+                component: schemeDesc,
             },
             {
-                path:'/scheme/:id/overview',
-                component:overview,
-                redirect:'/scheme/:id/overview/3',
+                path: '/scheme/:id/overview',
+                component: overview,
+                redirect: '/scheme/:id/overview/3',
                 children: [
                     {
-                        path:'/scheme/:id/overview/:days',
-                        component:lineChartOverview,
+                        path: '/scheme/:id/overview/:days',
+                        component: lineChartOverview,
                     },
                 ]
             },
             {
-                path:'/scheme/:id/deposit',
-                component:dashboard,
+                path: '/scheme/:id/deposit',
+                component: deposit, //component必须要有，下面的children才能用
+                redirect: '/scheme/:id/deposit/USDT/0', //默认跳转到USDT的BEP20%BSC链,index是1,这里不能使用%20这种带空格的转义符，但是可用中文
+                children: [
+                    {
+                        name:'depositCoinChain',
+                        path: '/scheme/:id/deposit/:coin/:chain',
+                        component: deposit,
+                    },
+                ]
             },
             {
-                path:'/scheme/:id/withdraw',
-                component:dashboard,
+                path: '/scheme/:id/withdraw',
+                component: dashboard,
             },
             {
-                path:'/scheme/:id/trade',
-                component:trade,
+                path: '/scheme/:id/trade',
+                component: trade,
             },
             {
-                path:'/scheme/:id/invest',
-                component:dashboard,
+                path: '/scheme/:id/invest',
+                component: dashboard,
             },
         ]
     },
@@ -210,7 +218,7 @@ const routes = [
 
 const router = new Router({
     mode: 'history',
-    linkActiveClass:'active',//路由跳转时动态添加样式
+    linkActiveClass: 'active',//路由跳转时动态添加样式
     routes
 })
 

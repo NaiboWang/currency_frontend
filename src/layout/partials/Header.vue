@@ -10,9 +10,9 @@
       </router-link>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center ml-auto ml-lg-0">
-      <button class="navbar-toggler navbar-toggler align-self-center d-lg-block" type="button" @click="toggleSidebar()">
-        <span class="mdi mdi-menu"></span>
-      </button>
+<!--      <button class="navbar-toggler navbar-toggler align-self-center d-lg-block" type="button" @click="toggleSidebar()">-->
+<!--        <span class="mdi mdi-menu"></span>-->
+<!--      </button>-->
       <!--      <div class="search-field d-none d-md-block">-->
       <!--        <form action="#">-->
       <!--          <div class="d-flex align-items-center input-group">-->

@@ -19,7 +19,10 @@ const service = axios.create({
 // request 请求拦截器
 service.interceptors.request.use(
     config => {
-        NProgress.start();
+        if(config.url.indexOf("wait") == -1){ // 只有当请求接口地址不包含wait时才显示progress bar
+            NProgress.start();
+        }
+
         //针对django框架设计的专属post方法
         if(config.method == "post")
         {
@@ -52,7 +55,11 @@ service.interceptors.request.use(
 // response 响应拦截器
 service.interceptors.response.use(
     response => {
-        NProgress.done();
+
+        if(response.request.responseURL.indexOf("wait") == -1){
+            NProgress.done();
+        }
+
         if (response.data.status != 200 && response.data.status != 210 && 'msg' in response.data) {
             Message({
                 message: response.data.msg,

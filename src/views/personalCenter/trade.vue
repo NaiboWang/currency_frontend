@@ -51,7 +51,7 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <h3 class="col-sm-4">Portfolio</h3>
+              <h3 class="col-sm-4" style="margin-top:10px">Portfolio</h3>
 
 
               <b-form-group
@@ -63,13 +63,23 @@
                   style="margin-top:0"
               >
                 <div class="row">
-<!--                  <div class="col-sm-2"></div>-->
-                  <b-form-checkbox-group
-                      v-model="hideSmall"
-                      class="col-sm-6 mt-1"
-                  >
-                    <b-form-checkbox >Hide Small Balance</b-form-checkbox>
-                  </b-form-checkbox-group>
+                  <!--                  <div class="col-sm-2"></div>-->
+
+                  <!--                  <b-form-checkbox-group-->
+                  <!--                      v-model="hideSmall"-->
+                  <!--                      class="col-sm-6"-->
+                  <!--                  >-->
+                  <!--                    <b-form-checkbox class="form-check-primary">Hide Small Balance <i class="input-helper"></i></b-form-checkbox>-->
+                  <!--                  </b-form-checkbox-group>-->
+
+                  <div class="col-sm-6 mt-1 form-check form-check-flat form-check-info check-hide">
+                    <div class="check-hide-inner">
+                      <label class="form-check-label">
+                        <input v-model="hideSmall" type="checkbox" class="form-check-input"> Hide Small Balance <i
+                          class="input-helper"></i> </label>
+                    </div>
+                  </div>
+
                   <b-input-group class="col-sm-6 mt-1">
                     <b-input-group-prepend>
                       <span class="input-group-text"><i class="fa fa-search fa-lg"></i></span>
@@ -88,68 +98,68 @@
                 </div>
               </b-form-group>
 
+            </div>
+            <b-table id="my-table"
+                     :per-page="pagination.perPage"
+                     :current-page="pagination.currentPage"
+                     striped hover responsive
+                     show-empty
+                     :filter="filter"
+                     :filter-included-fields="filterOn"
+                     :sort-by.sync="sortBy"
+                     :sort-desc.sync="sortDesc"
+                     :sort-direction="sortDirection"
+                     @filtered="onFiltered"
+                     :fields="fields" fixed :items="displayProperties">
+              <!--              <template #emptyfiltered>-->
+              <!--                <h4>asdf</h4>-->
+              <!--              </template>-->
+
+              <template #cell(symbol)="data">
+                <img :src="staticURL+'pics/'+data.item.symbol+'.png'" alt="image">
+                {{ data.item.symbol }}
+                <div class="percentage" style="color:grey">({{ data.item.name }})</div>
+              </template>
+              <template #cell(quantity)="data">
+                {{ data.item.quantity | numFilter_quantity }}
+              </template>
+
+              <template #cell(amount)="data">
+                {{ data.item.amount | numFilter }}
+              </template>
+              <template #cell(category)="data">
+                {{ data.item.category }}
+              </template>
+
+              <template #cell(percentage)="data">
+                <div class="progress" style="width:75%;display: inline-flex;margin-right:10px">
+                  <div :class="['progress-bar',progressbarStyles[data.index % 5]]" role="progressbar"
+                       :style="{width: data.item.percentage+'%'}"></div>
+                </div>
+                <div class="percentage">{{ data.item.percentage | numFilter }}%</div>
+              </template>
+
+            </b-table>
+            <b-pagination
+                first-number
+                last-number
+                v-model="pagination.currentPage"
+                :total-rows="pagination.rows"
+                :per-page="pagination.perPage"
+                aria-controls="my-table"
+                align="center"
+            ></b-pagination>
+
           </div>
-          <b-table id="my-table"
-                   :per-page="pagination.perPage"
-                   :current-page="pagination.currentPage"
-                   striped hover responsive
-                   show-empty
-                   :filter="filter"
-                   :filter-included-fields="filterOn"
-                   :sort-by.sync="sortBy"
-                   :sort-desc.sync="sortDesc"
-                   :sort-direction="sortDirection"
-                   @filtered="onFiltered"
-                   :fields="fields" fixed :items="displayProperties">
-            <!--              <template #emptyfiltered>-->
-            <!--                <h4>asdf</h4>-->
-            <!--              </template>-->
-
-            <template #cell(symbol)="data">
-              <img :src="staticURL+'pics/'+data.item.symbol+'.png'" style="margin-right: 3px" alt="image">
-              {{ data.item.symbol }}
-              <div class="percentage" style="color:grey">({{ data.item.name }})</div>
-            </template>
-            <template #cell(quantity)="data">
-              {{ data.item.quantity | numFilter_quantity }}
-            </template>
-
-            <template #cell(amount)="data">
-              {{ data.item.amount | numFilter }}
-            </template>
-            <template #cell(category)="data">
-              {{ data.item.category }}
-            </template>
-
-            <template #cell(percentage)="data">
-              <div class="progress" style="width:75%;display: inline-flex;margin-right:10px">
-                <div :class="['progress-bar',progressbarStyles[data.index % 5]]" role="progressbar"
-                     :style="{width: data.item.percentage+'%'}"></div>
-              </div>
-              <div class="percentage">{{ data.item.percentage | numFilter }}%</div>
-            </template>
-
-          </b-table>
-          <b-pagination
-              first-number
-              last-number
-              v-model="pagination.currentPage"
-              :total-rows="pagination.rows"
-              :per-page="pagination.perPage"
-              aria-controls="my-table"
-              align="center"
-          ></b-pagination>
-
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script>
 import doughnutChart from "../../components/charts/chartjs/doughnutChart";
-import { getSchemeAccountInfo} from "../../utils/schemeAccount";
+import {getSchemeAccountInfo} from "../../utils/schemeAccount";
 
 
 export default {
@@ -240,7 +250,7 @@ export default {
     displayProperties() {
       // Create an options list from our fields
       // console.log(this.hideSmall)
-      if (this.hideSmall.length>0) { //复选框选中后hideSmall数组长度由0变成1，多了一个true
+      if (this.hideSmall.length > 0) { //复选框选中后hideSmall数组长度由0变成1，多了一个true
         return this.properties
             .filter(f => f.percentage > 2); //小额资产定义为占比小于2%的资产
       } else {
@@ -272,6 +282,8 @@ h3 {
     color: rgb(17, 115, 239);
   }
 }
+
+
 
 //table{
 //  tr{
@@ -306,40 +318,71 @@ h3 {
     }
 
     td {
-      font-size: 16px !important;
-
+      font-size: 17px !important;
+      img{
+        margin-right:3px;
+        margin-top:-3px;
+      }
       &:nth-of-type(n+2) {
         text-align: center !important;
       }
 
       div {
-        font-size: 14px;
+        font-size: 15px;
       }
     }
   }
   .percentage {
     display: inline-flex;
-    font-size: 14px;
+    font-size: 15px;
   }
-  .custom-control-label::before{
-    width:1.2rem;
-    height:1.2rem;
+  .custom-control-label::before {
+    width: 1.2rem;
+    height: 1.2rem;
   }
-  .custom-control-label::after{
-    width:1.2rem;
-    height:1.2rem;
+  .custom-control-label::after {
+    width: 1.2rem;
+    height: 1.2rem;
   }
-  .custom-control-label{
+  .custom-control-label {
     font-family: 'ubuntu-regular';
-    line-height: 1.75!important;
-    padding-left:2px;
-    font-size:1rem!important;
+    line-height: 1.75 !important;
+    padding-left: 2px;
+    font-size: 1rem !important;
   }
-  .custom-control{
-    float:right;
-    margin-top:7px;
+  .custom-control {
+    float: right;
+    margin-top: 7px;
   }
 }
+.check-hide {
+  margin-top: 0.8rem !important;
 
+  position: relative;
+  .check-hide-inner{
+    position: absolute;
+    right:0.5rem;
+  }
+  .form-check-label {
+    //float:right;
+    font-family: ubuntu-regular;
+    font-size: 1rem !important;
+
+    .input-helper{
+
+      &:before{
+        width:20px!important;
+        height:20px!important;
+        margin-top:2px;
+        font-size:1rem;
+      }
+      &:after{
+        line-height: 20px!important;
+        margin-top:2px;
+        margin-left:1px;
+      }
+    }
+  }
+}
 
 </style>
