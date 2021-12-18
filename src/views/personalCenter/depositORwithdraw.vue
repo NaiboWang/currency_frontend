@@ -492,7 +492,7 @@ export default {
       // filterOn: [],//定义可以在哪些字段上过滤，不填就是全部都行
       pagination: {
         currentPage: 1,
-        perPage: 5,//每页有几条数据
+        perPage: 10,//每页有几条数据
         rows: 0, //一共多少行
         firstInvoke: true, // 是否第一次调用
         showCurrent: [],//是否隐藏小额资产
@@ -851,7 +851,7 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
   color: $info-color;
 }
 .modal-content{
-  background-color: white;
+  background-color: white!important;
 }
 .new-address{
   padding:0.5rem 0.2rem 0 0.2rem;
