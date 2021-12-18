@@ -130,7 +130,7 @@ export default {
         this.$confirm(`Do you really want to change your info?`, 'Confirm', {
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
-          cancelButtonClass: 'btn-custom-cancel',
+          // cancelButtonClass: 'btn-custom-cancel',
           type: 'success'
         }).then(async () => {
           let info = await this.$axios.get('changeUserInfo', {

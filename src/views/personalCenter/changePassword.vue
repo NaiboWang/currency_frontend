@@ -107,7 +107,7 @@ export default {
         this.$confirm('Do you really want to change your password?', 'Change Password', {
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
-          cancelButtonClass: 'btn-custom-cancel',
+          // cancelButtonClass: 'btn-custom-cancel',
           type: 'success'
         }).then(async () => {
           let changePasswordFormEncrypted = this.$lodash.clone(this.changePasswordForm);

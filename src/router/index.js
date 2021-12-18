@@ -12,7 +12,7 @@ import trade from "../views/personalCenter/trade";
 import schemeDesc from "../views/personalCenter/schemeDesc";
 import overview from "../views/personalCenter/overview";
 import lineChartOverview from "../views/personalCenter/lineChartOverview";
-import deposit from "../views/personalCenter/deposit";
+import depositORwithdraw from "../views/personalCenter/depositORwithdraw";
 
 Vue.use(Router)
 
@@ -42,6 +42,7 @@ const routes = [
     },
     {
         path: '/personal',
+        name:'personalHome',
         component: layout,
         redirect: '/personalHome',
         children: [
@@ -53,22 +54,27 @@ const routes = [
     {
         path: '/scheme',
         component: layout,
+        name:'scheme',
         redirect: '/scheme/:id/overview',
         children: [
             {
+                name:'SchemeNew',
                 path: '/scheme/new',
                 component: addScheme,
             },
             {
+                name:'SchemeEdit',
                 path: '/scheme/:id/edit',
                 component: schemeDesc,
             },
             {
+                name:'SchemeOverview',
                 path: '/scheme/:id/overview',
                 component: overview,
                 redirect: '/scheme/:id/overview/3',
                 children: [
                     {
+                        name:'SchemeOverviewDays',
                         path: '/scheme/:id/overview/:days',
                         component: lineChartOverview,
                     },
@@ -76,21 +82,32 @@ const routes = [
             },
             {
                 path: '/scheme/:id/deposit',
-                component: deposit, //component必须要有，下面的children才能用
+                name:'SchemeDeposit',
+                component: depositORwithdraw, //component必须要有，下面的children才能用
                 redirect: '/scheme/:id/deposit/USDT/0', //默认跳转到USDT的BEP20%BSC链,index是1,这里不能使用%20这种带空格的转义符，但是可用中文
                 children: [
                     {
                         name:'depositCoinChain',
                         path: '/scheme/:id/deposit/:coin/:chain',
-                        component: deposit,
+                        component: depositORwithdraw,
                     },
                 ]
             },
             {
                 path: '/scheme/:id/withdraw',
-                component: dashboard,
+                name:'SchemeWithdraw',
+                component: depositORwithdraw, //component必须要有，下面的children才能用
+                redirect: '/scheme/:id/withdraw/USDT/0', //默认跳转到USDT的BEP20%BSC链,index是1,这里不能使用%20这种带空格的转义符，但是可用中文
+                children: [
+                    {
+                        name:'withdrawCoinChain',
+                        path: '/scheme/:id/withdraw/:coin/:chain',
+                        component: depositORwithdraw,
+                    },
+                ]
             },
             {
+                name:'SchemeTrade',
                 path: '/scheme/:id/trade',
                 component: trade,
             },

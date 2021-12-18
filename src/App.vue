@@ -19,6 +19,18 @@
 </style>
 
 <style lang="less">
+///deep/.el-message-box__btns {
+//  text-align: center;
+//  // 交换 确定 和 取消 按钮的位置
+//  /deep/.el-button:nth-child(1) {
+//    float: right;
+//    margin-right: 20%;
+//  }
+//  /deep/.el-button:nth-child(2) {
+//    float: left;
+//    margin-left: 20%;
+//  }
+//}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

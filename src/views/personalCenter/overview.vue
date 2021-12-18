@@ -1,17 +1,18 @@
 <template>
   <div>
     <!-- 面包屑导航区 -->
-    <div class="page-header">
-      <h3 class="page-title">
-      <span class="page-title-icon bg-gradient-info text-white mr-2">
-        <i class="mdi mdi-chart-areaspline" style="content: '\FA9B'"></i>
-      </span> Scheme > Overview </h3>
-    </div>
+<!--    <div class="page-header">-->
+<!--      <h3 class="page-title">-->
+<!--      <span class="page-title-icon bg-gradient-info text-white mr-2">-->
+<!--        <i class="mdi mdi-chart-areaspline" style="content: '\FA9B'"></i>-->
+<!--      </span> Scheme > Overview </h3>-->
+<!--    </div>-->
     <div class="row">
       <div class="col-lg-12 grid-margin stretch-card" style="text-align: left">
         <div class="card">
           <div class="card-body">
             <h4>Total Balance</h4>
+
             <h3 v-if="account.amount!=-1">{{ account.amount| numFilter }} USD</h3>
             <h4 :style="{color:account.profit==0?'black':(account.profit>0?'green':'orangered')}"> Today's Profit :
               {{ account.profit| numFilter }} ({{ account.profitPercentage | numFilter }}%)</h4>

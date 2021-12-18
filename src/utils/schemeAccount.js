@@ -18,6 +18,7 @@ export async function getSchemeAccountInfo(id) {
         property.percentage = 0;//该币占的比例
         for (let address of property.addresses) { //每个币有好几个链，余额统一算到该币中
             let USD = address.amount * store.state.coinInfo.prices[property.symbol]
+            address.balance = USD;
             property.amount += USD;
             property.quantity += address.amount;
             account.amount += USD;

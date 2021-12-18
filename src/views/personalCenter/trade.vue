@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 面包屑导航区 -->
-    <div class="page-header">
-      <h3 class="page-title" style="font-size:1.2rem">
-      <span class="page-title-icon bg-gradient-info text-white mr-2">
-        <i class="mdi mdi-wallet" style="content: '\FA9B'"></i>
-      </span> Scheme > Trade </h3>
-    </div>
+<!--    <div class="page-header">-->
+<!--      <h3 class="page-title" style="font-size:1.2rem">-->
+<!--      <span class="page-title-icon bg-gradient-info text-white mr-2">-->
+<!--        <i class="mdi mdi-wallet" style="content: '\FA9B'"></i>-->
+<!--      </span> Scheme > Trade </h3>-->
+<!--    </div>-->
     <div class="row">
       <div class="col-md-6 grid-margin stretch-card" style="text-align: left">
         <div class="card">

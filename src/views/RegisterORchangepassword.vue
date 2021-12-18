@@ -182,7 +182,7 @@ export default {
         this.$confirm("Do you really want to " + hint, this.$route.path == '/register' ? 'Register' : 'Reset Password', {
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
-          cancelButtonClass: 'btn-custom-cancel',
+          // cancelButtonClass: 'btn-custom-cancel', // yes和no位置互换
           type: 'success'
         }).then(async () => {
           let registerFormEnctrypted = this.$lodash.clone(this.registerForm);
