@@ -418,7 +418,26 @@
         </div>
       </div>
     </div>
+    <b-modal centered id="bv-modal-submit">
+      <template #modal-title>
+        Withdraw Confirm
+      </template>
+      <div class="d-block text-center">
+        <h4 style="text-align: left;padding-left:1rem">Do you really want to withdraw {{withdrawForm.quantity}} {{selectedCoin.symbol}} on chain {{chainInfo.chainInfo.name}}?</h4>
+      </div>
+      <template #modal-footer>
+
+        <b-button size="sm" variant="dark" @click="$bvModal.hide('bv-modal-submit')">
+          No
+        </b-button>
+        <b-button size="sm" variant="info" @click="submitWithdraw">
+          Yes
+        </b-button>
+
+      </template>
+    </b-modal>
   </div>
+
 </template>
 
 <script>
@@ -511,7 +530,7 @@ export default {
   },
   methods: {
     validateQuantity() {
-      if (this.withdrawForm.quantity < 0 || this.withdrawForm.quantity > this.maxAmount) {
+      if (this.withdrawForm.quantity <= 0 || this.withdrawForm.quantity > this.maxAmount) {
         this.validations.quantity = false;
       } else {
         this.validations.quantity = null;
@@ -544,30 +563,35 @@ export default {
       if (Object.values(this.validations).includes(false) || this.withdrawForm.quantity == 0) {
         return false;
       }
-      this.$confirm(`Do you really want to withdraw ${this.withdrawForm.quantity} ${this.selectedCoin.symbol} on chain ${this.chainInfo.chainInfo.name}?`, 'Confirm', {
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        // cancelButtonClass: 'btn-custom-cancel',
-        type: 'success'
-      }).then(async () => {
-        let params = {
-          "id": this.$route.params.id,
-          "coin": this.$route.params.coin,
-          "chain": this.chainInfo.chainInfo.name,
-          "address": this.withdrawForm.address,
-          "quantity": this.withdrawForm.quantity
-        };
-        let info = await this.$axios.post("withdrawCoin", {"params": JSON.stringify(params)});
-        if(info){
-          this.withdrawForm.quantity = 0;
-          this.validations.quantity = null;
-          this.validations.address = null;
-        }
-      }).catch(() => { //取消选项后的操作
-        // this.withdrawForm.quantity = 0;
+      this.$bvModal.show('bv-modal-submit');
+      // this.$confirm(`Do you really want to withdraw ${this.withdrawForm.quantity} ${this.selectedCoin.symbol} on chain ${this.chainInfo.chainInfo.name}?`, 'Confirm', {
+      //   confirmButtonText: 'Yes',
+      //   cancelButtonText: 'No',
+      //   // cancelButtonClass: 'btn-custom-cancel',
+      //   type: 'success'
+      // }).then(async () => {
+      //
+      // }).catch(() => { //取消选项后的操作
+      //   // this.withdrawForm.quantity = 0;
+      //   this.validations.quantity = null;
+      //   this.validations.address = null;
+      // });
+    },
+    async submitWithdraw() {
+      let params = {
+        "id": this.$route.params.id,
+        "coin": this.$route.params.coin,
+        "chain": this.chainInfo.chainInfo.name,
+        "address": this.withdrawForm.address,
+        "quantity": this.withdrawForm.quantity
+      };
+      let info = await this.$axios.post("withdrawCoin", {"params": JSON.stringify(params)});
+      if (info) {
+        this.withdrawForm.quantity = 0;
         this.validations.quantity = null;
         this.validations.address = null;
-      });
+        this.$bvModal.hide("bv-modal-submit");
+      }
     },
     showAddressBook() {
       let btn = document.getElementById("realAddressButton");

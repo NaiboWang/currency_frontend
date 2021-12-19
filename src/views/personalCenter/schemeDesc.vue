@@ -16,12 +16,12 @@
               <h3 class="card-title" style="font-size:1.5rem">Edit Scheme Description</h3>
               <form class="forms-sample" style="text-align: left">
                 <div class="form-group">
-                  <label>Scheme Description</label>
-                  <b-form-select v-model="form.selected" :options="options"></b-form-select>
+                  <label style="font-family: ubuntu-regular">Scheme Description</label>
+                  <b-form-select style="font-family: ubuntu-regular" v-model="form.selected" :options="options"></b-form-select>
                 </div>
                 <div class="form-group" v-if="form.selected==2">
-                  <label>Custom Description</label>
-                  <b-form-input v-model="form.desc" id="feedback-user"></b-form-input>
+                  <label style="font-family: ubuntu-regular">Custom Description</label>
+                  <b-form-input v-model="form.desc" id="feedback-user" style="font-family: ubuntu-regular;font-size: 1rem"></b-form-input>
                   <b-form-invalid-feedback :state="validation">
                     Your scheme description must be 5-30 characters long.
                   </b-form-invalid-feedback>

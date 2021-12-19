@@ -13,6 +13,7 @@ import schemeDesc from "../views/personalCenter/schemeDesc";
 import overview from "../views/personalCenter/overview";
 import lineChartOverview from "../views/personalCenter/lineChartOverview";
 import depositORwithdraw from "../views/personalCenter/depositORwithdraw";
+import invest from "../views/personalCenter/invest";
 
 Vue.use(Router)
 
@@ -113,7 +114,7 @@ const routes = [
             },
             {
                 path: '/scheme/:id/invest',
-                component: dashboard,
+                component: invest,
             },
         ]
     },
