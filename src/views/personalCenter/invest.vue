@@ -426,7 +426,7 @@ export default {
           // console.log(investProperties[index].symbol, percentage);
         }
       }
-      if (this.properties.length == 0) { // 如果全部删光
+      if (this.properties.find(x=>x.symbol=="USDT") == undefined) { // 如果数组里没有usdt，手动添加
         this.properties.push({
           amount: 0,
           quantity: 0,
@@ -454,6 +454,7 @@ export default {
 
       }
       // console.log(this.remainPercentage, remainPercentage, aggregatePercentage);
+      // console.log(investPlan);
       let info = await this.$axios.post("newInvestPlan", {
         "plan": JSON.stringify(investPlan),
         "id": this.$route.params.id
