@@ -117,7 +117,16 @@ export default {
     let myChart = echarts.init(chart);
 
     myChart.setOption(option);
-    window.onresize = myChart.resize;//跟随屏幕大小变化
+    // window.onresize = myChart.resize;//跟随屏幕大小变化
+    window.onresize = () => { //解决最大最小化之后图标比例显示异常的问题
+      // myChart为echarts的实例
+      myChart.resize();
+      setTimeout(() => {
+        console.log(111);
+        myChart.resize();
+      }, 300)
+    }
+
   },
 
   components: {},

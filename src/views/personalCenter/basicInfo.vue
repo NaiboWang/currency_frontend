@@ -1,12 +1,12 @@
 <template>
   <div>
-    <!-- 面包屑导航区 -->
-    <div class="page-header">
-      <h3 class="page-title">
-      <span class="page-title-icon bg-gradient-info text-white mr-2">
-        <i class="mdi mdi-account"></i>
-      </span> User Information View/Change </h3>
-    </div>
+<!--    &lt;!&ndash; 面包屑导航区 &ndash;&gt;-->
+<!--    <div class="page-header">-->
+<!--      <h3 class="page-title">-->
+<!--      <span class="page-title-icon bg-gradient-info text-white mr-2">-->
+<!--        <i class="mdi mdi-account"></i>-->
+<!--      </span> User Information View/Change </h3>-->
+<!--    </div>-->
     <div class="row">
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
