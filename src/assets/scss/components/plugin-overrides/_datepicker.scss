@@ -20,7 +20,7 @@
         color: #ffffff;
         .mx-btn-text {
           font-size: 1rem;
-          @media (max-width: 1200px) and (min-width: 1201px) {
+          @media (max-width: 1400px) and (min-width: 1401px) {
             font-size: 1.2rem;
           }
         }
@@ -38,7 +38,7 @@
               @media (max-width: 576px) {
                 padding: 1rem 0rem;
               }
-              @media (max-width: 1200px) and (min-width: 1201px) {
+              @media (max-width: 1400px) and (min-width: 1401px) {
                 padding: 1rem 0rem;
               }
             }
@@ -102,19 +102,19 @@
             @media (max-width: 576px) {
               padding: 0.5rem;
             }
-            @media (max-width: 1200px) and (min-width: 1201px) {
+            @media (max-width: 1400px) and (min-width: 1401px) {
               padding: 2rem;
             }
             .mx-calendar-header-label {
               font-size: 2rem;
               @media (max-width: 576px),
-              (max-width: 1200px) and (min-width: 1201px) {
+              (max-width: 1400px) and (min-width: 1401px) {
                 font-size: 1rem;
               }
               .mx-btn-text {
                 font-size: 2rem;
                 @media (max-width: 576px),
-                (max-width: 1200px) and (min-width: 1201px)
+                (max-width: 1400px) and (min-width: 1401px)
                  {
                   font-size: 1rem;
                 }
@@ -123,7 +123,7 @@
             .mx-btn {
               font-size: 2rem;
               @media (max-width: 576px),
-              (max-width: 1200px) and (min-width: 1201px) {
+              (max-width: 1400px) and (min-width: 1401px) {
                 font-size: 1rem;
               }
             }
@@ -135,7 +135,7 @@
                 height: 15px;
                 border-width: 4px 0 0 4px;
                 @media (max-width: 576px),
-                (max-width: 1200px) and (min-width: 1201px) {
+                (max-width: 1400px) and (min-width: 1401px) {
                   width: 10px;
                   height: 10px;
                   border-width: 2px 0 0 2px;
@@ -149,7 +149,7 @@
                 height: 15px;
                 border-width: 4px 0 0 4px;
                 @media (max-width: 576px),
-                (max-width: 1200px) and (min-width: 1201px) {
+                (max-width: 1400px) and (min-width: 1401px) {
                   width: 10px;
                   height: 10px;
                   border-width: 2px 0 0 2px;
@@ -165,7 +165,7 @@
                   @media (max-width: 576px)  {
                     padding: 0rem;
                   }
-                  @media (max-width: 1200px) and (min-width: 1201px) {
+                  @media (max-width: 1400px) and (min-width: 1401px) {
                     padding: 1.5rem 0rem;
                   }
                 }
@@ -182,7 +182,7 @@
                     @media (max-width: 576px) {
                       padding: 0rem;
                     }
-                    @media (max-width: 1200px) and (min-width: 1201px) {
+                    @media (max-width: 1400px) and (min-width: 1401px) {
                       padding: 0.8rem 0.5rem;
                     }
                   }

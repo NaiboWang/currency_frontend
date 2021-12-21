@@ -4,7 +4,7 @@
 	h1 {
 		font-size: 9.375rem;
 		line-height: 1;
-		@media (max-width: 1200px) {
+		@media (max-width: 1400px) {
 			font-size: 8rem;
 		}
 	}
@@ -13,7 +13,7 @@
 		line-height: 1;
 	}
 	.error-page-divider {
-		@media (min-width: 1201px) {
+		@media (min-width: 1401px) {
 			border-left: 3px solid rgba($white, .2);
 		}
 	}

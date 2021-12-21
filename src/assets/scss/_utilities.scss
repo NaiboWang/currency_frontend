@@ -14,12 +14,12 @@
   }
 }
 .grid-margin-lg-0 {
-  @media (min-width: 1201px) {
+  @media (min-width: 1401px) {
     margin-bottom: 0;
   }
 }
 .grid-margin-xl-0 {
-  @media (min-width: 1200px) {
+  @media (min-width: 1400px) {
     margin-bottom: 0;
   }
 }
@@ -60,7 +60,7 @@
   }
 }
 .border-right-lg {
-  @media (min-width: 1201px) {
+  @media (min-width: 1401px) {
     border-right: $border-width solid $border-color;
   }
 }
@@ -76,7 +76,7 @@
   }
 }
 .border-left-lg {
-  @media (min-width: 1201px) {
+  @media (min-width: 1401px) {
     border-left: $border-width solid $border-color;
   }
 }

@@ -682,8 +682,8 @@ $non-gradients: (
   }
   .check-coin {
     //margin-top: 0.8rem !important;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 0!important;
+    margin-bottom: 0!important;
     //position: relative;
     //.check-hide-inner{
     //  position: absolute;

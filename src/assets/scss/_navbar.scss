@@ -100,7 +100,7 @@
               margin: 0;
             }
           }
-          @media (max-width: 1200px) {
+          @media (max-width: 1400px) {
             .navbar-dropdown {
               left: 20px;
               right: 20px;
@@ -162,7 +162,7 @@
         }
       }
       &.navbar-nav-right {
-        @media (min-width: 1201px) {
+        @media (min-width: 1401px) {
           margin-left: auto;
           .rtl & {
             margin-left: 0;
@@ -190,7 +190,7 @@
       }
       width: $sidebar-width-lg;
       height: $navbar-height;
-      @media (max-width: 1200px) {
+      @media (max-width: 1400px) {
         width: 55px;
       }
       .navbar-brand {
@@ -236,7 +236,7 @@
       padding-right: 24px;
       width: calc(100% - #{$sidebar-width-lg});
       height: $navbar-height;
-      @media (max-width: 1200px) {
+      @media (max-width: 1400px) {
         width: auto;
         padding-left: 15px;
         padding-right: 15px;
@@ -251,15 +251,15 @@
         padding-right: 20px;
         &:not(.navbar-toggler-right) {
           font-size: 1.5rem;
-          @media (max-width: 1200px) {
+          @media (max-width: 1400px) {
             display: none;
           }
         }
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
           display:block;
         }
         &.navbar-toggler-right{
-          @media (max-width:1200px){
+          @media (max-width:1400px){
             padding-left: 15px;
             padding-right: 11px;
             border-right: none;
@@ -332,7 +332,7 @@
     @extend .align-items-stretch;
     padding-left: 0;
     padding-right: 0;
-    @media (max-width:1200px) {
+    @media (max-width:1400px) {
       padding-left: 2rem;
       padding-right: 2rem;
     }
@@ -397,7 +397,7 @@
             &.nav-profile {
               margin-left: 5rem;
               margin-right: 0;
-              @media (max-width: 1200px) {
+              @media (max-width: 1400px) {
                 margin-left: 0;
               }
             }
@@ -419,7 +419,7 @@
             border-radius: 6px;
             line-height: 1;
             font-family: $type1-bold;
-            @media (max-width: 1200px) {
+            @media (max-width: 1400px) {
               border-radius: 0;
             }
             &.active {
@@ -434,7 +434,7 @@
       .navbar-nav {
         .nav-item {
           margin-left: 2rem;
-          @media (max-width: 1200px) {
+          @media (max-width: 1400px) {
             margin-left: 1rem;
           }
         }
@@ -447,7 +447,7 @@
       border-radius: 6px;
       .navbar-nav {
         @extend .flex-row;
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
           display: block;
         }
         .nav-item {
@@ -607,7 +607,7 @@
 }
 
 
-@media (max-width:1200px) {
+@media (max-width:1400px) {
   .navbar {
     flex-direction: row;
     .navbar-brand-wrapper {
@@ -641,7 +641,7 @@
 }
 
 /* Style for rendering off-canvas menu in mobile and tablet */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .navbar {
     &.horizontal-boxed-layout-navbar {
       .navbar-collapse {
