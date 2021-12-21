@@ -857,6 +857,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@media (max-width: 1100px){
+  h4{
+    font-size:1rem;
+  }
+  .btn-copy-div{
+    button{
+
+    }
+
+  }
+  span{
+    font-size:14px;
+  }
+}
 h3 {
   font-size: 1.3rem;
 }
@@ -900,9 +914,13 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
   }
 }
 
-.form-quantity::-webkit-inner-spin-button {
-  -webkit-appearance: none !important; //去除input=number默认的箭头
+.form-quantity {
   -moz-appearance: textfield!important;
+  &::-webkit-inner-spin-button{
+    -webkit-appearance: none !important; //去除input=number默认的箭头
+  }
+
+
   //margin: 0;
 }
 
@@ -1173,18 +1191,5 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
   }
 }
 
-@media (max-width: 1100px){
-  h4{
-    font-size:1rem;
-  }
-  .btn-copy-div{
-    button{
 
-    }
-
-  }
-  span{
-    font-size:14px;
-  }
-}
 </style>
