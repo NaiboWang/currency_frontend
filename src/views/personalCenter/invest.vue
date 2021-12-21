@@ -648,6 +648,9 @@ $non-gradients: (
     3: #fe7c96,
     4: #fed713,
 );
+.modal-header .close {
+  margin: -20px -20px -25px auto!important;
+}
 //@media (max-width:769px){
 //font-size: 1.5rem;
 //}
@@ -744,6 +747,10 @@ $non-gradients: (
     thead {
       th {
         z-index: 1003;
+
+      }
+      .b-table-sticky-column{
+        z-index:1004;
       }
     }
 
@@ -801,7 +808,7 @@ $non-gradients: (
     td {
       font-size: 15px !important;
       white-space: normal;
-
+      border-top:0px ;
       img {
         margin-right: 3px;
         margin-top: -3px;

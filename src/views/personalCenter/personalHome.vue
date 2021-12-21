@@ -37,17 +37,19 @@
       <div class="col-md-4 stretch-card grid-margin">
         <div class="card bg-outline-success card-img-holder">
           <div class="card-body text-color">
-            <h3 class=" mb-3">New Scheme <i class="mdi mdi-clipboard-text-outline mdi-24px float-right"></i>
+            <h3 class="mb-3" style="margin-left: 1.5rem">New Scheme <i class="mdi mdi-clipboard-text-outline mdi-24px float-right"></i>
             </h3>
             <div >
             <h5 v-if="schemes.length!=0">You can add a new scheme to start a new invest plan!</h5>
             <h5 v-else>You don't have any invest scheme now, add a new scheme to start invest!</h5>
             </div>
+            <div :class="[schemes.length%3!=2?'btn-new-scheme':'']">
             <button type="button" class="btn btn-info btn-icon-text newplan add-position"
                     @click="$router.push('scheme/new')">
               <i class="mdi mdi-plus btn-icon-prepend"></i>
               &nbsp;&nbsp;New Scheme
             </button>
+            </div>
           </div>
         </div>
       </div>
@@ -134,9 +136,15 @@ export default {
 }
 
 .newplan {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
 }
-
+.btn-new-scheme{
+  position:absolute;
+  margin:0 auto;
+  width:100%;
+  left:0;
+  bottom:2rem;
+}
 .add-position {
   position: relative;
 
