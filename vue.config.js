@@ -21,6 +21,9 @@ module.exports = {
             title: 'Currency Market'
         },
     },
+    devServer:{
+      host:"0.0.0.0",
+    },
    configureWebpack: {
         devServer: {
             compress: true,

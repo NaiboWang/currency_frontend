@@ -269,7 +269,7 @@
 
 /* style for off-canvas menu*/
 
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 1200px) {
   .sidebar-offcanvas {
     position: fixed;
     max-height: calc(100vh - #{$navbar-height});
@@ -280,7 +280,7 @@
     -webkit-transition: all 0.25s ease-out;
     -o-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out;
-
+    z-index: 2000;
     &.active {
       right: 0;
     }

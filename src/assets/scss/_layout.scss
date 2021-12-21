@@ -11,7 +11,7 @@
 
 // Sidebar Mini
 .sidebar-mini {
-  @media (min-width: 992px) {
+  @media (min-width: 1201px) {
     .navbar {
       .navbar-brand-wrapper {
         width: $sidebar-width-mini;
@@ -118,7 +118,7 @@
 
 // Sidebar Icon Only
 .sidebar-icon-only {
-  @media (min-width: 992px) {
+  @media (min-width: 1201px) {
     .navbar {
       .navbar-brand-wrapper {
         width: $sidebar-width-icon;
@@ -285,7 +285,7 @@
 
 // Hidden Sidebar
 .sidebar-hidden {
-  @media (min-width: 992px) {
+  @media (min-width: 1201px) {
     .sidebar {
       transition: width $action-transition-duration $action-transition-timing-function;
       -webkit-transition: width $action-transition-duration $action-transition-timing-function;
@@ -302,7 +302,7 @@
 
 // Absolute sidebar with overlay to content
 .sidebar-absolute {
-  @media (min-width: 992px) {
+  @media (min-width: 1201px) {
     .page-body-wrapper {
       position: relative;
 
@@ -333,7 +333,7 @@
 
 //Horizontal Menu
 .horizontal-menu {
-  @media (min-width: 992px) {
+  @media (min-width: 1201px) {
     .page-body-wrapper {
       @include flex-direction(column);
     }
@@ -365,7 +365,7 @@
       }
     }
   }
-  @media (max-width: 991px) {
+  @media (max-width: 1200px) {
     &.horizontal-menu-boxed {
       .container-scroller {
         .page-body-wrapper {
@@ -383,7 +383,7 @@
 
 //Fixed sidebar
 .sidebar-fixed {
-  @media(min-width: 992px) {
+  @media(min-width: 1201px) {
     .sidebar {
       position: fixed;
       max-height: auto;
@@ -413,7 +413,7 @@
 
 //Boxed layout
 .boxed-layout {
-  @media (min-width: 992px) {
+  @media (min-width: 1201px) {
     .container-scroller {
       background: #e1d7ea;
       padding: 0 calc((100% - #{$boxed-container-width}) / 2);

@@ -48,23 +48,23 @@
 .btn-group {
   display: block;
   .btn {
-    @media (max-width: 992px) {
+    @media (max-width: 1201px) {
       margin-bottom: 10px;
       display: block;
     }
     + .btn {
       border-left: 0;
       @extend .ml-0;
-      @media (max-width: 992px) {
+      @media (max-width: 1201px) {
         border-left: 1px solid #c3bdbd;
       }
-      
+
     }
   }
 }
 .template-demo {
   .btn {
-    @media (max-width: 992px) {
+    @media (max-width: 1201px) {
       margin-bottom: 10px;
     }
     + .btn {
@@ -82,7 +82,7 @@
 /*social buttons*/
 @each $color, $value in $social-colors {
   .btn-#{$color} {
-    @include social-button(social-color($color)); 
+    @include social-button(social-color($color));
   }
   .btn-outline-#{$color} {
     @include social-outline-button(social-color($color));

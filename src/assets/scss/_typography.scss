@@ -54,31 +54,31 @@ p {
 }
 .display-1 {
   font-size: 3.75rem;
-  @media (max-width: 991px) {
+  @media (max-width: 1200px) {
     font-size: 3rem;
   }
 }
 .display-2 {
   font-size: 3.125rem;
-  @media (max-width: 991px) {
+  @media (max-width: 1200px) {
     font-size: 2.5rem;
   }
 }
 .display-3 {
   font-size: 2.5rem;
-  @media (max-width: 991px) {
+  @media (max-width: 1200px) {
     font-size: 2rem;
   }
 }
 .display-4 {
   font-size: 1.875rem;
-  @media (max-width: 991px) {
+  @media (max-width: 1200px) {
     font-size: 1.5rem;
   }
 }
 .display-5 {
   font-size: 1.25rem;
-  @media (max-width: 991px) {
+  @media (max-width: 1200px) {
     font-size: 1rem;
   }
 }
@@ -102,7 +102,7 @@ address {
 .error-page {
   h1 {
     font-size: 12rem;
-    @media (max-width: 991px) {
+    @media (max-width: 1200px) {
       font-size: 8rem;
     }
   }

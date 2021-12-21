@@ -277,7 +277,9 @@ h3 {
 
 .edit {
   cursor: pointer;
-
+  &:before{
+    font-size: 22.4px;
+  }
   &:hover {
     color: rgb(17, 115, 239);
   }
@@ -295,7 +297,8 @@ h3 {
 <style lang="scss">
 //一个文件里写了样式，对所有的组件全部适用！
 /*从第二个元素开始设置属性*/
-@media screen and (min-width: 768px) {
+
+@media (min-width: 768px) {
   table {
     font-family: 'ubuntu-regular';
 
@@ -335,6 +338,9 @@ h3 {
   .percentage {
     display: inline-flex;
     font-size: 15px;
+    @media (max-width: 768px) {
+      font-size: 13px;
+    }
   }
   .custom-control-label::before {
     width: 1.2rem;
@@ -353,6 +359,17 @@ h3 {
   .custom-control {
     float: right;
     margin-top: 7px;
+  }
+}
+@media (max-width: 768px){
+  table#my-table{
+    tbody{
+      tr{
+        td{
+          font-size:13px!important;
+        }
+      }
+    }
   }
 }
 .check-hide {

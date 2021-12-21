@@ -221,7 +221,10 @@
               <div class="address-book" :style="{right:validations.address==null?'15px':'35px'}"
                    @click="showAddressBook">Address Book
               </div>
-              <b-dropdown size="lg" variant="link" block toggle-class="text-decoration-none" class="withdraw-book"
+              <b-dropdown size="lg" variant="link" block toggle-class="text-decoration-none"
+                          class="withdraw-book"
+                          @hide="hideAddress"
+                          @show="showAddress"
                           no-caret>
                 <template #button-content>
                   <div id="realAddressButton"></div>
@@ -261,10 +264,10 @@
                   <template #modal-footer>
 
                     <b-button size="sm" variant="dark" @click="$bvModal.hide('bv-modal-scheme-new')">
-                      No
+                      Cancel
                     </b-button>
                     <b-button size="sm" variant="info" @click="submitAddress">
-                      Yes
+                      Add
                     </b-button>
 
                   </template>
@@ -272,12 +275,16 @@
 
                 <b-dropdown-form style="width:100%;max-height:20rem;overflow: auto">
                   <b-dropdown-item v-for="(book,index) in chainInfo.userInfo.books" :key="book.tag + index">
-                    <div style="width:100%;white-space:normal;word-wrap:break-word;font-family: ubuntu-regular"
+                    <div style="width:100%;white-space:normal;word-wrap:break-word;font-family: ubuntu-regular;position:relative"
                          @click="fillAddress(book.address)">
                       <!--                       如果文字无法换行，首先看是不是white-space属性有问题！-->
                       <div>Tag: {{ book.tag }}</div>
                       <div>Address: {{ book.address }}</div>
+                      <div class="address-delete" @click="confirmDeleteAddress(index)">
+                        <span class="mdi mdi-delete"></span>
+                      </div>
                     </div>
+
                   </b-dropdown-item>
                   <div v-if="chainInfo.userInfo.books.length==0"
                        style="height:9.4rem;font-family: ubuntu-regular;text-align: center;padding-top: 4.7rem">No
@@ -436,6 +443,24 @@
 
       </template>
     </b-modal>
+    <b-modal centered id="bv-modal-delete">
+      <template #modal-title>
+        Withdraw Confirm
+      </template>
+      <div class="d-block text-center">
+        <h4 style="text-align: left;padding-left:1rem;white-space: normal" v-if="deleteAddressIndex!=-1">Do you really want to delete address (Tag: {{chainInfo.userInfo.books[deleteAddressIndex].tag}}) of {{selectedCoin.symbol}} on chain {{chainInfo.chainInfo.name}}?</h4>
+      </div>
+      <template #modal-footer>
+
+        <b-button size="sm" variant="dark" @click="$bvModal.hide('bv-modal-delete')">
+          No
+        </b-button>
+        <b-button size="sm" variant="info" @click="deleteAddress">
+          Yes
+        </b-button>
+
+      </template>
+    </b-modal>
   </div>
 
 </template>
@@ -516,6 +541,7 @@ export default {
         firstInvoke: true, // 是否第一次调用
         showCurrent: [],//是否隐藏小额资产
       },
+      deleteAddressIndex:-1,
       addressWait: true, //等待生成address
       fields: [
         // A virtual column made up from two fields
@@ -529,6 +555,34 @@ export default {
     }
   },
   methods: {
+    confirmDeleteAddress(index) {
+      this.deleteAddressIndex = index;
+      this.$bvModal.show("bv-modal-delete");
+      this.withdrawForm.address = "";
+    },hideAddress(event){
+      // if(this.deleteAddressIndex!=-1){
+      //   event.preventDefault();
+      // }
+    },showAddress() {
+      this.deleteAddressIndex = -1;
+    },
+    async deleteAddress() {
+      let info = this.$axios.post("deleteAddressBook",{"id": this.$route.params.id,
+        "coin": this.$route.params.coin,
+        "chain": this.chainInfo.chainInfo.name,
+        // "index":this.deleteAddressIndex,
+          "tag":this.chainInfo.userInfo.books[this.deleteAddressIndex].tag,
+      "address":this.chainInfo.userInfo.books[this.deleteAddressIndex].address});
+      if(info){
+        // this.account = await getSchemeAccountInfo(this.$route.params.id); //重新获得用户财产信息,但此时太快了所以数据库还没有反应过来，所以这里不用这个
+        // console.log(this.account.scheme.properties[3]["addresses"][2]["books"])
+        let books = this.account.scheme.properties.find(x=>x.symbol == this.$route.params.coin).addresses[this.$route.params.chain].books;
+        books.splice(this.deleteAddressIndex,1);//删除对应address
+        // console.log(books);
+        this.$bvModal.hide("bv-modal-delete");
+        this.deleteAddressIndex = -1;
+      }
+    },
     validateQuantity() {
       if (this.withdrawForm.quantity <= 0 || this.withdrawForm.quantity > this.maxAmount) {
         this.validations.quantity = false;
@@ -614,8 +668,10 @@ export default {
       popover.style.display = "block";
     },
     fillAddress(address){
-      this.withdrawForm.address=address;
-      this.validateAddress();
+      if(this.deleteAddressIndex==-1){
+        this.withdrawForm.address=address;
+        this.validateAddress();
+      }
     },
     checkFormValidity() {
       let valid = true;
@@ -650,6 +706,7 @@ export default {
         this.addressForm.address="";
         this.addressForm.tag="";
         this.account = await getSchemeAccountInfo(this.$route.params.id); //重新获得用户财产信息
+
       }
 
       // // Hide the modal manually
@@ -753,7 +810,8 @@ export default {
           output["userInfo"].balance = chain[0].balance;
           output["userInfo"].quantity = chain[0].amount;
           output["userInfo"].withdrawAmount = chain[0].withdrawAmount;
-          output["userInfo"].books = this.$lodash.clone(chain[0].books).reverse(); //倒序
+          // output["userInfo"].books = this.$lodash.clone(chain[0].books).reverse(); //倒序
+          output["userInfo"].books = chain[0].books;
         }
       }
       output["chainInfo"] = supportChains[this.$route.params.chain];
@@ -792,6 +850,7 @@ export default {
       this.withdrawForm.quantity = 0;
       this.validations.address = null;
       this.validations.quantity = null;
+      this.deleteAddressIndex = -1;
     }
   }
 }
@@ -808,6 +867,7 @@ h3 {
 
 .edit {
   cursor: pointer;
+
 
   &:hover {
     color: rgb(17, 115, 239);
@@ -967,18 +1027,25 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
 .btn-copy-div {
   margin-top: -3px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .btn-copy {
     color: $info-color !important;
     //font-weight: normal;
     //border: 1px solid transparent!important;
     width: 7rem !important;
+    min-width: 7rem!important;
     font-family: ubuntu-regular !important;
     padding: 0.5em 0.5em !important;
     margin-left: 0 !important;
     margin-right: 5px;
     background-color: transparent !important;
     float: right;
-
+    @media (max-width: 768px) {
+      width:5rem!important;
+      min-width: 5rem!important;
+    }
     &:hover {
       color: #fff !important;
       background-color: $info-color !important;
@@ -1088,7 +1155,36 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
     height: 45px !important;
     width: 100% !important;
   }
+}
+.address-delete{
+  position:absolute;
+  top:0;
+  right:-1rem;
+  height:100%;
+  display: table;
 
+  span{
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 1.2rem;
+    &:hover{
+      color:$info-color;
+    }
+  }
+}
 
+@media (max-width: 1100px){
+  h4{
+    font-size:1rem;
+  }
+  .btn-copy-div{
+    button{
+
+    }
+
+  }
+  span{
+    font-size:14px;
+  }
 }
 </style>

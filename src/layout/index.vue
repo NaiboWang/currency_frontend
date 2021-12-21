@@ -51,7 +51,7 @@
       getIdentity: async function () {
         let userInfo = await getIdentity();
         if (userInfo.role == "guest") {
-          this.$message.error('Sorry, you have not logged in or you are not authorised user!');
+          this.$message.info({message:'Please log in',center:true});
           await this.$router.push("/login");
         }
       },

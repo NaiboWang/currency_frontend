@@ -27,6 +27,7 @@ export async function getSchemeAccountInfo(id) {
     for (let property of info.data.properties) {
         property.percentage = property.quantity == 0 ? 0 : property.amount / account.amount; //该币所占比例
     }
+    // console.log(info.data)
     info.data.propertyLogs.reverse();//从新到旧排列
     for (let propertyLog of info.data.propertyLogs) {
         if (get_date_difference(date, propertyLog["time"]["$date"]) >= 1) { //找到昨天记录的最后一条资产总额记录
