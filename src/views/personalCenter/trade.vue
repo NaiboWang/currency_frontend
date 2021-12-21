@@ -72,7 +72,7 @@
                   <!--                    <b-form-checkbox class="form-check-primary">Hide Small Balance <i class="input-helper"></i></b-form-checkbox>-->
                   <!--                  </b-form-checkbox-group>-->
 
-                  <div class="col-sm-6 mt-1 form-check form-check-flat form-check-info check-hide">
+                  <div class="col-sm-6 form-check form-check-flat form-check-info check-hide">
                     <div class="check-hide-inner">
                       <label class="form-check-label">
                         <input v-model="hideSmall" type="checkbox" class="form-check-input"> Hide Small Balance <i

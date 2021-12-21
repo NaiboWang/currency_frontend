@@ -116,7 +116,7 @@ export default {
   },
   data() {
     return {
-      schemes: [{}],
+      schemes: [],
       amount:0, //账户总余额
       yesterdayAmount:0,//昨天的余额
       profit:0,
