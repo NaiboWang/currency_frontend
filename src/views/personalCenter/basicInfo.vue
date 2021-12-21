@@ -32,7 +32,7 @@
                           accept=".jpg,.jpeg,.png,.gif,.bmp,.svg"
                           :on-success="handleSuccess"
                           :before-upload="beforeAvatarUpload">
-                        <img :src="staticURL+'pics/'+$store.state.userInfo.profile" class="avatar"/>
+                        <img :src="staticURL+'pics/'+userInfo.profile" class="avatar"/>
                       </el-upload>
                     </div>
                     <div class="col-md-8 hint">

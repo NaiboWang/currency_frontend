@@ -39,8 +39,10 @@
           <div class="card-body text-color">
             <h3 class=" mb-3">New Scheme <i class="mdi mdi-clipboard-text-outline mdi-24px float-right"></i>
             </h3>
-            <h5 class="mb-5" v-if="schemes.length!=0">You can add a new scheme to start a new invest plan!</h5>
-            <h5 class="mb-5" v-else>You don't have any invest scheme now, add a new scheme to start invest!</h5>
+            <div >
+            <h5 v-if="schemes.length!=0">You can add a new scheme to start a new invest plan!</h5>
+            <h5 v-else>You don't have any invest scheme now, add a new scheme to start invest!</h5>
+            </div>
             <button type="button" class="btn btn-info btn-icon-text newplan add-position"
                     @click="$router.push('scheme/new')">
               <i class="mdi mdi-plus btn-icon-prepend"></i>
@@ -128,10 +130,11 @@ export default {
 <style scoped lang="scss">
 .text-color {
   color: rgb(50, 50, 3) !important;
+  //padding-bottom:1rem;
 }
 
 .newplan {
-  margin-top: 20px;
+  margin-top: 2.5rem;
 }
 
 .add-position {

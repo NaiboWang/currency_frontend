@@ -118,7 +118,7 @@
                     </div>
                   </el-popover>
                   <span style="float:right">{{
-                      maxAmount
+                      maxAmount | numFilter_quantity
                     }}</span></h5>
                 <p>If won't charge fee for internal address withdrawal. Please ignore the fee and the target address
                   will receive all funds.</p>

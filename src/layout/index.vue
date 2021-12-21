@@ -41,6 +41,13 @@
       Sidebar,
       Footer
     },
+    watch:{
+      $route:async function (n, o) {
+        if (n.name != o.name || o.params.id != n.params.id) {
+          await this.getIdentity();
+        }
+      }
+    },
     methods: {
       toggleSidebar: () => {
         document.querySelector('body').classList.toggle('sidebar-icon-only');
