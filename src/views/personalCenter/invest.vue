@@ -646,6 +646,7 @@ $non-gradients: (
 @media (min-width: 768px) {
   .invest-table-div {
     .b-table-sticky-header {
+      min-height: 22.5rem;
       max-height: 33.5rem !important;
       overflow: auto;
       //max-height: 100%;

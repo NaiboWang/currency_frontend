@@ -215,7 +215,7 @@
             <div class="card badge-gradient-special text-white" @click="$router.push('../invest/invest')">
               <div class="card-body">
 
-                <h3 class="font-weight-normal mb-3">New Invest Plan <i
+                <h3 class="font-weight-normal mb-3">Start New Invest <i
                     class="mdi mdi-account-cash mdi-24px float-right"></i>
                 </h3>
                 <h4 class="mb-5">
