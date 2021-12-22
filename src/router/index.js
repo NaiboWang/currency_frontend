@@ -14,6 +14,7 @@ import overview from "../views/personalCenter/overview";
 import lineChartOverview from "../views/personalCenter/lineChartOverview";
 import depositORwithdraw from "../views/personalCenter/depositORwithdraw";
 import invest from "../views/personalCenter/invest";
+import investPreview from "../views/personalCenter/investPreview";
 
 Vue.use(Router)
 
@@ -43,7 +44,7 @@ const routes = [
     },
     {
         path: '/personal',
-        name:'personalHome',
+        name: 'personalHome',
         component: layout,
         redirect: '/personalHome',
         children: [
@@ -55,27 +56,27 @@ const routes = [
     {
         path: '/scheme',
         component: layout,
-        name:'scheme',
+        name: 'scheme',
         redirect: '/scheme/:id/overview',
         children: [
             {
-                name:'SchemeNew',
+                name: 'SchemeNew',
                 path: '/scheme/new',
                 component: addScheme,
             },
             {
-                name:'SchemeEdit',
+                name: 'SchemeEdit',
                 path: '/scheme/:id/edit',
                 component: schemeDesc,
             },
             {
-                name:'SchemeOverview',
+                name: 'SchemeOverview',
                 path: '/scheme/:id/overview',
                 component: overview,
                 redirect: '/scheme/:id/overview/3',
                 children: [
                     {
-                        name:'SchemeOverviewDays',
+                        name: 'SchemeOverviewDays',
                         path: '/scheme/:id/overview/:days',
                         component: lineChartOverview,
                     },
@@ -83,12 +84,12 @@ const routes = [
             },
             {
                 path: '/scheme/:id/deposit',
-                name:'SchemeDeposit',
+                name: 'SchemeDeposit',
                 component: depositORwithdraw, //component必须要有，下面的children才能用
                 redirect: '/scheme/:id/deposit/USDT/0', //默认跳转到USDT的BEP20%BSC链,index是1,这里不能使用%20这种带空格的转义符，但是可用中文
                 children: [
                     {
-                        name:'depositCoinChain',
+                        name: 'depositCoinChain',
                         path: '/scheme/:id/deposit/:coin/:chain',
                         component: depositORwithdraw,
                     },
@@ -96,24 +97,36 @@ const routes = [
             },
             {
                 path: '/scheme/:id/withdraw',
-                name:'SchemeWithdraw',
+                name: 'SchemeWithdraw',
                 component: depositORwithdraw, //component必须要有，下面的children才能用
                 redirect: '/scheme/:id/withdraw/USDT/0', //默认跳转到USDT的BEP20%BSC链,index是1,这里不能使用%20这种带空格的转义符，但是可用中文
                 children: [
                     {
-                        name:'withdrawCoinChain',
+                        name: 'withdrawCoinChain',
                         path: '/scheme/:id/withdraw/:coin/:chain',
                         component: depositORwithdraw,
                     },
                 ]
             },
             {
-                name:'SchemeTrade',
+                name: 'SchemeTrade',
                 path: '/scheme/:id/trade',
                 component: trade,
             },
             {
                 path: '/scheme/:id/invest',
+                component: investPreview,
+                redirect: '/scheme/:id/invest/preview',
+                children: [
+                    {
+                        name: 'investPreview',
+                        path: '/scheme/:id/invest/preview',
+                        component: investPreview,
+                    },
+                ]
+            }, {
+                name: 'invest',
+                path: '/scheme/:id/invest/invest',
                 component: invest,
             },
         ]

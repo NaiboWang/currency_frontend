@@ -79,17 +79,13 @@
                 </template>
                 <template #cell(symbol)="data">
                   <div style="color:grey;margin-right:1rem;display: inline-block">
-
                   <span
-                      v-if="data.item.symbol != 'USDT'"
                       v-b-popover.hover.top="'Remove this coin'" class="mdi mdi-minus-circle edit"
                       style="margin-left:0.5rem;font-size: 1.1rem;"
                       @click="removeCoin(data.item.symbol)"></span>
-<!--                    <span v-else-->
-<!--                          v-b-popover.hover.top="'You cannot remove USDT'" class="mdi mdi-info edit"-->
-<!--                          style="margin-left:0.5rem;font-size: 1.1rem;visibility: hidden"-->
-<!--                          @click="removeCoin(data.item.symbol)"></span>-->
-                    <span v-else v-b-popover.hover.top="'You can reduce other coin\'s percentage to get USDT'" class="el-icon-info edit" style="margin-left:0.5rem;font-size: 1.1rem;cursor:initial;"></span>
+                    <!--                    <span v-else-->
+                    <!--                          v-b-popover.hover.top="'You cannot remove USDT'" class="mdi mdi-minus-circle edit" style="margin-left:0.5rem;font-size: 1.1rem;visibility: hidden"-->
+                    <!--                          @click="removeCoin(data.item.symbol)"></span>-->
                   </div>
                   <img :src="staticURL+'pics/'+data.item.symbol+'.png'" alt="image">
                   {{ data.item.symbol }}
@@ -116,26 +112,9 @@
                   <div class="percentage">{{ data.item.percentage | numFilter }}%</div>
                 </template>
                 <template #cell(investPercentage)="data">
-
-                  <el-slider v-model="data.item.investPercentage" v-if="data.item.symbol!='USDT'" :show-tooltip="false"
-
+                  <el-slider v-model="data.item.investPercentage" :show-tooltip="false"
                              :class="'slider-'+data.index%5"></el-slider>
-
-
-
-                  <div class="progress" v-if="data.item.symbol=='USDT'">
-                    <div :class="['progress-bar',progressbarStyles[data.index % 5]]" role="progressbar"
-                         :style="{width: data.item.investPercentage+'%'}"></div>
-
-
-                  </div>
-                  <div class="invest-percentage">
-                    <el-input-number v-model="data.item.investPercentage" controls-position="right"
-                                     class="form-quantity occupation-quantity" :disabled="data.item.symbol=='USDT'"
-                                     :min="0" :max="data.item.investPercentage + remainPercentage"
-                                     :precision="0"></el-input-number>
-                    <span style="margin-top: 11px">%</span></div>
-<!--                  <div class="percentage" v-if="data.item.symbol=='USDT'"><div class="pp-r">{{ data.item.investPercentage}}</div><div class="ppp">%</div></div>-->
+                  <div class="invest-percentage">{{ data.item.investPercentage | numFilter }}%</div>
                 </template>
 
               </b-table>
@@ -146,13 +125,18 @@
               <!--              <div class="col-md-12">-->
               <b-button variant="gradient-special" @click="$bvModal.show('bv-modal-add')">Add new coin</b-button>
 
-              <!--              <span style="margin-top: 3px">Remain Invest Percentage: {{-->
-              <!--                  remainPercentage > 0 ? remainPercentage : 0 | numFilter-->
-<!--                              }}%  -->
-              <!--                              <br> Estimated Remain Value: {{-->
-              <!--                  remainPercentage > 0 ? remainPercentage * account.amount : 0 | numFilter-->
-              <!--                }} USD-->
-              <!--                            </span>-->
+              <span style="margin-top: 3px">Remain Invest Percentage: {{ remainPercentage > 0 ? remainPercentage : 0 | numFilter }}%  <el-popover
+                  placement="right"
+                  width="300"
+                  trigger="hover"
+              >
+                  <i class="el-icon-info" slot="reference"></i>
+                  This shows how much of the remaining investment percentage can be allocated, <strong>note that the unallocated percentage after submission will be convertted to USDT</strong>.
+                </el-popover>
+                              <br> Estimated Remain Value: {{
+                  remainPercentage > 0 ? remainPercentage * account.amount : 0 | numFilter
+                }} USD
+                            </span>
 
               <b-button variant="gradient-info" @click="$bvModal.show('bv-modal-submit')">Submit Plan</b-button>
               <!--              </div>-->
@@ -332,14 +316,12 @@ export default {
         // A virtual column made up from two fields
         {key: 'symbol', stickyColumn: true, label: 'Coin', sortable: true, tdClass: "table-symbol"},
         // {key: 'category', label: 'Category', sortable: true},
-
-        {key: 'amount', label: 'Current Value (USD)', sortable: true, tdClass: "table-current-value"},
         {key: 'quantity', label: 'Current Quantity', sortable: true, tdClass: "table-current-value"},
+        {key: 'amount', label: 'Current Value', sortable: true, tdClass: "table-current-value"},
         {key: 'percentage', label: 'Current Occupation', sortable: true, tdClass: "table-percentage"},
         {key: 'investPercentage', label: 'Planned Occupation', sortable: true, tdClass: "table-invest-percentage"},
-        {key: 'investAmount', label: 'Estimated Value (USD)', sortable: true, tdClass: "table-invest-amount"},
         {key: 'investQuantity', label: 'Estimated Quantity', sortable: true, tdClass: "table-invest-quantity"},
-
+        {key: 'investAmount', label: 'Estimated Value', sortable: true, tdClass: "table-invest-amount"},
       ], fieldsWait: [
         // A virtual column made up from two fields
         {key: 'index', label: 'Select', tdClass: 'invest-wait-select'},
@@ -418,23 +400,70 @@ export default {
     },
     async submitInvestPlan() {
       let investPlan = [];
-
-      for (let property of this.properties) {
-        if (property.investPercentage > 0 || property.symbol == "USDT") {
-          investPlan.push({"coin": property.symbol, "percentage": property.investPercentage});
+      let aggregatePercentage = 0;
+      let totalPercentage = 100;
+      let percentage = 0;
+      if (this.remainPercentage > 0) {
+        totalPercentage -= this.remainPercentage;
+      }
+      let investProperties = this.properties.filter(x => x.investPercentage > 0);
+      // console.log(investProperties);
+      let len = investProperties.length;
+      // console.log(len,investProperties)
+      for (let index in investProperties) {
+        if (index != len - 1) {
+          percentage = parseFloat(investProperties[index].investPercentage.toFixed(6));//保留小数点后六位
+          // console.log(index)
+        } else {
+          percentage = totalPercentage - aggregatePercentage;
+        }
+        aggregatePercentage += percentage;
+        investProperties[index].investPercentage = percentage;
+        if (investProperties[index].symbol != "USDT") {
+          investPlan.push({
+            "coin": investProperties[index].symbol,
+            "percentage": investProperties[index].investPercentage
+          });
+          // console.log(investProperties[index].symbol, percentage);
         }
       }
+      if (this.properties.find(x=>x.symbol=="USDT") == undefined) { // 如果数组里没有usdt，手动添加
+        this.properties.push({
+          amount: 0,
+          quantity: 0,
+          symbol: "USDT",
+          percentage: 0,
+          name: "Tether",
+          investAmount: 0,
+          investPercentage: 0,
+          investQuantity: 0,
+        });
+      }
+      let remainPercentage = 0;
+      for (let property of this.properties) {
+        if (property.symbol == "USDT") {
+          // console.log(property.symbol, property.investPercentage);
+          remainPercentage = 100.0 - aggregatePercentage;
+          if (remainPercentage > 0) {
+            property.investPercentage += remainPercentage;
+          }
+          investPlan.push({"coin": property.symbol, "percentage": property.investPercentage});
+        }
+        if (property.investPercentage != 0) {
+          // console.log(property.symbol,property.investPercentage)
+        }
 
+      }
+      // console.log(this.remainPercentage, remainPercentage, aggregatePercentage);
+      // console.log(investPlan);
       let info = await this.$axios.post("newInvestPlan", {
         "plan": JSON.stringify(investPlan),
-        "id": this.$route.params.id,
-        "rebalance":false,
+        "id": this.$route.params.id
       });
       if (info) {
         this.$router.push({name: "SchemeTrade", params: {"id": this.$route.params.id}})
       }
     },
-
     removeCoin(coin) {
       this.properties.splice(this.properties.findIndex(e => e.symbol == coin), 1);
     },
@@ -472,21 +501,26 @@ export default {
       this.$bvModal.hide("bv-modal-add");
     },
   },
+  watch: {
+    // properties: {
+    //   handler: function (new_properties, old_properties) {
+    //     let n = this.$lodash.cloneDeep(new_properties);
+    //     let o = this.$lodash.cloneDeep(old_properties);
+    //     console.log(n,o);
 
+    //   },
+    //   deep: true
+    //
+    // }
+  },
   computed: {
     displayProperties() {
+      let remainPercentage = 100;
       let modifiedCoin = null;
-
-      let properties = this.properties;
-      let USDTInfo = properties.splice(this.properties.findIndex(e => e.symbol == "USDT"), 1);
-      if (USDTInfo.length == 0) {
-        return [];
-      } else {
-        USDTInfo = USDTInfo[0];
-      }
-
-      //第一步 找到修改的coin是哪个
       for (let property of this.properties) {
+        property.investAmount = this.account.amount * property.investPercentage / 100;
+        property.investQuantity = property.investAmount / this.$store.state.coinInfo.prices[property.symbol];
+        remainPercentage -= property.investPercentage;
         // console.log(property.symbol);
         if (this.properties_backup.length > 0) {
           let modifiedInfo = this.properties_backup.find(x => x.symbol == property.symbol && x.investPercentage != property.investPercentage);
@@ -496,48 +530,35 @@ export default {
         }
       }
 
-      let accumlatedPercentage = 0;
-      //第二步，计算除了此coin外其他coin的累计百分比
-      for (let property of this.properties) {
-        if (property.symbol != modifiedCoin) {
-          accumlatedPercentage += property.investPercentage;
-        }
-      }
-
-      //第三步，设置修改币的最高百分比
-      let remainPercentage = 100;
-      let maxPercentage = 100 - accumlatedPercentage;
-      let coinInfo = this.properties.find(x => x.symbol == modifiedCoin);
-      if (coinInfo != undefined) {
-        coinInfo.investPercentage = Math.min(maxPercentage, coinInfo.investPercentage);
-        //第四步，计算剩余多少百分比，全部算入USDT中
-        remainPercentage = maxPercentage - coinInfo.investPercentage;
-      } else { //默认没有币被选中时
-        remainPercentage = 100 - accumlatedPercentage;
-      }
-      USDTInfo.investPercentage = remainPercentage;
-      //第五步，计算各币种的预估值
-      for (let property of this.properties) {
-        property.investAmount = this.account.amount * property.investPercentage / 100;
-        property.investQuantity = property.investAmount / this.$store.state.coinInfo.prices[property.symbol];
-      }
       // console.log(this.properties,this.properties_backup);
       // console.log(remainPercentage,modifiedCoin);
-
+      let remainAllocatePercentage = -remainPercentage;
+      if (remainAllocatePercentage > 0) {
+        //投资比例超过100%，则需要设置算法分配比例以达到配比均衡
+        let deductProperties = this.properties.filter(x => (x.investPercentage > 0 && x.symbol != modifiedCoin)); //等待等比例减少的数组
+        deductProperties.sort(compare_asc("investPercentage"));
+        // console.log(deductProperties);
+        for (let index in deductProperties) {
+          let percentage = remainAllocatePercentage / (deductProperties.length - index);
+          let realPercentage = percentage;
+          if (deductProperties[index].investPercentage < percentage) { //扣完比例或者扣平均比例
+            realPercentage = deductProperties[index].investPercentage;
+          }
+          deductProperties[index].investPercentage -= realPercentage;
+          remainAllocatePercentage -= realPercentage;
+          // console.log(deductProperties[index].symbol, deductProperties[index].investPercentage, realPercentage, remainAllocatePercentage);
+        }
+      }
       this.setPropertiesBackup();//备份一份，用于定位是修改了哪个币，注意一定要放在这里，即修改其他币比例之后！
       this.setRemainPercentage(remainPercentage); // 设置剩余的配置百分比
       let output = null;
 
       if (this.hideSmall.length > 0) { //复选框选中后hideSmall数组长度由0变成1，多了一个true
-        output = properties
+        output = this.properties
             .filter(f => f.percentage > 2); //小额资产定义为占比小于2%的资产
       } else {
-        output = properties;
+        output = this.properties;
       }
-
-      // console.log(USDTInfo)
-
-
       if (this.sortInfo != null) {
         let sort = true;
         if (this.sortInfoBackup != null && this.sortInfo.sortBy == this.sortInfoBackup.sortBy && this.sortInfo.sortDesc == this.sortInfoBackup.sortDesc) { //如果上次排序和此次排序排的是同一个字段，且排序方向一直，则取消排序
@@ -560,11 +581,6 @@ export default {
         }
         this.setSortInfoBackup();
       }
-      //最后把USDT加回去
-      USDTInfo.investAmount = this.account.amount * USDTInfo.investPercentage / 100;
-      USDTInfo.investQuantity = USDTInfo.investAmount;
-      output.unshift(USDTInfo);
-
       return output;
     },
     waitCoins() { //等待加入的货币
@@ -635,9 +651,8 @@ $non-gradients: (
     4: #fed713,
 );
 .modal-header .close {
-  margin: -20px -20px -25px auto !important;
+  margin: -20px -20px -25px auto!important;
 }
-
 //@media (max-width:769px){
 //font-size: 1.5rem;
 //}
@@ -666,14 +681,14 @@ $non-gradients: (
       //max-height: 100%;
     }
   }
-  .invest-wait-select {
-    width: 70px;
+  .invest-wait-select{
+    width:70px;
     min-width: 70px;
   }
   .check-coin {
     //margin-top: 0.8rem !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    margin-top: 0!important;
+    margin-bottom: 0!important;
     //position: relative;
     //.check-hide-inner{
     //  position: absolute;
@@ -695,13 +710,11 @@ $non-gradients: (
           font-size: 1rem;
 
         }
+        &:before,&:after{
 
-        &:before, &:after {
-
-          top: -0.7rem !important;
-          left: 0.85rem !important;
+          top:-0.7rem!important;
+          left:0.85rem!important;
         }
-
         &:after {
           //line-height: 20px!important;
           margin-top: 1px;
@@ -732,134 +745,20 @@ $non-gradients: (
   }
   table#invest-table {
     font-family: 'ubuntu-regular';
-    .invest-percentage {
-      display: inline-flex;
-      //position:absolute;
-      right: 0;
-      top: 20px;
-    }
-    .table-invest-quantity {
-      width: 190px;
-      max-width: 190px;
-      min-width: 190px;
-    }
-    .table-invest-amount {
-      width: 190px;
-      max-width: 190px;
-      min-width: 190px;
-    }
-    .table-current-value {
-      width: 180px;
-      max-width: 180px;
-      min-width: 180px;
-    }
-    .table-symbol {
-      min-width: 240px;
-      width: 240px;
-      white-space: normal;
-    }
-    .table-invest-percentage {
-      min-width: 200px;
-      display: flex;
-      justify-content: center; //水平居中
-      align-items: center; //垂直居中
-
-    }
-    .table-percentage {
-      text-align: left;
-      min-width: 220px;
-
-      .progress {
-        width: 120px;
-        display: inline-flex;
-        margin-right: 10px;
-      }
-
-      .percentage {
-        display: inline-block;
-        font-size: 15px;
-        white-space: nowrap;
-        min-width: 60px;
-        width: 25%;
-        text-align: center !important;
-      }
-    }
-
-
-    .custom-control-label::before {
-      width: 1.2rem;
-      height: 1.2rem;
-    }
-    .custom-control-label::after {
-      width: 1.2rem;
-      height: 1.2rem;
-    }
-    .custom-control-label {
-      font-family: 'ubuntu-regular';
-      line-height: 1.75 !important;
-      padding-left: 2px;
-      font-size: 1rem !important;
-    }
-    .custom-control {
-      float: right;
-      margin-top: 7px;
-    }
 
     thead {
       th {
         z-index: 1003;
 
       }
-
-      .b-table-sticky-column {
-        z-index: 1004;
+      .b-table-sticky-column{
+        z-index:1004;
       }
     }
 
     tbody {
       .b-table-sticky-column {
         z-index: 1002;
-      }
-
-      tr:nth-child(1) {
-        position:sticky;
-        top:2.77rem;
-        z-index: 1004;
-        .table-invest-percentage {
-          justify-content: left;
-
-          .progress {
-            width: 75%;
-            display: inline-flex;
-            margin-right: 10px;
-          }
-          .invest-percentage{
-
-
-          }
-          .percentage {
-            display: inline-flex;
-            justify-content: space-between;
-            font-size: 15px;
-            white-space: nowrap;
-            min-width: 60px;
-            width: 25%;
-
-            .pp-r{
-              display: inline-block;
-              width:40px;
-              text-align: center;
-              margin:0;
-            }
-            .ppp{
-              display: inline-block;
-              text-align: right;
-            }
-
-            //text-align: right !important;
-          }
-        }
-
       }
 
       tr:nth-of-type(odd) {
@@ -871,8 +770,8 @@ $non-gradients: (
           //background: none;
           background-image: none;
           background-color: rgb(252, 251, 253);
-        }
 
+        }
       }
 
       tr:hover {
@@ -911,8 +810,7 @@ $non-gradients: (
     td {
       font-size: 15px !important;
       white-space: normal;
-      border-top: 0px;
-
+      border-top:0px ;
       img {
         margin-right: 3px;
         margin-top: -3px;
@@ -930,21 +828,6 @@ $non-gradients: (
 
       div {
         font-size: 15px;
-      }
-    }
-
-    .occupation-quantity {
-      width: 40px;
-      //margin-left: 10px;
-      margin-right: 5px;
-
-      .el-input__inner {
-        height: 30px;
-        padding: 0
-      }
-
-      .el-input-number__increase, .el-input-number__decrease {
-        display: none !important;
       }
     }
   }
@@ -969,7 +852,76 @@ $non-gradients: (
       margin-right: 15px;
     }
   }
+  .invest-percentage {
+    display: inline-flex;
+    //position:absolute;
+    right: 0;
+    top: 20px;
+  }
+  .table-invest-quantity {
+    width: 190px;
+    max-width: 190px;
+    min-width: 190px;
+  }
+  .table-invest-amount {
+    width: 190px;
+    max-width: 190px;
+    min-width: 190px;
+  }
+  .table-current-value {
+    width: 180px;
+    max-width: 180px;
+    min-width: 180px;
+  }
+  .table-symbol {
+    min-width: 180px;
+    white-space: normal;
+  }
+  .table-invest-percentage {
+    min-width: 200px;
+    display: flex;
+    justify-content: center; //水平居中
+    align-items: center; //垂直居中
+  }
+  .table-percentage {
+    text-align: left;
+    min-width: 220px;
 
+    .progress {
+      width: 120px;
+      display: inline-flex;
+      margin-right: 10px;
+    }
+
+    .percentage {
+      display: inline-block;
+      font-size: 15px;
+      white-space: nowrap;
+      min-width: 60px;
+      width: 25%;
+      text-align: center !important;
+    }
+  }
+
+
+  .custom-control-label::before {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  .custom-control-label::after {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  .custom-control-label {
+    font-family: 'ubuntu-regular';
+    line-height: 1.75 !important;
+    padding-left: 2px;
+    font-size: 1rem !important;
+  }
+  .custom-control {
+    float: right;
+    margin-top: 7px;
+  }
 }
 
 .check-hide {

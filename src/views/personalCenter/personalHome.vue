@@ -12,7 +12,7 @@
         <div class="card bg-gradient-info card-img-holder text-white">
           <div class="card-body">
             <img src="../../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
-            <h3 class="font-weight-normal mb-3">Total Balance <i class="mdi mdi-diamond mdi-24px float-right"></i>
+            <h3 style="margin-left: 24px" class="font-weight-normal mb-3">Total Balance <i class="mdi mdi-diamond mdi-24px float-right"></i>
             </h3>
             <h2 class="mb-5">$ {{ amount | numFilter}}</h2>
             <h5 class="card-text">Today's Profit: {{profit | numFilter}}</h5>
@@ -25,7 +25,7 @@
              @click="$router.push('/scheme/'+scheme.id+'/overview');">
           <div class="card-body">
             <img src="../../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
-            <h3 class="font-weight-normal mb-3">Scheme {{ scheme.code }} Balance <i
+            <h3 style="margin-left: 24px" class="font-weight-normal mb-3">Scheme {{ scheme.code }} Balance <i
                 :class="['mdi mdi-24px float-right',index%2 == 0?'mdi-chart-areaspline':'mdi-chart-line']"></i>
             </h3>
             <h2 class="mb-5">$ {{ scheme.amount | numFilter }}</h2>

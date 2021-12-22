@@ -25,6 +25,7 @@
   import store from "../store";
   import {convert_time} from "../utils/time";
   import moment from "moment";
+  import {compare_asc, compare_asc_letter} from "../utils/compare";
   export default {
     name: "layout",
     async created() { //注意生命周期，父组件的mounted是在子组件mounted之后执行的，所以这里要用created
@@ -63,9 +64,10 @@
         }
       },
       getCoinInfo: async function () {
-        let getCoinInfo = await axios.get("getCoinInfo");
-        convert_time(getCoinInfo);
-        store.commit("setCoinInfo",getCoinInfo.data);
+        let coinInfo = await axios.get("getCoinInfo");
+        convert_time(coinInfo);
+        coinInfo.data.coins.sort(compare_asc_letter("symbol"))
+        store.commit("setCoinInfo",coinInfo.data);
         // console.log(this.$store.state.coinInfo);
         this.loadSuccess = true; //等待汇率和coin信息加载完了再加载各种组件！
       },

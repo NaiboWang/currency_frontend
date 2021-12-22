@@ -74,19 +74,26 @@
               <div style="height:45px"></div>
             </div>
             <div class="form-group" style="margin-top: 1.5rem">
+              <h4>Total Quantity<span style="float:right">{{ selectedCoin.quantity | numFilter_quantity }}</span></h4>
+
+              <!--              <h3></h3>-->
+              <h4 style="margin-top:1rem">Total Balance (USD)<span style="float:right">{{
+                  selectedCoin.amount | numFilter
+                }}</span></h4>
+
               <div v-if="$route.name=='withdrawCoinChain'">
-                <h4>Quantity on {{ chainInfo.chainInfo.name }}<span
-                    style="float:right">{{ chainInfo.userInfo.quantity | numFilter_quantity }}</span></h4>
+                <!--                <h4>Quantity on {{ chainInfo.chainInfo.name }}<span-->
+                <!--                    style="float:right">{{ chainInfo.userInfo.quantity | numFilter_quantity }}</span></h4>-->
 
-                <!--              <h3></h3>-->
-                <h4 style="margin-top:1rem">Balance on {{ chainInfo.chainInfo.name }}<span style="float:right">{{
-                    chainInfo.userInfo.balance | numFilter
-                  }}</span></h4>
+                <!--                &lt;!&ndash;              <h3></h3>&ndash;&gt;-->
+                <!--                <h4 style="margin-top:1rem">Balance on {{ chainInfo.chainInfo.name }}<span style="float:right">{{-->
+                <!--                    chainInfo.userInfo.balance | numFilter-->
+                <!--                  }}</span></h4>-->
 
-                <h5 style="margin-top:1rem">24H Withdraw Limit
-                  <span style="float:right">{{
-                      chainInfo.chainInfo.withdrawLimit
-                    }}</span></h5>
+                <!--                <h5 style="margin-top:1rem">24H Withdraw Limit-->
+                <!--                  <span style="float:right">{{-->
+                <!--                      chainInfo.chainInfo.withdrawLimit-->
+                <!--                    }}</span></h5>-->
                 <h5 style="margin-top:1rem">Transaction Fee
                   <span style="float:right">{{
                       chainInfo.chainInfo.transactionFee
@@ -98,24 +105,30 @@
                       trigger="hover"
                   >
                     <i class="el-icon-info" slot="reference"></i>
-                    <div
-                        v-if="chainInfo.chainInfo.withdrawLimit -chainInfo.userInfo.withdrawAmount >=chainInfo.userInfo.quantity">
-                      {{ chainInfo.userInfo.quantity | numFilter_quantity }} (Quantity on
-                      {{ chainInfo.chainInfo.name }}) - {{ chainInfo.chainInfo.transactionFee | numFilter_quantity }}
-                      (Transaction Fee) = {{
-                        maxAmount
-                            | numFilter_quantity
-                      }}
-                    </div>
-                    <div v-else>
-                      {{ chainInfo.chainInfo.withdrawLimit | numFilter_quantity }} (24H withdraw limit on
-                      {{ chainInfo.chainInfo.name }}) - {{ chainInfo.userInfo.withdrawAmount | numFilter_quantity }}
-                      (already withdrawn within 24H) - {{ chainInfo.chainInfo.transactionFee | numFilter_quantity }}
-                      (Transaction Fee) = {{
-                        maxAmount
-                            | numFilter_quantity
-                      }}
-                    </div>
+                    {{ selectedCoin.quantity | numFilter_quantity }} (Quantity on
+                    {{ selectedCoin.symbol }}) - {{ chainInfo.chainInfo.transactionFee | numFilter_quantity }}
+                    (Transaction Fee) = {{
+                      maxAmount
+                          | numFilter_quantity
+                    }}
+                    <!--                    <div-->
+                    <!--                        v-if="chainInfo.chainInfo.withdrawLimit -chainInfo.userInfo.withdrawAmount >=chainInfo.userInfo.quantity">-->
+                    <!--                      {{ chainInfo.userInfo.quantity | numFilter_quantity }} (Quantity on-->
+                    <!--                      {{ chainInfo.chainInfo.name }}) - {{ chainInfo.chainInfo.transactionFee | numFilter_quantity }}-->
+                    <!--                      (Transaction Fee) = {{-->
+                    <!--                        maxAmount-->
+                    <!--                            | numFilter_quantity-->
+                    <!--                      }}-->
+                    <!--                    </div>-->
+                    <!--                    <div v-else>-->
+                    <!--                      {{ chainInfo.chainInfo.withdrawLimit | numFilter_quantity }} (24H withdraw limit on-->
+                    <!--                      {{ chainInfo.chainInfo.name }}) - {{ chainInfo.userInfo.withdrawAmount | numFilter_quantity }}-->
+                    <!--                      (already withdrawn within 24H) - {{ chainInfo.chainInfo.transactionFee | numFilter_quantity }}-->
+                    <!--                      (Transaction Fee) = {{-->
+                    <!--                        maxAmount-->
+                    <!--                            | numFilter_quantity-->
+                    <!--                      }}-->
+                    <!--                    </div>-->
                   </el-popover>
                   <span style="float:right">{{
                       maxAmount | numFilter_quantity
@@ -123,15 +136,10 @@
                 <p>If won't charge fee for internal address withdrawal. Please ignore the fee and the target address
                   will receive all funds.</p>
               </div>
-              <div v-else>
-                <h4>Total Quantity<span style="float:right">{{ selectedCoin.quantity | numFilter_quantity }}</span></h4>
+              <!--              <div v-else>-->
+              <!--               -->
 
-                <!--              <h3></h3>-->
-                <h4 style="margin-top:1rem">Total Balance<span style="float:right">{{
-                    selectedCoin.amount | numFilter
-                  }}</span></h4>
-
-              </div>
+              <!--              </div>-->
 
 
               <!--              <h4 style="margin-top:1rem">Total Balance</h4>-->
@@ -212,7 +220,8 @@
             <b-form-group
                 style="margin-top:0;position:relative"
             >
-              <b-form-input required @change="validateAddress" v-model="withdrawForm.address" :state="validations.address"
+              <b-form-input required @change="validateAddress" v-model="withdrawForm.address"
+                            :state="validations.address"
                             placeholder="Address" style="font-size:0.9rem;margin-top:1.5rem"></b-form-input>
 
               <b-form-invalid-feedback :state="validations.address">
@@ -234,30 +243,32 @@
                     New Address
                   </template>
                   <div class="d-block text-center">
-                    <h4>Add new address for coin {{selectedCoin.symbol}} on chain {{chainInfo.chainInfo.name}}</h4>
+                    <h4>Add new address for coin {{ selectedCoin.symbol }} on chain {{ chainInfo.chainInfo.name }}</h4>
                     <form ref="form">
                       <b-form-group
                           class="new-address"
                           style="margin-top:0;position:relative"
                       >
-                        <b-form-input required @change="validateNewTag" v-model="addressForm.tag" :state="validationAddress.tag"
+                        <b-form-input required @change="validateNewTag" v-model="addressForm.tag"
+                                      :state="validationAddress.tag"
                                       placeholder="Tag Name" style="font-size:0.9rem;"></b-form-input>
 
-                        <b-form-invalid-feedback :state="validations.tag">
+                        <b-form-invalid-feedback :state="validationAddress.tag">
                           Tag name must between 2 to 30 characters
                         </b-form-invalid-feedback>
                       </b-form-group>
-                    <b-form-group
-                        class="new-address"
-                        style="margin-top:0;position:relative"
-                    >
-                      <b-form-input required @change="validateNewAddress" v-model="addressForm.address" :state="validationAddress.address"
-                                    placeholder="Address" style="font-size:0.9rem;"></b-form-input>
+                      <b-form-group
+                          class="new-address"
+                          style="margin-top:0;position:relative"
+                      >
+                        <b-form-input required @change="validateNewAddress" v-model="addressForm.address"
+                                      :state="validationAddress.address"
+                                      placeholder="Address" style="font-size:0.9rem;"></b-form-input>
 
-                      <b-form-invalid-feedback :state="validationAddress.address">
-                        Address must be 1 to 100 characters
-                      </b-form-invalid-feedback>
-                    </b-form-group>
+                        <b-form-invalid-feedback :state="validationAddress.address">
+                          Address must be 1 to 100 characters
+                        </b-form-invalid-feedback>
+                      </b-form-group>
 
                     </form>
                   </div>
@@ -275,8 +286,9 @@
 
                 <b-dropdown-form style="width:100%;max-height:20rem;overflow: auto">
                   <b-dropdown-item v-for="(book,index) in chainInfo.userInfo.books" :key="book.tag + index">
-                    <div style="width:100%;white-space:normal;word-wrap:break-word;font-family: ubuntu-regular;position:relative"
-                         @click="fillAddress(book.address)">
+                    <div
+                        style="width:100%;white-space:normal;word-wrap:break-word;font-family: ubuntu-regular;position:relative"
+                        @click="fillAddress(book.address)">
                       <!--                       如果文字无法换行，首先看是不是white-space属性有问题！-->
                       <div>Tag: {{ book.tag }}</div>
                       <div>Address: {{ book.address }}</div>
@@ -306,11 +318,12 @@
                                 style="font-size:0.9rem"></b-form-input>
 
                   <b-form-invalid-feedback :state="validations.quantity">
-                    Quantity must bigger than 0 and smaller than {{ maxAmount }}
+                    Quantity must bigger than 0 and smaller than {{ maxAmount |numFilter_quantity }}
                   </b-form-invalid-feedback>
                   <div class="all-amount" @click="withdrawForm.quantity = maxAmount"
                        :style="{right:validations.quantity==null?'35px':'55px'}">
-                    {{ chainInfo.chainInfo.withdrawLimit - chainInfo.userInfo.withdrawAmount > chainInfo.userInfo.quantity ? "ALL" : "MAX" }}
+                    <!--                    {{ chainInfo.chainInfo.withdrawLimit - chainInfo.userInfo.withdrawAmount > chainInfo.userInfo.quantity ? "ALL" : "MAX" }}-->
+                    MAX
                   </div>
                 </div>
                 <div class="col-md-6" style="padding-right:0;padding-left:0;float:right">
@@ -430,7 +443,8 @@
         Withdraw Confirm
       </template>
       <div class="d-block text-center">
-        <h4 style="text-align: left;padding-left:1rem">Do you really want to withdraw {{withdrawForm.quantity}} {{selectedCoin.symbol}} on chain {{chainInfo.chainInfo.name}}?</h4>
+        <h4 style="text-align: left;padding-left:1rem">Do you really want to withdraw {{ withdrawForm.quantity }}
+          {{ selectedCoin.symbol }} on chain {{ chainInfo.chainInfo.name }}?</h4>
       </div>
       <template #modal-footer>
 
@@ -448,7 +462,9 @@
         Withdraw Confirm
       </template>
       <div class="d-block text-center">
-        <h4 style="text-align: left;padding-left:1rem;white-space: normal" v-if="deleteAddressIndex!=-1">Do you really want to delete address (Tag: {{chainInfo.userInfo.books[deleteAddressIndex].tag}}) of {{selectedCoin.symbol}} on chain {{chainInfo.chainInfo.name}}?</h4>
+        <h4 style="text-align: left;padding-left:1rem;white-space: normal" v-if="deleteAddressIndex!=-1">Do you really
+          want to delete address (Tag: {{ chainInfo.userInfo.books[deleteAddressIndex].tag }}) of
+          {{ selectedCoin.symbol }} on chain {{ chainInfo.chainInfo.name }}?</h4>
       </div>
       <template #modal-footer>
 
@@ -472,6 +488,7 @@ import qrcode from "qrcode";
 import ClipboardJS from "clipboard";
 import {convert_time} from "../../utils/time";
 import store from "../../store";
+import {convert_num} from "../../utils/filters";
 
 export default {
   async created() {
@@ -509,13 +526,13 @@ export default {
         yesterdayAmount: 0,//昨天的余额
         profit: 0,
       },
-      addressForm:{
-        tag:"",
-        address:"",
+      addressForm: {
+        tag: "",
+        address: "",
       },
-      validationAddress:{
-        tag:null,
-        address:null,
+      validationAddress: {
+        tag: null,
+        address: null,
       },
       withdrawForm: {
         address: "",
@@ -541,7 +558,7 @@ export default {
         firstInvoke: true, // 是否第一次调用
         showCurrent: [],//是否隐藏小额资产
       },
-      deleteAddressIndex:-1,
+      deleteAddressIndex: -1,
       addressWait: true, //等待生成address
       fields: [
         // A virtual column made up from two fields
@@ -559,25 +576,27 @@ export default {
       this.deleteAddressIndex = index;
       this.$bvModal.show("bv-modal-delete");
       this.withdrawForm.address = "";
-    },hideAddress(event){
+    }, hideAddress(event) {
       // if(this.deleteAddressIndex!=-1){
       //   event.preventDefault();
       // }
-    },showAddress() {
+    }, showAddress() {
       this.deleteAddressIndex = -1;
     },
     async deleteAddress() {
-      let info = this.$axios.post("deleteAddressBook",{"id": this.$route.params.id,
+      let info = this.$axios.post("deleteAddressBook", {
+        "id": this.$route.params.id,
         "coin": this.$route.params.coin,
         "chain": this.chainInfo.chainInfo.name,
         // "index":this.deleteAddressIndex,
-          "tag":this.chainInfo.userInfo.books[this.deleteAddressIndex].tag,
-      "address":this.chainInfo.userInfo.books[this.deleteAddressIndex].address});
-      if(info){
+        "tag": this.chainInfo.userInfo.books[this.deleteAddressIndex].tag,
+        "address": this.chainInfo.userInfo.books[this.deleteAddressIndex].address
+      });
+      if (info) {
         // this.account = await getSchemeAccountInfo(this.$route.params.id); //重新获得用户财产信息,但此时太快了所以数据库还没有反应过来，所以这里不用这个
         // console.log(this.account.scheme.properties[3]["addresses"][2]["books"])
-        let books = this.account.scheme.properties.find(x=>x.symbol == this.$route.params.coin).addresses[this.$route.params.chain].books;
-        books.splice(this.deleteAddressIndex,1);//删除对应address
+        let books = this.account.scheme.properties.find(x => x.symbol == this.$route.params.coin).addresses[this.$route.params.chain].books;
+        books.splice(this.deleteAddressIndex, 1);//删除对应address
         // console.log(books);
         this.$bvModal.hide("bv-modal-delete");
         this.deleteAddressIndex = -1;
@@ -590,22 +609,22 @@ export default {
         this.validations.quantity = null;
       }
     },
-    validateAddress(){
-      if (this.withdrawForm.address == "" || this.withdrawForm.address.length>100) {
+    validateAddress() {
+      if (this.withdrawForm.address == "" || this.withdrawForm.address.length > 100) {
         this.validations.address = false;
       } else {
         this.validations.address = null;
       }
     },
-    validateNewAddress(){
-      if (this.addressForm.address == "" || this.addressForm.address.length>100) {
+    validateNewAddress() {
+      if (this.addressForm.address == "" || this.addressForm.address.length > 100) {
         this.validationAddress.address = false;
       } else {
         this.validationAddress.address = null;
       }
     },
-    validateNewTag(){
-      if (this.addressForm.tag == "" || this.addressForm.tag.length>100) {
+    validateNewTag() {
+      if (this.addressForm.tag == "" || this.addressForm.tag.length > 100) {
         this.validationAddress.tag = false;
       } else {
         this.validationAddress.tag = null;
@@ -667,29 +686,29 @@ export default {
           });
       popover.style.display = "block";
     },
-    fillAddress(address){
-      if(this.deleteAddressIndex==-1){
-        this.withdrawForm.address=address;
+    fillAddress(address) {
+      if (this.deleteAddressIndex == -1) {
+        this.withdrawForm.address = address;
         this.validateAddress();
       }
     },
     checkFormValidity() {
       let valid = true;
-      if (this.addressForm.address == "" || this.addressForm.address.length>100) {
+      if (this.addressForm.address == "" || this.addressForm.address.length > 100) {
         this.validationAddress.address = false;
         valid = false;
       } else {
         this.validationAddress.address = null;
       }
-      if (this.addressForm.tag == "" || this.addressForm.address.length>30) {
+      if (this.addressForm.tag == "" || this.addressForm.address.length > 30) {
         this.validationAddress.tag = false;
-        valid=false;
+        valid = false;
       } else {
         this.validationAddress.tag = null;
       }
       return valid;
     },
-    async submitAddress(){
+    async submitAddress() {
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return null;
@@ -698,13 +717,13 @@ export default {
         "id": this.$route.params.id,
         "coin": this.$route.params.coin,
         "chain": this.chainInfo.chainInfo.name,
-        "tag":this.addressForm.tag,
-        "address":this.addressForm.address,
+        "tag": this.addressForm.tag,
+        "address": this.addressForm.address,
       });
-      if(info){
+      if (info) {
         this.$bvModal.hide('bv-modal-scheme-new');
-        this.addressForm.address="";
-        this.addressForm.tag="";
+        this.addressForm.address = "";
+        this.addressForm.tag = "";
         this.account = await getSchemeAccountInfo(this.$route.params.id); //重新获得用户财产信息
 
       }
@@ -724,27 +743,27 @@ export default {
       // console.log(this.account, this.$store.state.coinInfo);
       this.pagination.firstInvoke = false; //
       const h = this.$createElement;
-      let info = await this.$axios.post("waitSchemeLogs", {"type": this.$route.name == "depositCoinChain" ? "deposit" : "withdraw"});
-      if (info.new_log) { //如果有新的日志出现
-        this.notification = this.$notify({
-          title: "New " + (this.$route.name == "depositCoinChain" ? "deposit" : "withdraw") + " log available",
-          dangerouslyUseHTMLString: true,
-          // message: '<span style="color:rgb(17, 115, 239);cursor: pointer" @click="alert(1)">Click here</span> to get the lastest log.',
-          message: h('div', {}, [h('el-button', {
-            attrs: {
-              type: 'text'
-            },
-            on: {
-              click: () => {
-                this.firstLoadLogs() //动态渲染元素绑定事件的方法
-              }
-            },
-          }, 'Click here'), h('span', {}, " to get the latest log.")]),
-          type: 'info',
-          offset: 60,
-          duration: 0,//不自动关闭
-        });
-      }
+      // let info = await this.$axios.post("waitSchemeLogs", {"type": this.$route.name == "depositCoinChain" ? "deposit" : "withdraw"});
+      // if (info.new_log) { //如果有新的日志出现
+      //   this.notification = this.$notify({
+      //     title: "New " + (this.$route.name == "depositCoinChain" ? "deposit" : "withdraw") + " log available",
+      //     dangerouslyUseHTMLString: true,
+      //     // message: '<span style="color:rgb(17, 115, 239);cursor: pointer" @click="alert(1)">Click here</span> to get the lastest log.',
+      //     message: h('div', {}, [h('el-button', {
+      //       attrs: {
+      //         type: 'text'
+      //       },
+      //       on: {
+      //         click: () => {
+      //           this.firstLoadLogs() //动态渲染元素绑定事件的方法
+      //         }
+      //       },
+      //     }, 'Click here'), h('span', {}, " to get the latest log.")]),
+      //     type: 'info',
+      //     offset: 60,
+      //     duration: 0,//不自动关闭
+      //   });
+      // }
     },
     async getCurrentLogs() {
       await this.getSchemeLogs(1); //页数归1
@@ -831,7 +850,9 @@ export default {
       //用户每天在该链该币上最多可以提的数量是这个链在这个币上限制的数量减去用户今天已经提取的数量withdrawAmount
       //计算方法：用户总币数与最多可提的数量的最小值减去手续费，如果小于0就是0，即不可提
       let minNum = Math.min(this.chainInfo.chainInfo.withdrawLimit - this.chainInfo.userInfo.withdrawAmount, this.chainInfo.userInfo.quantity);
+      minNum = this.selectedCoin.quantity;
       let maxAmount = Math.max(0, minNum - this.chainInfo.chainInfo.transactionFee);
+      maxAmount = convert_num(maxAmount);
       return maxAmount;
     }
   },
@@ -857,20 +878,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@media (max-width: 1100px){
-  h4{
-    font-size:1rem;
+@media (max-width: 1100px) {
+  h4 {
+    font-size: 1rem;
   }
-  .btn-copy-div{
-    button{
+  .btn-copy-div {
+    button {
 
     }
 
   }
-  span{
-    font-size:14px;
+  span {
+    font-size: 14px;
   }
 }
+
 h3 {
   font-size: 1.3rem;
 }
@@ -915,8 +937,9 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
 }
 
 .form-quantity {
-  -moz-appearance: textfield!important;
-  &::-webkit-inner-spin-button{
+  -moz-appearance: textfield !important;
+
+  &::-webkit-inner-spin-button {
     -webkit-appearance: none !important; //去除input=number默认的箭头
   }
 
@@ -927,21 +950,24 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
 .add-new-address {
   padding: 1.5rem 2rem 1rem 2.7rem;
   text-align: center;
-  display: block;
+  display: block !important;
   font-family: ubuntu-regular;
   font-size: 1rem;
   color: $info-color;
   border-top: solid 1px lightgrey;
   cursor: pointer;
 }
-.new-address{
-  .invalid-feedback{
+
+.new-address {
+  .invalid-feedback {
     text-align: left;
   }
 }
-.invalid-feedback{
+
+.invalid-feedback {
   white-space: nowrap;
 }
+
 .address-book {
   position: absolute;
   //top:37px;
@@ -952,12 +978,15 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
   cursor: pointer;
   color: $info-color;
 }
-.modal-content{
-  background-color: white!important;
+
+.modal-content {
+  background-color: white !important;
 }
-.new-address{
-  padding:0.5rem 0.2rem 0 0.2rem;
+
+.new-address {
+  padding: 0.5rem 0.2rem 0 0.2rem;
 }
+
 .all-amount {
   position: absolute;
   top: 0;
@@ -1048,12 +1077,13 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
   display: flex;
   justify-content: center;
   align-items: center;
+
   .btn-copy {
     color: $info-color !important;
     //font-weight: normal;
     //border: 1px solid transparent!important;
     width: 7rem !important;
-    min-width: 7rem!important;
+    min-width: 7rem !important;
     font-family: ubuntu-regular !important;
     padding: 0.5em 0.5em !important;
     margin-left: 0 !important;
@@ -1061,9 +1091,10 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
     background-color: transparent !important;
     float: right;
     @media (max-width: 768px) {
-      width:5rem!important;
-      min-width: 5rem!important;
+      width: 5rem !important;
+      min-width: 5rem !important;
     }
+
     &:hover {
       color: #fff !important;
       background-color: $info-color !important;
@@ -1174,19 +1205,21 @@ $info-color: #198ae3; //其他组件无法使用，scss的私有变量无法共�
     width: 100% !important;
   }
 }
-.address-delete{
-  position:absolute;
-  top:0;
-  right:-1rem;
-  height:100%;
+
+.address-delete {
+  position: absolute;
+  top: 0;
+  right: -1rem;
+  height: 100%;
   display: table;
 
-  span{
+  span {
     display: table-cell;
     vertical-align: middle;
     font-size: 1.2rem;
-    &:hover{
-      color:$info-color;
+
+    &:hover {
+      color: $info-color;
     }
   }
 }
