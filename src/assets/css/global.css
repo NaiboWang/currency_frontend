@@ -21,6 +21,9 @@
     text-align: center;
     margin: 10px auto;
 }
+.el-form-item__error{
+    padding-top:0;
+}
 .form_center_layout
 {
     min-width: 500px;
