@@ -493,10 +493,10 @@ import {convert_num} from "../../utils/filters";
 export default {
   async created() {
     this.account = await getSchemeAccountInfo(this.$route.params.id);
+    await this.firstLoadLogs();
     if (this.$route.name == "depositCoinChain") {
       await this.getNewAddress();
     }
-    await this.firstLoadLogs();
   },
   mounted() {
     if (this.$route.name == "depositCoinChain") {
