@@ -373,7 +373,7 @@ export default {
         if (investCoin != undefined) {
           investPercentage = investCoin.percentage;
         }
-        if (!(investPercentage == 0 && property.percentage == 0)) {
+        if (!(investPercentage == 0 && property.percentage == 0&&property.symbol!="USDT")) {
           properties.push({
             "symbol": property.symbol,
             "name": coinInfo.name,
