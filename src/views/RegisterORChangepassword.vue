@@ -235,7 +235,7 @@ export default {
     padding: 10px;
     box-shadow: 0 0 10px #ddd;
     //position: absolute;
-    margin-left: 40%;
+    margin-left: 43%;
     //transform: translate(-30%, -100%);
     background-color: #fff;
 
@@ -249,7 +249,7 @@ export default {
 
   h2 {
     text-align: center;
-    margin-left: 50px;
+    margin-left: 75px;
     margin-top: 10px;
   }
 }

@@ -119,7 +119,7 @@ export default {
     padding: 10px;
     box-shadow: 0 0 10px #ddd;
     //position: absolute;
-    margin-left: 43%;
+    margin-left: 42.5%;
     //transform: translate(-30%, -95%);
     background-color: #fff;
 
@@ -134,7 +134,7 @@ export default {
   h2 {
     //transform: translate(0%, 70%);
     text-align: center;
-    margin-left: 75px;
+    margin-left: 70px;
     margin-top: 10px;
   }
 }
