@@ -89,13 +89,18 @@ service.interceptors.response.use(
     },
     error => {
         NProgress.done();
-        console.log(error);
-        Message({
-            message: "Server Error!",
-            type: "error",
-            duration: 5 * 1000
-        });
-        return Promise.reject(error);
+        if(!axios.isCancel(error)){ //如果不是取消异步请求的错误，则报错，否则不报错
+            Message({
+                message: "Server Error!",
+                type: "error",
+                duration: 5 * 1000
+            });
+            return Promise.reject(error);
+        }else{
+            return false; //取消请求返回false
+        }
+
+
     }
 );
 

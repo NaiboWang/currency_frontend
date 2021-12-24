@@ -489,7 +489,9 @@ import ClipboardJS from "clipboard";
 import {convert_time} from "../../utils/time";
 import store from "../../store";
 import {convert_num} from "../../utils/filters";
+import axios from "axios";
 
+const CancelToken = axios.CancelToken;
 export default {
   async created() {
     this.account = await getSchemeAccountInfo(this.$route.params.id);
@@ -514,9 +516,10 @@ export default {
     if (this.clipboard != null) {
       this.clipboard.destroy(); //页面退出时销毁clipboard
     }
-    if (this.notification != null) { //关闭通知
-      this.notification.close();
-    }
+    // if (this.notification != null) { //关闭通知
+    //   this.notification.close();
+    // }
+    // this.source.cancel();//停止所有未完成的异步网络请求
   },
   data() {
     return {
@@ -558,6 +561,7 @@ export default {
         firstInvoke: true, // 是否第一次调用
         showCurrent: [],//是否隐藏小额资产
       },
+      source: CancelToken.source(),
       deleteAddressIndex: -1,
       addressWait: true, //等待生成address
       fields: [
@@ -742,8 +746,10 @@ export default {
       await this.getSchemeLogs(1);
       // console.log(this.account, this.$store.state.coinInfo);
       this.pagination.firstInvoke = false; //
-      const h = this.$createElement;
-      // let info = await this.$axios.post("waitSchemeLogs", {"type": this.$route.name == "depositCoinChain" ? "deposit" : "withdraw"});
+      // const h = this.$createElement;
+      // // try {
+      // let info = await this.$axios.post("waitSchemeLogs", {"type": this.$route.name == "depositCoinChain" ? "deposit" : "withdraw"}, {cancelToken: this.source.token});
+      // // console.log(info);
       // if (info.new_log) { //如果有新的日志出现
       //   this.notification = this.$notify({
       //     title: "New " + (this.$route.name == "depositCoinChain" ? "deposit" : "withdraw") + " log available",
@@ -764,6 +770,10 @@ export default {
       //     duration: 0,//不自动关闭
       //   });
       // }
+      // // } catch (err) {
+      // //     console.log("Canceled request");
+      // // }
+
     },
     async getCurrentLogs() {
       await this.getSchemeLogs(1); //页数归1
