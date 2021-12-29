@@ -32,11 +32,11 @@
                 <div class="row">
 
                   <div class="col-sm-6 form-check form-check-flat form-check-info check-hide">
-<!--                    <div class="check-hide-inner">-->
-<!--                      <label class="form-check-label">-->
-<!--                        <input v-model="hideSmall" type="checkbox" class="form-check-input"> Hide Small Balance <i-->
-<!--                          class="input-helper"></i> </label>-->
-<!--                    </div>-->
+                    <!--                    <div class="check-hide-inner">-->
+                    <!--                      <label class="form-check-label">-->
+                    <!--                        <input v-model="hideSmall" type="checkbox" class="form-check-input"> Hide Small Balance <i-->
+                    <!--                          class="input-helper"></i> </label>-->
+                    <!--                    </div>-->
                   </div>
 
                   <b-input-group class="col-sm-6 mt-1">
@@ -85,11 +85,12 @@
                       v-b-popover.hover.top="'Remove this coin'" class="mdi mdi-minus-circle edit"
                       style="margin-left:0.5rem;font-size: 1.1rem;"
                       @click="removeCoin(data.item.symbol)"></span>
-<!--                    <span v-else-->
-<!--                          v-b-popover.hover.top="'You cannot remove USDT'" class="mdi mdi-info edit"-->
-<!--                          style="margin-left:0.5rem;font-size: 1.1rem;visibility: hidden"-->
-<!--                          @click="removeCoin(data.item.symbol)"></span>-->
-                    <span v-else v-b-popover.hover.top="'You can reduce other coin\'s percentage to get USDT'" class="el-icon-info edit" style="margin-left:0.5rem;font-size: 1.1rem;cursor:initial;"></span>
+                    <!--                    <span v-else-->
+                    <!--                          v-b-popover.hover.top="'You cannot remove USDT'" class="mdi mdi-info edit"-->
+                    <!--                          style="margin-left:0.5rem;font-size: 1.1rem;visibility: hidden"-->
+                    <!--                          @click="removeCoin(data.item.symbol)"></span>-->
+                    <span v-else v-b-popover.hover.top="'You can reduce other coin\'s percentage to get USDT'"
+                          class="el-icon-info edit" style="margin-left:0.5rem;font-size: 1.1rem;cursor:initial;"></span>
                   </div>
                   <img :src="staticURL+'pics/'+data.item.symbol+'.png'" alt="image">
                   {{ data.item.symbol }}
@@ -122,7 +123,6 @@
                              :class="'slider-'+data.index%5"></el-slider>
 
 
-
                   <div class="progress" v-if="data.item.symbol=='USDT'">
                     <div :class="['progress-bar',progressbarStyles[data.index % 5]]" role="progressbar"
                          :style="{width: data.item.investPercentage+'%'}"></div>
@@ -135,7 +135,7 @@
                                      :min="0" :max="data.item.investPercentage + remainPercentage"
                                      :precision="0"></el-input-number>
                     <span style="margin-top: 11px">%</span></div>
-<!--                  <div class="percentage" v-if="data.item.symbol=='USDT'"><div class="pp-r">{{ data.item.investPercentage}}</div><div class="ppp">%</div></div>-->
+                  <!--                  <div class="percentage" v-if="data.item.symbol=='USDT'"><div class="pp-r">{{ data.item.investPercentage}}</div><div class="ppp">%</div></div>-->
                 </template>
 
               </b-table>
@@ -148,7 +148,7 @@
 
               <!--              <span style="margin-top: 3px">Remain Invest Percentage: {{-->
               <!--                  remainPercentage > 0 ? remainPercentage : 0 | numFilter-->
-<!--                              }}%  -->
+              <!--                              }}%  -->
               <!--                              <br> Estimated Remain Value: {{-->
               <!--                  remainPercentage > 0 ? remainPercentage * account.amount : 0 | numFilter-->
               <!--                }} USD-->
@@ -188,6 +188,24 @@
           No
         </b-button>
         <b-button size="sm" variant="info" @click="submitInvestPlan">
+          Yes
+        </b-button>
+      </template>
+    </b-modal>
+    <b-modal centered id="bv-modal-leave">
+      <template #modal-title>
+        Leave Confirm
+      </template>
+      <div class="d-block text-center">
+        <h4 style="text-align: left;padding-left:1rem">Do you really want to leave this page? All changes will be
+          discarded.</h4>
+      </div>
+      <template #modal-footer>
+
+        <b-button size="sm" variant="dark" @click="$bvModal.hide('bv-modal-leave')">
+          No
+        </b-button>
+        <b-button size="sm" variant="info" @click="goNext">
           Yes
         </b-button>
       </template>
@@ -293,6 +311,55 @@ export default {
   async created() {
     await this.getSchemeAccount();
   },
+  beforeRouteLeave(to, from, next) { //离开前警告
+    this.next = next;
+    let canJump = true;
+    if (this.canJump) {
+      canJump = true;
+    } else {
+      for (let property_initial of this.properties_initial) {
+        let property = this.properties.find(x => x.symbol == property_initial.symbol);
+        if (property == undefined) {
+          canJump = false;
+          break;
+        } else if (property.investPercentage != property_initial.investPercentage) {
+          canJump = false;
+          break;
+        }
+      }
+      if (canJump) {
+        for (let property of this.properties) {
+          let property_initial = this.properties_initial.find(x => x.symbol == property.symbol);
+          if (property_initial == undefined) {
+            canJump = false;
+            break;
+          } else if (property.investPercentage != property_initial.investPercentage) {
+            canJump = false;
+            break;
+          }
+        }
+      }
+    }
+
+    if (!canJump) {
+      // // 这里需要elementui的支持，如果使用其他界面组件自行替换即可
+      // this.$confirm('You are leaving this page, all changes will be discarded', 'warning', {
+      //   confirmButtonText: 'Leave',
+      //   cancelButtonText: 'Cancel',
+      //   type: 'warning'
+      // }).then(() => {
+      //   // 正常跳转
+      //   next();
+      // }).catch(() => {
+      //   // 如果取消跳转地址栏会变化，这时保持地址栏不变
+      //   window.history.go(1)
+      // })
+      this.$bvModal.show('bv-modal-leave');
+    } else {
+      next();//没修改过，直接跳转
+    }
+
+  },
   data() {
     return {
       account: {
@@ -301,9 +368,12 @@ export default {
         yesterdayAmount: 0,//昨天的余额
         profit: 0,
       },
+      canJump: false,//是否可以跳转
+      next: null,
       remainPercentage: 100,//剩余的百分比
       properties: [],
       properties_backup: [],
+      properties_initial: [], //最开始的properties数组
       sortBy: '',
       sortByWait: '',
       hideSmall: [],//是否隐藏小额资产
@@ -351,6 +421,9 @@ export default {
     }
   },
   methods: {
+    goNext() {
+      this.next();
+    },
     setRemainPercentage(percentage) {
       this.remainPercentage = percentage;
     },
@@ -373,7 +446,7 @@ export default {
         if (investCoin != undefined) {
           investPercentage = investCoin.percentage;
         }
-        if (!(investPercentage == 0 && property.percentage == 0&&property.symbol!="USDT")) {
+        if (!(investPercentage == 0 && property.percentage == 0 && property.symbol != "USDT")) {
           properties.push({
             "symbol": property.symbol,
             "name": coinInfo.name,
@@ -401,6 +474,7 @@ export default {
       }
       this.investPlan = info.data.contents;
       this.properties = properties;
+      this.properties_initial = this.$lodash.cloneDeep(properties);
       this.pagination.rows = this.properties.length;
     },
     onFiltered(filteredItems) {
@@ -418,7 +492,6 @@ export default {
     },
     async submitInvestPlan() {
       let investPlan = [];
-
       for (let property of this.properties) {
         if (property.investPercentage > 0 || property.symbol == "USDT") {
           investPlan.push({"coin": property.symbol, "percentage": property.investPercentage});
@@ -428,13 +501,13 @@ export default {
       let info = await this.$axios.post("newInvestPlan", {
         "plan": JSON.stringify(investPlan),
         "id": this.$route.params.id,
-        "rebalance":false,
+        "rebalance": false,
       });
       if (info) {
+        this.setCanJump(true);//是否修改过符号设置为默认未修改，这样可以正常离开页面
         this.$router.push({name: "SchemeTrade", params: {"id": this.$route.params.id}})
       }
     },
-
     removeCoin(coin) {
       this.properties.splice(this.properties.findIndex(e => e.symbol == coin), 1);
     },
@@ -471,8 +544,10 @@ export default {
       this.selectedCoins = [];
       this.$bvModal.hide("bv-modal-add");
     },
+    setCanJump(jump) {
+      this.canJump = jump;
+    },
   },
-
   computed: {
     displayProperties() {
       let modifiedCoin = null;
@@ -492,6 +567,7 @@ export default {
           let modifiedInfo = this.properties_backup.find(x => x.symbol == property.symbol && x.investPercentage != property.investPercentage);
           if (modifiedInfo != undefined) {
             modifiedCoin = modifiedInfo.symbol;
+            break;
           }
         }
       }
@@ -733,32 +809,38 @@ $non-gradients: (
   }
   table#invest-table {
     font-family: 'ubuntu-regular';
+
     .invest-percentage {
       display: inline-flex;
       //position:absolute;
       right: 0;
       top: 20px;
     }
+
     .table-invest-quantity {
       width: 190px;
       max-width: 190px;
       min-width: 190px;
     }
+
     .table-invest-amount {
       width: 190px;
       max-width: 190px;
       min-width: 190px;
     }
+
     .table-current-value {
       width: 180px;
       max-width: 180px;
       min-width: 180px;
     }
+
     .table-symbol {
       min-width: 240px;
       width: 240px;
       white-space: normal;
     }
+
     .table-invest-percentage {
       min-width: 200px;
       display: flex;
@@ -766,6 +848,7 @@ $non-gradients: (
       align-items: center; //垂直居中
 
     }
+
     .table-percentage {
       text-align: left;
       min-width: 220px;
@@ -791,16 +874,19 @@ $non-gradients: (
       width: 1.2rem;
       height: 1.2rem;
     }
+
     .custom-control-label::after {
       width: 1.2rem;
       height: 1.2rem;
     }
+
     .custom-control-label {
       font-family: 'ubuntu-regular';
       line-height: 1.75 !important;
       padding-left: 2px;
       font-size: 1rem !important;
     }
+
     .custom-control {
       float: right;
       margin-top: 7px;
@@ -823,9 +909,10 @@ $non-gradients: (
       }
 
       tr:nth-child(1) {
-        position:sticky;
-        top:2.77rem;
+        position: sticky;
+        top: 2.77rem;
         z-index: 1004;
+
         .table-invest-percentage {
           justify-content: left;
 
@@ -834,10 +921,12 @@ $non-gradients: (
             display: inline-flex;
             margin-right: 10px;
           }
-          .invest-percentage{
+
+          .invest-percentage {
 
 
           }
+
           .percentage {
             display: inline-flex;
             justify-content: space-between;
@@ -846,13 +935,14 @@ $non-gradients: (
             min-width: 60px;
             width: 25%;
 
-            .pp-r{
+            .pp-r {
               display: inline-block;
-              width:40px;
+              width: 40px;
               text-align: center;
-              margin:0;
+              margin: 0;
             }
-            .ppp{
+
+            .ppp {
               display: inline-block;
               text-align: right;
             }

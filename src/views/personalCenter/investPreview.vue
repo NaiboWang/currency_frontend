@@ -382,7 +382,7 @@ export default {
       this.investPlan = info.data.contents;
       properties.sort(compare_desc("amount"));
       this.properties = properties.filter(x=>x.percentage!=0||x.symbol=="USDT");
-      console.log(properties,this.properties,this.account.scheme.properties)
+      // console.log(properties,this.properties,this.account.scheme.properties)
       this.staticProperties = this.$lodash.cloneDeep(properties).filter(x => x.investPercentage != 0);
       this.pagination.rows = this.properties.length;
     },
