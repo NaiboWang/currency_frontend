@@ -319,8 +319,9 @@ export default {
         // {key: 'amount', label: 'Current Value (USD)', sortable: true, tdClass: "table-current-value"},
         // {key: 'quantity', label: 'Current Quantity', sortable: true, tdClass: "table-current-value"},
         // {key: 'percentage', label: 'Current Occupation', sortable: true, tdClass: "table-percentage"},
-        {key: 'investPercentage', label: 'Planned Occupation', sortable: true, tdClass: "table-percentage"},
         {key: 'investAmount', label: 'Estimated Value (USD)', sortable: true, tdClass: "table-current-value"},
+        {key: 'investPercentage', label: 'Planned Occupation', sortable: true, tdClass: "table-percentage"},
+
         // {key: 'investQuantity', label: 'Estimated Quantity', sortable: true, tdClass: "table-invest-quantity"},
 
       ],
