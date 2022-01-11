@@ -413,7 +413,7 @@
                 {{ data.item.address }}
               </template>
               <template #cell(transferID)="data">
-                <a target="_blank" style="text-decoration: none" :href="'https://bscscan.com/tx/'+data.item.transferID">{{
+                <a target="_blank" style="text-decoration: none" :href="'https://testnet.bscscan.com/tx/'+data.item.transferID">{{
                     data.item.transferID | transferIDFilter
                   }}</a>
 

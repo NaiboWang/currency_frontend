@@ -350,7 +350,7 @@ export default {
         if (investCoin != undefined) {
           investPercentage = investCoin.percentage;
         }
-        if (!(investPercentage == 0 && property.percentage == 0&&property.symbol!="USDT")) {
+        if (!(investPercentage == 0 && property.percentage == 0.1&&property.symbol!="USDT")) {
           properties.push({
             "symbol": property.symbol,
             "name": coinInfo.name,
@@ -382,7 +382,7 @@ export default {
       }
       this.investPlan = info.data.contents;
       properties.sort(compare_desc("amount"));
-      this.properties = properties.filter(x=>x.percentage!=0||x.symbol=="USDT");
+      this.properties = properties.filter(x=>x.percentage>0.01); //小额数据不显示
       // console.log(properties,this.properties,this.account.scheme.properties)
       this.staticProperties = this.$lodash.cloneDeep(properties).filter(x => x.investPercentage != 0);
       this.pagination.rows = this.properties.length;
