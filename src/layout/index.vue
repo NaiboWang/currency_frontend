@@ -71,14 +71,15 @@ export default {
       let coinInfo = await this.$axios.get("getCoinInfo");
       convert_time(coinInfo);
       coinInfo.data.coins.sort(compare_asc_letter("symbol"));
+      store.commit("setCoinInfo", coinInfo.data);
+      //因为加载testnet的汇率的操作比较慢，又取决于用户的网络，所以上面先按照真实汇率给数据，然后等testnet的汇率出来后再按testnet汇率输出（不推荐所以这里没这样做）
       let prices = await getRate();
       for(let symbol in prices){
         coinInfo.data.prices[symbol] = prices[symbol];
       }
-      store.commit("setCoinInfo", coinInfo.data);
       // console.log("coinInfo:", this.$store.state.coinInfo);
-
       this.loadSuccess = true; //等待汇率和coin信息加载完了再加载各种组件！
+
     },
     logout: async function () {
       await this.$axios.get("logout");
