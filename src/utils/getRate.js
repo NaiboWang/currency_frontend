@@ -45,13 +45,15 @@ async function getRate() {
             "type": "function"
         }
     ]
-    let swap_path = [tokenAddresses['bep20_usdt'], tokenAddresses['bep20_wbnb'],tokenAddresses["bep20_xrp"]];
+    let swap_path = [tokenAddresses['bep20_usdt'], tokenAddresses['bep20_wbnb']];
     let rate_contract = new web3.eth.Contract(abi_pancakeRouter, pancakeRouter);
     let amountsOut = await rate_contract.methods.getAmountsOut(web3.utils.toHex(1e18), swap_path).call();
     // console.log(amountsOut[0]/amountsOut[1],amountsOut[0]/amountsOut[2]);
     let prices = [];
     prices["BNB"] = amountsOut[0]/amountsOut[1];
-    prices["XRP"] = amountsOut[0]/amountsOut[2];
+    swap_path = [tokenAddresses['bep20_usdt'],tokenAddresses["bep20_xrp"]];
+    amountsOut = await rate_contract.methods.getAmountsOut(web3.utils.toHex(1e18), swap_path).call();
+    prices["XRP"] = amountsOut[0]/amountsOut[1];
     swap_path = [tokenAddresses["bep20_wbnb"],tokenAddresses["bep20_btc"]];
     amountsOut = await rate_contract.methods.getAmountsOut(web3.utils.toHex(1e18), swap_path).call();
     prices["BTC"] = amountsOut[0] / amountsOut[1] * prices["BNB"];
