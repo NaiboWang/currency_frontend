@@ -77,7 +77,7 @@ export default {
       for(let symbol in prices){
         coinInfo.data.prices[symbol] = prices[symbol];
       }
-      // console.log("coinInfo:", this.$store.state.coinInfo);
+      console.log("coinInfo:", this.$store.state.coinInfo);
       this.loadSuccess = true; //等待汇率和coin信息加载完了再加载各种组件！
 
     },
