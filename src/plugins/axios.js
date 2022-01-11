@@ -59,7 +59,13 @@ service.interceptors.response.use(
         if(response.request.responseURL.indexOf("wait") == -1){
             NProgress.done();
         }
-
+        if(typeof(response.data)=='string'){ //对返回的json字符串里有NaN导致系统崩溃的解决方案
+            // console.log(0,response.data)
+            response.data = response.data.replaceAll("NaN","-1");
+            // console.log(1,response.data)
+            response.data = JSON.parse(response.data);
+            // console.log(2, response.data.data.schemes[0].propertyLogs[7],response.data)
+        }
         if (response.data.status != 200 && response.data.status != 210 && 'msg' in response.data) {
             Message({
                 message: response.data.msg,
