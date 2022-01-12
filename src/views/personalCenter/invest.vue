@@ -517,7 +517,7 @@ export default {
         let existCoinInfo = this.account.scheme.properties.find(x => x.symbol == coin);
         // console.log(existCoinInfo);
         if (existCoinInfo) {
-          this.properties.unshift({
+          this.properties.push({
             amount: existCoinInfo.amount,
             quantity: existCoinInfo.quantity,
             symbol: coin,
@@ -528,7 +528,7 @@ export default {
             investQuantity: 0,
           });
         } else {
-          this.properties.unshift({
+          this.properties.push({
             amount: 0,
             quantity: 0,
             symbol: coin,
@@ -539,8 +539,11 @@ export default {
             investQuantity: 0,
           });
         }
-
       }
+      setTimeout(()=>{
+        let investTable = document.getElementsByClassName("b-table-sticky-header");
+        investTable[0].scrollTop = investTable[0].scrollHeight;//添加币种之后滚动条自动滚动到最下方
+      },100); //由于DOM异步更新所以需要等待100ms
       this.selectedCoins = [];
       this.$bvModal.hide("bv-modal-add");
     },
