@@ -72,6 +72,7 @@ import {convert_time, get_date_difference} from "../../utils/time";
 export default {
   async mounted() {
     this.account = await getSchemeAccountInfo(this.$route.params.id); //得到用户总数据
+    // console.log(this.account)
     this.$store.commit("setAmount", this.account.amount);
     this.dateDifference = get_date_difference(new Date(), this.account.scheme.propertyStartTime["$date"]);
   },

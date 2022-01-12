@@ -14,7 +14,7 @@ export default {
       'id': this.$route.params.id,
       'range': this.$route.params.days
     });
-    // console.log(get_date_difference(new Date(), info.data.propertyLogs[0].time.$date));
+    // console.log(get_date_difference(new Date(), info.data.propertyLogs[0].time.$date),info.data.propertyLogs[0].time.$date);
     if(get_date_difference(new Date(), info.data.propertyLogs[0].time.$date)<1 && this.$route.params.days!=1){ //默认跳转到3天记录，但如果当前日志记录条数没有超过1天的话，跳转到24小时标签，后一个条件保证只跳转1次
       await this.$router.push("1");
       return ;//防止图表重复渲染，下面的语句就不执行了
@@ -122,7 +122,6 @@ export default {
       // myChart为echarts的实例
       myChart.resize();
       setTimeout(() => {
-        console.log(111);
         myChart.resize();
       }, 300)
     }
