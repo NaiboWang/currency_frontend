@@ -913,7 +913,7 @@ $non-gradients: (
 
       tr:nth-child(1) {
         position: sticky;
-        top: 2.77rem;
+        top: 3.6rem; //首行USDT冻结
         z-index: 1004;
 
         .table-invest-percentage {
