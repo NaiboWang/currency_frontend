@@ -336,8 +336,10 @@ h3 {
     }
   }
   .percentage {
-    display: inline-flex;
+    display: inline-block;
     font-size: 15px;
+    text-align: right;
+    width: 20%;
     @media (max-width: 768px) {
       font-size: 13px;
     }

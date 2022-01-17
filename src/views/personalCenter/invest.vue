@@ -94,7 +94,7 @@
                   </div>
                   <img :src="staticURL+'pics/'+data.item.symbol+'.png'" alt="image">
                   {{ data.item.symbol }}
-                  <div class="percentage" style="color:grey">({{ data.item.name }})</div>
+                  <div style="color:grey;display: inline-block">({{ data.item.name }})</div>
                 </template>
                 <template #cell(quantity)="data">
                   {{ data.item.quantity | numFilter_quantity }}
@@ -276,7 +276,7 @@
             <template #cell(symbol)="data">
               <img :src="staticURL+'pics/'+data.item.symbol+'.png'" alt="image">
               {{ data.item.symbol }}
-              <div class="percentage" style="color:grey">({{ data.item.name }})</div>
+              <div  style="color:grey;display: inline-block">({{ data.item.name }})</div>
             </template>
 
             <template #cell(price)="data">
@@ -867,8 +867,8 @@ $non-gradients: (
         font-size: 15px;
         white-space: nowrap;
         min-width: 60px;
-        width: 25%;
-        text-align: center !important;
+        width: 20%;
+        text-align: right !important;
       }
     }
 
